@@ -18,6 +18,8 @@
 
 * { box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -388,8 +390,9 @@ footer {
 .nav-link:hover { color: var(--text); }
 .nav-link.active { color: var(--accent-2); border-bottom-color: var(--accent-2); }
 
-.view { display: none; }
-.view.active { display: block; }
+/* one continuous page: every section is visible; tabs jump-scroll to them */
+.view { scroll-margin-top: 58px; }
+.view + .view { margin-top: 8px; }
 
 /* ====================================================================== */
 /* PICKER — single suggested row                                          */

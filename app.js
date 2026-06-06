@@ -81,21 +81,34 @@
   // ======================================================================
   // NAV / ROUTER
   // ======================================================================
-  function showView(v) {
+  // single scrolling page: tabs jump to a section; active tab follows scroll
+  function setActiveNav(v) {
     currentView = v;
-    ["calendar", "my-teams", "planner"].forEach(x =>
-      document.getElementById("view-" + x).classList.toggle("active", x === v));
-    document.querySelectorAll(".nav-link").forEach(a =>
-      a.classList.toggle("active", a.dataset.view === v));
+    document.querySelectorAll(".nav-link").forEach(a => a.classList.toggle("active", a.dataset.view === v));
+  }
+  function scrollToView(v) {
+    const el = document.getElementById("view-" + v);
+    if (!el) return;
+    setActiveNav(v);
     if (location.hash !== "#" + v) history.replaceState(null, "", "#" + v);
-    if (v === "calendar") renderCalendar();
-    else if (v === "my-teams") renderMyMatches();
-    else if (v === "planner") renderPlanner();
-    window.scrollTo({ top: 0, behavior: "instant" in document.documentElement.style ? "instant" : "auto" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   document.getElementById("main-nav").addEventListener("click", e => {
-    const b = e.target.closest(".nav-link"); if (b) showView(b.dataset.view);
+    const b = e.target.closest(".nav-link"); if (b) scrollToView(b.dataset.view);
   });
+
+  function setupScrollSpy() {
+    const ids = ["calendar", "my-teams", "planner"];
+    const obs = new IntersectionObserver(entries => {
+      const vis = entries.filter(en => en.isIntersecting);
+      if (!vis.length) return;
+      vis.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      const id = vis[0].target.id.replace("view-", "");
+      setActiveNav(id);
+      if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    ids.forEach(id => obs.observe(document.getElementById("view-" + id)));
+  }
 
   // ======================================================================
   // TEAM PICKER
@@ -136,14 +149,14 @@
       : "Tap your team to follow it — your location and the top 10 are below, or search any of the 48.";
   }
 
+  function rerenderAll() { renderCalendar(); renderMyMatches(); renderPlanner(); }
+
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
     saveFavorites();
     renderPicker();
     renderHeaderStats();
-    if (currentView === "calendar") renderCalendar();
-    else if (currentView === "my-teams") renderMyMatches();
-    else if (currentView === "planner") renderPlanner();
+    rerenderAll();
   }
 
   document.getElementById("picker-panel").addEventListener("click", e => {
@@ -154,8 +167,7 @@
   document.getElementById("team-search").addEventListener("input", e => { ui.search = e.target.value; renderPicker(); });
   document.getElementById("toggle-elo").addEventListener("change", e => { ui.showElo = e.target.checked; renderPicker(); });
   document.getElementById("clear-fav").addEventListener("click", () => {
-    favorites.clear(); saveFavorites(); renderPicker(); renderHeaderStats();
-    if (currentView === "calendar") renderCalendar();
+    favorites.clear(); saveFavorites(); renderPicker(); renderHeaderStats(); rerenderAll();
   });
 
   // ======================================================================
@@ -246,7 +258,7 @@
     while (y < endY || (y === endY && m <= endM)) { html += renderMonth(y, m); m++; if (m > 11) { m = 0; y++; } }
     el.innerHTML = html;
   }
-  mobileMQ.addEventListener("change", () => { if (currentView === "calendar") renderCalendar(); });
+  mobileMQ.addEventListener("change", renderCalendar);
 
   // ======================================================================
   // MY TEAMS
@@ -261,7 +273,7 @@
         <button class="cta-btn" id="es-pick">Pick your teams →</button>
       </div>`;
       const b = document.getElementById("es-pick");
-      if (b) b.addEventListener("click", () => { showView("calendar"); document.getElementById("team-search").focus(); });
+      if (b) b.addEventListener("click", () => { scrollToView("calendar"); document.getElementById("team-search").focus(); });
       return;
     }
     const favTeams = [...favorites].sort((a, b) => a.localeCompare(b));
@@ -430,6 +442,15 @@
   // ======================================================================
   renderPicker();
   renderHeaderStats();
+  renderCalendar();
+  renderMyMatches();
+  renderPlanner();
+  setupScrollSpy();
+  setActiveNav("calendar");
   const initial = (location.hash || "").replace("#", "");
-  showView(["calendar", "my-teams", "planner"].includes(initial) ? initial : "calendar");
+  if (["my-teams", "planner"].includes(initial)) {
+    // jump to the deep-linked section once layout settles
+    requestAnimationFrame(() => document.getElementById("view-" + initial).scrollIntoView({ block: "start" }));
+    setActiveNav(initial);
+  }
 })();
