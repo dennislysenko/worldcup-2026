@@ -33,7 +33,6 @@
         <h1>World Cup 2026 <span class="trophy">🏆</span></h1>
         <p class="subtitle">United States · Canada · Mexico — June 11 to July 19, 2026</p>
       </div>
-      <div class="header-stats" id="header-stats"></div>
     </div>
   </header>
 
@@ -47,6 +46,20 @@
   <main>
     <!-- ===================== CALENDAR VIEW ===================== -->
     <div class="view" id="view-calendar">
+      <!-- INTRO (dismissible) -->
+      <section class="intro-card" id="intro-card" hidden>
+        <button class="intro-close" id="intro-close" aria-label="Dismiss">×</button>
+        <h2>New here?</h2>
+        <ul class="intro-list">
+          <li><b>📅 Full World Cup calendar</b> — see all 104 matchups in one view.</li>
+          <li><b>🔥 Banger alerts</b> — the marquee matchups, ranked by Elo and highlighted everywhere.</li>
+          <li><b>🗓️ Planner</b> — can't decide when to catch a World Cup weekend? Pick some dates and we'll show every match that falls on them — bangers first, of course.</li>
+          <li><b>⭐ Follow your teams</b> — star the teams you want to watch and they'll jump out across every view.</li>
+        </ul>
+      </section>
+
+      <h2 class="section-title">Calendar<span class="st-sub">Every match of the tournament, June 11 – July 19</span></h2>
+
       <!-- TEAM PICKER -->
       <section class="panel" id="picker-panel">
         <div class="panel-head">
@@ -60,6 +73,12 @@
         <p class="hint" id="picker-hint"></p>
         <div id="suggested-row" class="chip-row"></div>
         <div id="search-results" class="chips hidden"></div>
+      </section>
+
+      <!-- UPCOMING BANGERS (compact strip) -->
+      <section class="upcoming" id="upcoming-bangers" hidden>
+        <div class="upcoming-head">🔥 Upcoming bangers</div>
+        <div class="upcoming-row" id="upcoming-row"></div>
       </section>
 
       <!-- CALENDAR CONTROLS -->
@@ -80,17 +99,16 @@
 
     <!-- ===================== MY TEAMS VIEW ===================== -->
     <div class="view" id="view-my-teams">
+      <h2 class="section-title">My Teams<span class="st-sub">Every fixture for the teams you follow, in date order</span></h2>
       <section class="panel">
-        <div class="panel-head"><h2>When my teams play</h2></div>
         <div id="my-matches"></div>
       </section>
     </div>
 
     <!-- ===================== PLANNER VIEW ===================== -->
     <div class="view" id="view-planner">
+      <h2 class="section-title">Planner<span class="st-sub">Pick a day or a range — see everything on, your teams and bangers first</span></h2>
       <section class="panel">
-        <div class="panel-head"><h2>Plan a window</h2></div>
-        <p class="hint">Tap a day — or a start and an end — to see everything on in that span. Your teams and the bangers jump to the top of the queue.</p>
         <div id="planner-cal"></div>
         <div id="planner-summary"></div>
       </section>
@@ -99,6 +117,7 @@
 
     <!-- ===================== PROJECTIONS VIEW ===================== -->
     <div class="view" id="view-projections">
+      <h2 class="section-title">Projections<span class="st-sub">Who's likely to fill each knockout slot — click a team for its path</span></h2>
       <section class="panel" id="proj-intro"></section>
       <div id="proj-list"></div>
     </div>

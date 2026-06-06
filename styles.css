@@ -61,6 +61,67 @@ main {
 .header-stats .stat b { display: block; font-size: 26px; color: var(--accent); line-height: 1.1; }
 .header-stats .stat span { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 
+/* ---------- Big section headings ---------- */
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin: 10px 2px 18px;
+  line-height: 1.15;
+}
+.section-title .st-sub {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ---------- Upcoming bangers (compact strip) ---------- */
+.upcoming { margin-bottom: 22px; }
+.upcoming[hidden] { display: none; }
+.upcoming-head { font-size: 13px; font-weight: 700; color: var(--banger); margin: 0 2px 9px; letter-spacing: .3px; }
+.upcoming-row { display: flex; gap: 9px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: thin; }
+.upcoming-row::-webkit-scrollbar { height: 5px; } .upcoming-row::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.ub-card {
+  flex: 0 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 9px 12px;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(232,89,12,.16);
+}
+.ub-card:hover { border-color: var(--banger); }
+.ub-card.fav { border-color: rgba(240,140,0,.55); }
+.ub-date { font-size: 11px; font-weight: 700; color: var(--accent-2); white-space: nowrap; }
+.ub-teams { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.ub-teams img { width: 21px; height: 15px; border-radius: 2px; object-fit: cover; box-shadow: 0 1px 2px rgba(0,0,0,.18); }
+.ub-teams .vs { color: var(--muted); font-size: 10px; font-weight: 600; }
+.ub-meta { font-size: 10.5px; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+
+/* ---------- Intro card (dismissible) ---------- */
+.intro-card {
+  position: relative;
+  background: linear-gradient(100deg, rgba(12,166,120,.08), rgba(25,113,194,.08));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+}
+.intro-card[hidden] { display: none; }
+.intro-card h2 { margin: 0 0 10px; font-size: 17px; }
+.intro-list { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
+.intro-list li { font-size: 13.5px; color: var(--muted); line-height: 1.5; padding-left: 2px; }
+.intro-list li b { color: var(--text); font-weight: 600; }
+.intro-close {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; font-size: 22px; line-height: 1;
+  color: var(--muted); cursor: pointer; padding: 4px 8px; border-radius: 8px;
+}
+.intro-close:hover { color: var(--text); background: rgba(0,0,0,.04); }
+
 /* ---------- Panels ---------- */
 .panel {
   background: var(--panel);
@@ -566,6 +627,12 @@ footer {
 .pside { display: flex; flex-direction: column; gap: 6px; }
 .pside-main { display: flex; align-items: center; gap: 11px; font-size: 16px; font-weight: 700; min-height: 24px; }
 .pside-prob { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 1px 0 4px; scrollbar-width: thin; }
+/* desktop: probabilities sit inline, to the right of the slot label */
+@media (min-width: 641px) {
+  .pside { flex-direction: row; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
+  .pside-main { flex: 0 0 auto; min-width: 168px; }
+  .pside-prob { flex: 1 1 auto; flex-wrap: wrap; overflow: visible; padding: 0; }
+}
 .pside-prob::-webkit-scrollbar { height: 5px; } .pside-prob::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 .ppill { display: inline-flex; align-items: center; gap: 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px 2px 4px; font-size: 11.5px; flex: 0 0 auto; }
 .ppill img { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; }

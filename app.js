@@ -196,13 +196,12 @@
       : "Tap your team to follow it — your location and the top 10 are below, or search any of the 48.";
   }
 
-  function rerenderAll() { renderCalendar(); renderMyMatches(); renderPlanner(); }
+  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderMyMatches(); renderPlanner(); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
     saveFavorites();
     renderPicker();
-    renderHeaderStats();
     rerenderAll();
   }
 
@@ -214,23 +213,19 @@
   document.getElementById("team-search").addEventListener("input", e => { ui.search = e.target.value; renderPicker(); });
   document.getElementById("toggle-elo").addEventListener("change", e => { ui.showElo = e.target.checked; renderPicker(); });
   document.getElementById("clear-fav").addEventListener("click", () => {
-    favorites.clear(); saveFavorites(); renderPicker(); renderHeaderStats(); rerenderAll();
+    favorites.clear(); saveFavorites(); renderPicker(); rerenderAll();
   });
 
   // ======================================================================
-  // HEADER STATS
+  // INTRO CARD (dismissible, remembered on this device)
   // ======================================================================
-  function renderHeaderStats() {
-    const venues = new Set(WC.matches.map(m => m.venue)).size;
-    const stats = [
-      { n: WC.teams.length, l: "Teams" },
-      { n: WC.matches.length, l: "Matches" },
-      { n: venues, l: "Venues" },
-      { n: favorites.size, l: "My teams" }
-    ];
-    document.getElementById("header-stats").innerHTML = stats.map(s =>
-      `<div class="stat"><b>${s.n}</b><span>${s.l}</span></div>`).join("");
-  }
+  const INTRO_KEY = "wc2026.introDismissed";
+  const introCard = document.getElementById("intro-card");
+  if (localStorage.getItem(INTRO_KEY) !== "1") introCard.hidden = false;
+  document.getElementById("intro-close").addEventListener("click", () => {
+    introCard.hidden = true;
+    localStorage.setItem(INTRO_KEY, "1");
+  });
 
   // ======================================================================
   // CALENDAR (grid on desktop, agenda on mobile)
@@ -309,6 +304,32 @@
     el.innerHTML = html;
   }
   mobileMQ.addEventListener("change", renderCalendar);
+
+  // ======================================================================
+  // UPCOMING BANGERS (compact strip on the Calendar view)
+  // ======================================================================
+  const TODAY = "2026-06-06";
+  function renderUpcomingBangers() {
+    const el = document.getElementById("upcoming-bangers");
+    const row = document.getElementById("upcoming-row");
+    const we = parseDate(TODAY); we.setDate(we.getDate() + 10);
+    const windowEnd = `${we.getFullYear()}-${String(we.getMonth() + 1).padStart(2, "0")}-${String(we.getDate()).padStart(2, "0")}`;
+    const all = WC.matches.filter(m => isBanger(m) && m.date >= TODAY)
+      .sort((a, b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""));
+    const win = all.filter(m => m.date <= windowEnd);
+    const show = (win.length >= 4 ? win : all.slice(0, 8)).slice(0, 12);
+    if (!show.length) { el.hidden = true; return; }
+    el.hidden = false;
+    row.innerHTML = show.map(m => {
+      const dt = parseDate(m.date);
+      const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
+      return `<div class="ub-card ${isFavMatch(m) ? "fav" : ""}" data-match="${m.matchNumber}">
+        <div class="ub-date">${dateStr}${m.time ? " · " + m.time : ""}</div>
+        <div class="ub-teams">${teamFlag(m.home, "")}<span>${m.home}</span><span class="vs">v</span>${teamFlag(m.away, "")}<span>${m.away}</span></div>
+        <div class="ub-meta">${m.stage === "Group" ? "Group " + m.group : m.stage} · ${m.city}</div>
+      </div>`;
+    }).join("");
+  }
 
   // ======================================================================
   // MY TEAMS
@@ -478,8 +499,7 @@
     if (projectionsRendered) return; // static — independent of favorites
     const meta = WC.projMeta || {};
     document.getElementById("proj-intro").innerHTML = `
-      <div class="panel-head"><h2>Knockout projections</h2></div>
-      <p>Group fixtures are set; the knockout bracket isn't. We simulate the whole tournament ${meta.sims ? meta.sims.toLocaleString() : ""} times from current Elo ratings — group games as Poisson-goal matches, knockout ties as single games — and tally how often each nation reaches each slot.</p>
+      <p style="margin-top:0">Group fixtures are set; the knockout bracket isn't. We simulate the whole tournament ${meta.sims ? meta.sims.toLocaleString() : ""} times from current Elo ratings — group games as Poisson-goal matches, knockout ties as single games — and tally how often each nation reaches each slot.</p>
       <p class="proj-rule"><b>Reading the icons:</b> a single flag means a genuine favourite (≥<code>60%</code>). Otherwise the icon shows the leaders that cover the likely outcomes, expanding to 3–4 flags when the field is tightly packed — so an open slot looks open.
       <span style="color:var(--muted)">Winner/runner-up slots are exact; the eight best third-placed teams' allocation is approximated (FIFA uses a fixed table).</span></p>`;
     const ko = WC.matches.filter(m => m.stage !== "Group").sort((a, b) => a.matchNumber - b.matchNumber);
@@ -593,8 +613,8 @@
   // INIT
   // ======================================================================
   renderPicker();
-  renderHeaderStats();
   renderCalendar();
+  renderUpcomingBangers();
   renderMyMatches();
   renderPlanner();
   renderProjections();
