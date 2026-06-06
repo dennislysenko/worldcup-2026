@@ -74,6 +74,10 @@
   function projDist(matchNumber, side) {
     return (WC.proj && WC.proj[matchNumber]) ? WC.proj[matchNumber][side] : null;
   }
+  function groupOf(team) {
+    const m = WC.matches.find(x => x.stage === "Group" && (x.home === team || x.away === team));
+    return m ? m.group : null;
+  }
   // Single flag ONLY for a genuine favourite (#1 ≥ 60%). Otherwise show the leaders
   // that cover the bulk of outcomes (cumulative ≥ 60%), and keep extending while the
   // next contender stays within 70% of the one above (a tight pack). Clamped 2–4.
@@ -455,7 +459,7 @@
       const dist = projDist(m.matchNumber, which);
       const icon = known ? teamFlag(name, "flag") : projIconHTML(dist);
       const pills = (!known && dist) ? dist.slice(0, 8).map((d, i) =>
-        `<span class="ppill ${i === 0 ? "lead" : ""}"><img loading="lazy" src="https://flagcdn.com/w80/${iso(d.team)}.png" alt=""><span class="pct">${Math.round(d.p * 100)}%</span></span>`).join("") : "";
+        `<span class="ppill ${i === 0 ? "lead" : ""}" data-team="${d.team}" title="Click for ${d.team}'s path"><img loading="lazy" src="https://flagcdn.com/w80/${iso(d.team)}.png" alt=""><span class="pct">${Math.round(d.p * 100)}%</span></span>`).join("") : "";
       return `<div class="pside">
         <div class="pside-main">${icon}<span>${known ? name : shortLabel(name)}</span></div>
         ${pills ? `<div class="pside-prob">${pills}</div>` : ""}
@@ -489,6 +493,48 @@
     document.getElementById("proj-list").innerHTML = html;
     projectionsRendered = true;
   }
+
+  // ======================================================================
+  // DRILL-DOWN (per-team survival funnel)
+  // ======================================================================
+  const drillOverlay = document.createElement("div");
+  drillOverlay.className = "drill-overlay hidden";
+  drillOverlay.innerHTML = `<div class="drill" role="dialog" aria-modal="true"></div>`;
+  document.body.appendChild(drillOverlay);
+
+  function fmtPct(p) { const v = p * 100; return v < 9.5 ? v.toFixed(1) + "%" : Math.round(v) + "%"; }
+  function openDrill(team) {
+    const path = WC.teamPath && WC.teamPath[team];
+    if (!path) return;
+    const grp = groupOf(team);
+    const rows = [
+      ["Qualify from the group", path.r32, null],
+      ["Reach Round of 16", path.r16, path.r32],
+      ["Reach Quarter-finals", path.qf, path.r16],
+      ["Reach Semi-finals", path.sf, path.qf],
+      ["Reach the Final", path.final, path.sf],
+      ["Win the tournament", path.champion, path.final]
+    ];
+    const body = rows.map(([label, p, prev]) => {
+      const cond = (prev != null && prev > 0) ? `<span class="dl-cond">${Math.round(p / prev * 100)}% of the times it gets there</span>` : "";
+      return `<div class="dl-row"><div class="dl-label">${label}${cond}</div>
+        <div class="dl-bar"><span style="width:${Math.max(1.5, p * 100)}%"></span></div>
+        <div class="dl-pct">${fmtPct(p)}</div></div>`;
+    }).join("");
+    drillOverlay.querySelector(".drill").innerHTML = `
+      <div class="drill-head">${teamFlag(team, "")}<h3>${team}</h3><button class="drill-close" aria-label="Close">×</button></div>
+      <p class="drill-sub">Elo ${WC.elo[team] || "—"}${grp ? " · Group " + grp : ""} · ${(WC.projMeta.sims || 0).toLocaleString()} simulated tournaments</p>
+      <p class="drill-group">Finishes the group <b>1st ${fmtPct(path.groupWin)}</b> · <b>2nd ${fmtPct(path.groupRunner)}</b> — the group result sets up the whole bracket path below.</p>
+      ${body}
+      <p class="drill-note">Each bar is the share of simulations in which ${team} is still alive at that stage — "Reach Round of 32" means surviving the group. Reaching the final means winning four straight knockout ties, so a strong group win (and the easier bracket path it earns) compounds round over round.</p>`;
+    drillOverlay.classList.remove("hidden");
+  }
+  function closeDrill() { drillOverlay.classList.add("hidden"); }
+  drillOverlay.addEventListener("click", e => { if (e.target === drillOverlay || e.target.closest(".drill-close")) closeDrill(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrill(); });
+  document.getElementById("proj-list").addEventListener("click", e => {
+    const pill = e.target.closest(".ppill[data-team]"); if (pill) openDrill(pill.dataset.team);
+  });
 
   // ======================================================================
   // POPOVER (desktop match details, calendar + planner)

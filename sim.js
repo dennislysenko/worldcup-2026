@@ -77,7 +77,9 @@
     return assign;
   }
 
-  function simTournament(tally) {
+  const FUNNEL_STAGES = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Final"];
+
+  function simTournament(tally, paths) {
     const gw = {}, ru = {}, thirds = [];
     for (const L of GROUP_LETTERS) {
       const r = simGroup(L);
@@ -88,7 +90,7 @@
     thirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.r - b.r);
     const slotAssign = allocateThirds(thirds.slice(0, 8), new Set());
 
-    const winnerOf = {}, loserOf = {};
+    const winnerOf = {}, loserOf = {}, seen = {};
     function resolve(str, matchNum) {
       if (str.startsWith("Winner Group ")) return gw[str.slice(13)];
       if (str.startsWith("Runner-up Group ")) return ru[str.slice(16)];
@@ -103,10 +105,15 @@
       const tm = tally[m.matchNumber];
       tm.home[home] = (tm.home[home] || 0) + 1;
       tm.away[away] = (tm.away[away] || 0) + 1;
+      (seen[m.stage] = seen[m.stage] || new Set()).add(home).add(away);
       const w = koWinner(home, away);
       winnerOf[m.matchNumber] = w;
       loserOf[m.matchNumber] = w === home ? away : home;
     }
+    // per-team round-reach + group finish, for the drill-down funnel
+    FUNNEL_STAGES.forEach(stage => { const s = seen[stage]; if (s) s.forEach(t => { paths[t][stage]++; }); });
+    paths[winnerOf[104]].champion++;
+    for (const L of GROUP_LETTERS) { paths[gw[L]].groupWin++; paths[ru[L]].groupRunner++; }
   }
 
   // ---- run ----
@@ -114,7 +121,12 @@
   const t0 = (typeof performance !== "undefined" && performance.now) ? performance.now() : 0;
   const tally = {};
   koMatches.forEach(m => { tally[m.matchNumber] = { home: {}, away: {} }; });
-  for (let i = 0; i < N; i++) simTournament(tally);
+  const TEAM_NAMES = WC.teams.map(t => t.name);
+  const paths = {};
+  TEAM_NAMES.forEach(t => {
+    paths[t] = { "Round of 32": 0, "Round of 16": 0, "Quarter-final": 0, "Semi-final": 0, "Final": 0, champion: 0, groupWin: 0, groupRunner: 0 };
+  });
+  for (let i = 0; i < N; i++) simTournament(tally, paths);
 
   const toSorted = counts => Object.keys(counts)
     .map(team => ({ team, p: counts[team] / N }))
@@ -123,6 +135,17 @@
   WC.proj = {};
   koMatches.forEach(m => {
     WC.proj[m.matchNumber] = { home: toSorted(tally[m.matchNumber].home), away: toSorted(tally[m.matchNumber].away) };
+  });
+  // per-team survival funnel (probabilities), for drill-down
+  WC.teamPath = {};
+  TEAM_NAMES.forEach(t => {
+    const p = paths[t];
+    WC.teamPath[t] = {
+      groupWin: p.groupWin / N, groupRunner: p.groupRunner / N,
+      r32: p["Round of 32"] / N, r16: p["Round of 16"] / N,
+      qf: p["Quarter-final"] / N, sf: p["Semi-final"] / N,
+      final: p["Final"] / N, champion: p.champion / N
+    };
   });
   WC.projMeta = { sims: N, ms: t0 ? Math.round(performance.now() - t0) : null };
 })();

@@ -571,6 +571,28 @@ footer {
 .ppill img { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; }
 .ppill .pct { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
 .ppill.lead { border-color: rgba(25,113,194,.5); background: rgba(25,113,194,.07); }
+.ppill { cursor: pointer; }
+.ppill:hover { border-color: var(--accent-2); }
+
+/* ---- drill-down modal (survival funnel) ---- */
+.drill-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(20,30,60,.45); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.drill-overlay.hidden { display: none; }
+.drill { background: var(--panel); border-radius: 16px; max-width: 460px; width: 100%; padding: 22px 24px; box-shadow: 0 20px 60px rgba(0,0,0,.32); max-height: 90vh; overflow: auto; }
+.drill-head { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
+.drill-head img { width: 40px; height: 30px; border-radius: 4px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.drill-head h3 { margin: 0; font-size: 19px; }
+.drill-close { margin-left: auto; background: none; border: none; font-size: 24px; color: var(--muted); cursor: pointer; line-height: 1; align-self: flex-start; }
+.drill-close:hover { color: var(--text); }
+.drill-sub { color: var(--muted); font-size: 12.5px; margin: 2px 0 12px; }
+.drill-group { background: var(--bg); border-radius: 9px; padding: 9px 12px; font-size: 12px; color: var(--muted); margin: 0 0 16px; }
+.drill-group b { color: var(--text); }
+.dl-row { display: grid; grid-template-columns: minmax(120px, 1.2fr) 2fr 46px; gap: 10px; align-items: center; margin-bottom: 8px; }
+.dl-label { font-size: 12.5px; font-weight: 600; }
+.dl-cond { color: var(--muted); font-size: 10.5px; font-weight: 400; display: block; }
+.dl-bar { height: 18px; background: var(--bg); border-radius: 5px; overflow: hidden; }
+.dl-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 5px; }
+.dl-pct { font-size: 13px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.drill-note { margin-top: 14px; color: var(--muted); font-size: 11.5px; border-top: 1px solid var(--line); padding-top: 12px; }
 .pvs { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin: 9px 0 5px; padding-left: 3px; position: relative; }
 .pvs::after { content: ""; position: absolute; left: 44px; right: 0; top: 50%; height: 1px; background: var(--line); }
 
