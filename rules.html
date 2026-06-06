@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Icon selection rules</title>
+<style>
+  :root{--bg:#eef1f7;--panel:#fff;--line:#dde3ef;--text:#1a2138;--muted:#5f6b8a;--accent2:#1971c2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--text);padding:24px 16px 60px;line-height:1.45}
+  h1{font-size:20px;margin:0 0 4px}
+  .lede{color:var(--muted);font-size:13.5px;margin:0 0 8px;max-width:620px}
+  .rule{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;max-width:620px;margin:0 0 20px;font-size:13px}
+  .rule code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
+  .stack{display:flex;flex-direction:column;gap:11px;max-width:480px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+  .cap{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--accent2);font-weight:700;margin-bottom:9px}
+  .row{display:flex;align-items:center;gap:12px}
+  .label{font-size:16px;font-weight:700}
+  .mprob{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:8px 0 2px;scrollbar-width:thin;margin-top:6px}
+  .pill{display:inline-flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 9px 2px 4px;font-size:11.5px;flex:0 0 auto}
+  .pill img{width:18px;height:13px;border-radius:2px;object-fit:cover}
+  .pill .pct{color:var(--muted);font-variant-numeric:tabular-nums;font-weight:600}
+  .pill.in{border-color:rgba(25,113,194,.5);background:rgba(25,113,194,.07)}
+  .why{font-size:11.5px;color:var(--muted);margin-top:8px}
+
+  /* ICON FAMILY */
+  .single img{width:26px;height:19px;border-radius:3px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.2);flex:0 0 auto}
+  .even2{display:inline-flex;gap:2px;flex:0 0 auto}
+  .even2 img{width:19px;height:15px;border-radius:2px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.22)}
+  .b2,.b3{position:relative;display:inline-block;flex:0 0 auto}
+  .b2 img,.b3 img{position:absolute;width:20px;height:15px;border:1px solid #fff;border-radius:3px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+  .b2{width:28px;height:20px}
+  .b2 .f1{top:0;left:0;z-index:2} .b2 .f2{top:5px;left:8px;z-index:1}
+  .b3{width:36px;height:26px}
+  .b3 .f1{top:0;left:0;z-index:3} .b3 .f2{top:5px;left:8px;z-index:2} .b3 .f3{top:10px;left:16px;z-index:1}
+  .g4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1.5px;background:#fff;border-radius:4px;padding:1.5px;flex:0 0 auto;width:33px;height:25px;box-shadow:0 1px 2px rgba(0,0,0,.22);outline:1px solid rgba(0,0,0,.06)}
+  .g4 img{width:100%;height:100%;object-fit:cover;border-radius:2px;display:block}
+</style></head>
+<body>
+  <h1>How many flags? — the selection rule</h1>
+  <p class="lede">The icon is chosen <i>from</i> the slot's probability distribution, so its shape matches reality.</p>
+  <div class="rule">
+    <b>1 · How many (N) — cliff-aware:</b> always show #1. Add #2 if it's ≥ <code>15%</code>. Then add #3, #4 <i>only</i> while each is ≥ <code>70%</code> of the team above it — so a big drop-off (a “cliff”) stops the list.<br>
+    <b>2 · Which style:</b>
+    <code>N=1</code> → single ·
+    <code>N=2 &amp; gap ≤ 6pts</code> → <b>even pair</b> ·
+    <code>N=2 &amp; gap &gt; 6pts</code> → cascade ·
+    <code>N=3</code> → tri-shield ·
+    <code>N=4</code> → grid.<br>
+    <span style="color:var(--muted)">So 42/30/<b>18</b>/10 stops at 2 (18 is &lt;70% of 30 — past the cliff) → leader of two, not a misleading trident.</span>
+  </div>
+
+  <div class="stack" id="stack"></div>
+
+  <script>
+    const F = (iso)=>`https://flagcdn.com/w80/${iso}.png`;
+    const FLOOR2=0.15;   // #2 must clear this to be a co-favourite
+    const RATIO=0.7;     // #3/#4 included only if within 70% of the team above (no cliff)
+    const EVEN_GAP=0.06; // #1–#2 within this ⇒ even pair, else cascade
+
+    function pick(probs){
+      const p = i => probs[i] || 0;
+      let n = 1;                                  // #1 always
+      if(p(1) >= FLOOR2){ n = 2;                  // add #2 if it's a real contender
+        if(p(2) >= RATIO*p(1)){ n = 3;            // add #3 only if no cliff below #2
+          if(p(3) >= RATIO*p(2)) n = 4;           // add #4 only if no cliff below #3
+        }
+      }
+      let style;
+      if(n===1) style='single';
+      else if(n===2) style = (p(0)-p(1) <= EVEN_GAP) ? 'even' : 'cascade2';
+      else if(n===3) style='cascade3';
+      else style='grid';
+      return {n, style};
+    }
+    function icon(teams, style){
+      const im = (t,c)=>`<img class="${c}" src="${F(t.iso)}">`;
+      if(style==='single') return `<span class="single">${im(teams[0],'')}</span>`;
+      if(style==='even')   return `<span class="even2">${im(teams[0],'')}${im(teams[1],'')}</span>`;
+      if(style==='cascade2') return `<span class="b2">${im(teams[0],'f1')}${im(teams[1],'f2')}</span>`;
+      if(style==='cascade3') return `<span class="b3">${im(teams[0],'f1')}${im(teams[1],'f2')}${im(teams[2],'f3')}</span>`;
+      return `<span class="g4">${teams.slice(0,4).map(t=>im(t,'')).join('')}</span>`;
+    }
+
+    const CASES = [
+      { cap:'Near-lock → single', label:'Winner Group C',
+        teams:[{n:'Brazil',iso:'br',p:.80},{n:'Morocco',iso:'ma',p:.09},{n:'Scotland',iso:'gb-sct',p:.06},{n:'Haiti',iso:'ht',p:.05}] },
+      { cap:'Coin-flip pair → even', label:'Winner Group L',
+        teams:[{n:'England',iso:'gb-eng',p:.44},{n:'Croatia',iso:'hr',p:.40},{n:'Ghana',iso:'gh',p:.09},{n:'Panama',iso:'pa',p:.07}] },
+      { cap:'Leader of two — cliff after #2 → cascade (your case)', label:'Winner Group A',
+        teams:[{n:'Mexico',iso:'mx',p:.42},{n:'South Korea',iso:'kr',p:.30},{n:'Czechia',iso:'cz',p:.18},{n:'South Africa',iso:'za',p:.10}] },
+      { cap:'Two near-equal favs + cliff → even', label:'Runner-up B',
+        teams:[{n:'Switzerland',iso:'ch',p:.40},{n:'Canada',iso:'ca',p:.35},{n:'Bosnia',iso:'ba',p:.15},{n:'Qatar',iso:'qa',p:.10}] },
+      { cap:'Genuinely open three → tri-shield', label:'Runner-up A',
+        teams:[{n:'South Korea',iso:'kr',p:.33},{n:'Czechia',iso:'cz',p:.28},{n:'Mexico',iso:'mx',p:.24},{n:'South Africa',iso:'za',p:.09}] },
+      { cap:'Wide open four → grid', label:'Winner M91',
+        teams:[{n:'Spain',iso:'es',p:.24},{n:'Brazil',iso:'br',p:.22},{n:'Netherlands',iso:'nl',p:.19},{n:'Croatia',iso:'hr',p:.18},{n:'Belgium',iso:'be',p:.17}] },
+    ];
+
+    document.getElementById('stack').innerHTML = CASES.map(c=>{
+      const probs = c.teams.map(t=>t.p);
+      const {n,style} = pick(probs);
+      const ic = icon(c.teams, style);
+      const pills = c.teams.map((t,i)=>`<span class="pill ${i<n?'in':''}"><img src="${F(t.iso)}"><span class="pct">${Math.round(t.p*100)}%</span></span>`).join('');
+      const styleName = {single:'single flag',even:'even pair',cascade2:'2-way cascade',cascade3:'3-way tri-shield',grid:'4-way grid'}[style];
+      return `<div class="card">
+        <div class="cap">${c.cap}</div>
+        <div class="row">${ic}<span class="label">${c.label}</span></div>
+        <div class="mprob">${pills}</div>
+        <div class="why">→ ${n} flag${n>1?'s':''} · <b>${styleName}</b>${style==='cascade2'?' (gap '+Math.round((probs[0]-probs[1])*100)+'pts)':''}${style==='even'?' (gap '+Math.round((probs[0]-probs[1])*100)+'pts ≤ 6)':''}</div>
+      </div>`;
+    }).join('');
+  </script>
+</body></html>

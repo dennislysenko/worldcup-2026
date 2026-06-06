@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Row concepts</title>
+<style>
+  :root{
+    --bg:#eef1f7; --panel:#fff; --line:#dde3ef; --text:#1a2138; --muted:#5f6b8a;
+    --accent2:#1971c2; --fav:#f08c00; --fav-dim:rgba(240,140,0,.13); --banger:#e8590c; --ko:#6b78c4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--text);padding:28px 22px 60px;line-height:1.4}
+  h1{font-size:22px;margin:0 0 4px}
+  .lede{color:var(--muted);font-size:14px;margin:0 0 26px;max-width:720px}
+  .concept{margin-bottom:30px}
+  .concept-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+  .concept-head .n{width:26px;height:26px;border-radius:50%;background:var(--accent2);color:#fff;
+       display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 auto}
+  .concept-head h2{font-size:16px;margin:0}
+  .concept-head p{margin:0;color:var(--muted);font-size:13px}
+  .stack{display:flex;flex-direction:column;gap:9px;max-width:560px}
+
+  /* base row chrome (matches the app) */
+  .row{display:grid;grid-template-columns:84px 1fr;gap:14px;align-items:center;
+       background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+  .row.fav{border-color:rgba(240,140,0,.5);background:var(--fav-dim)}
+  .date{font-size:13px;font-weight:700;color:var(--accent2);display:flex;flex-direction:column}
+  .date .t{color:var(--muted);font-weight:500;font-size:12px}
+  .meta{color:var(--muted);font-size:12px;margin-top:4px}
+  .teams{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600}
+  .nm{white-space:nowrap}
+  .vs{color:var(--muted);font-size:12px;font-weight:600}
+  .ko-badge{width:24px;height:18px;border-radius:3px;background:var(--ko);color:#fff;font-size:9px;font-weight:800;
+       display:inline-flex;align-items:center;justify-content:center}
+
+  /* ---- Concept 1: baseline (current) ---- */
+  .c-base .flag{width:26px;height:19px;border-radius:3px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+
+  /* ---- Concept 2: diagonal split emblem ---- */
+  .emblem{position:relative;width:46px;height:46px;border-radius:50%;overflow:hidden;flex:0 0 auto;
+       box-shadow:0 1px 3px rgba(0,0,0,.22)}
+  .emblem img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .emblem .h{clip-path:polygon(0 0,0 100%,100% 100%)}
+  .emblem .a{clip-path:polygon(0 0,100% 0,100% 100%)}
+  .emblem .slash{position:absolute;inset:0;
+       background:linear-gradient(to bottom right,transparent calc(50% - 1.2px),rgba(255,255,255,.92) 0,
+       rgba(255,255,255,.92) calc(50% + 1.2px),transparent 0)}
+  /* partial-gray variant: desaturate, full colour on hover */
+  .emblem.muted img{filter:grayscale(.62) contrast(.96)}
+  .emblem.muted:hover img{filter:none}
+  .c-emblem .teams{gap:12px}
+
+  /* ---- Concept 3: overlapping coins + VS ---- */
+  .coins{display:flex;align-items:center;flex:0 0 auto}
+  .coin{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2.5px solid var(--panel);
+       box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .coin.b{margin-left:-12px}
+  .vs-chip{font-size:10px;font-weight:800;color:var(--muted);background:#eef1f7;border:1px solid var(--line);
+       border-radius:999px;padding:2px 6px;margin:0 -8px 0 -8px;position:relative;z-index:2}
+
+  /* ---- Concept 4: diagonal banner (wide split behind names) ---- */
+  .banner{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+       display:flex;align-items:stretch;min-height:46px}
+  .banner .side{flex:1;display:flex;align-items:center;gap:8px;padding:7px 12px;position:relative;color:#fff;
+       font-weight:700;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+  .banner .side.home{justify-content:flex-start}
+  .banner .side.away{justify-content:flex-end}
+  .banner .bg{position:absolute;inset:0;z-index:0}
+  .banner .bg img{position:absolute;top:0;height:100%;width:62%;object-fit:cover;filter:saturate(.92)}
+  .banner .bg .bh{left:0;clip-path:polygon(0 0,100% 0,76% 100%,0 100%)}
+  .banner .bg .ba{right:0;clip-path:polygon(24% 0,100% 0,100% 100%,0 100%)}
+  .banner .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,.12) 40%,rgba(0,0,0,.12) 60%,rgba(0,0,0,.28))}
+  .banner .side span{position:relative;z-index:1}
+  .banner .mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+       font-size:10px;font-weight:800;color:#fff;background:rgba(0,0,0,.35);border-radius:999px;padding:2px 7px}
+
+  /* ---- Concept 5: square split tile, names stacked (scoreboard) ---- */
+  .tile{position:relative;width:46px;height:46px;border-radius:9px;overflow:hidden;flex:0 0 auto;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .tile .h{clip-path:polygon(0 0,0 100%,100% 100%)}
+  .tile .a{clip-path:polygon(0 0,100% 0,100% 100%)}
+  .tile .slash{position:absolute;inset:0;background:linear-gradient(to bottom right,transparent calc(50% - 1px),#fff 0,#fff calc(50% + 1px),transparent 0)}
+  .stacked{display:flex;flex-direction:column;gap:1px;font-weight:700;font-size:14px;line-height:1.25}
+  .stacked .vrow{display:flex;align-items:center;gap:7px}
+  .stacked .mini{width:18px;height:13px;border-radius:2px;object-fit:cover}
+  .stacked small{color:var(--muted);font-weight:600;font-size:10px;letter-spacing:.5px}
+</style></head>
+<body>
+  <h1>Match-row concepts</h1>
+  <p class="lede">Same three rows in every style — a group game (Algeria v Austria), a banger (Brazil v Morocco), and a knockout slot with no flags yet. Hover the diagonal emblems to see the grey→colour treatment.</p>
+
+  <!-- 1 -->
+  <div class="concept c-base">
+    <div class="concept-head"><span class="n">1</span><div><h2>Baseline — current</h2><p>Two rectangular flags + names, inline "v".</p></div></div>
+    <div class="stack">
+      <div class="row"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div><div class="teams"><img class="flag" src="https://flagcdn.com/w80/dz.png"><span class="nm">Algeria</span><span class="vs">v</span><img class="flag" src="https://flagcdn.com/w80/at.png"><span class="nm">Austria</span></div><div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div>
+      <div class="row fav"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div><div class="teams"><img class="flag" src="https://flagcdn.com/w80/br.png"><span class="nm">Brazil</span><span class="vs">v</span><img class="flag" src="https://flagcdn.com/w80/ma.png"><span class="nm">Morocco</span> 🔥</div><div class="meta">Group C · MetLife Stadium, New York</div></div></div>
+      <div class="row"><div class="date">Sun Jun 28<span class="t">12:00</span></div>
+        <div><div class="teams"><span class="ko-badge">R32</span><span class="nm">Runner-up Group A</span><span class="vs">v</span><span class="ko-badge">R32</span><span class="nm">Runner-up Group B</span></div><div class="meta">Round of 32 · SoFi Stadium, Los Angeles</div></div></div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="concept c-emblem">
+    <div class="concept-head"><span class="n">2</span><div><h2>Diagonal split emblem (muted)</h2><p>One circular crest split corner-to-corner, partly greyed; full colour on hover.</p></div></div>
+    <div class="stack">
+      <div class="row"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div><div class="teams"><span class="emblem muted"><img class="h" src="https://flagcdn.com/w160/dz.png"><img class="a" src="https://flagcdn.com/w160/at.png"><span class="slash"></span></span><span class="nm">Algeria</span><span class="vs">v</span><span class="nm">Austria</span></div><div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div>
+      <div class="row fav"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div><div class="teams"><span class="emblem muted"><img class="h" src="https://flagcdn.com/w160/br.png"><img class="a" src="https://flagcdn.com/w160/ma.png"><span class="slash"></span></span><span class="nm">Brazil</span><span class="vs">v</span><span class="nm">Morocco</span> 🔥</div><div class="meta">Group C · MetLife Stadium, New York</div></div></div>
+      <div class="row"><div class="date">Sun Jun 28<span class="t">12:00</span></div>
+        <div><div class="teams"><span class="emblem muted" style="background:var(--ko)"><span class="slash"></span></span><span class="nm">Runner-up A</span><span class="vs">v</span><span class="nm">Runner-up B</span></div><div class="meta">Round of 32 · SoFi Stadium, Los Angeles</div></div></div>
+    </div>
+  </div>
+
+  <!-- 2b full colour -->
+  <div class="concept c-emblem">
+    <div class="concept-head"><span class="n">2b</span><div><h2>Diagonal split emblem (full colour)</h2><p>Same crest, no grey — punchier, less subtle.</p></div></div>
+    <div class="stack">
+      <div class="row"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div><div class="teams"><span class="emblem"><img class="h" src="https://flagcdn.com/w160/dz.png"><img class="a" src="https://flagcdn.com/w160/at.png"><span class="slash"></span></span><span class="nm">Algeria</span><span class="vs">v</span><span class="nm">Austria</span></div><div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div>
+      <div class="row fav"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div><div class="teams"><span class="emblem"><img class="h" src="https://flagcdn.com/w160/br.png"><img class="a" src="https://flagcdn.com/w160/ma.png"><span class="slash"></span></span><span class="nm">Brazil</span><span class="vs">v</span><span class="nm">Morocco</span> 🔥</div><div class="meta">Group C · MetLife Stadium, New York</div></div></div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="concept">
+    <div class="concept-head"><span class="n">3</span><div><h2>Overlapping coins + VS</h2><p>Two round flag coins overlapping with a little VS chip between.</p></div></div>
+    <div class="stack">
+      <div class="row"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div><div class="teams"><span class="coins"><img class="coin" src="https://flagcdn.com/w160/dz.png"><span class="vs-chip">VS</span><img class="coin b" src="https://flagcdn.com/w160/at.png"></span><span class="nm">Algeria <span class="vs">·</span> Austria</span></div><div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div>
+      <div class="row fav"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div><div class="teams"><span class="coins"><img class="coin" src="https://flagcdn.com/w160/br.png"><span class="vs-chip">VS</span><img class="coin b" src="https://flagcdn.com/w160/ma.png"></span><span class="nm">Brazil <span class="vs">·</span> Morocco</span> 🔥</div><div class="meta">Group C · MetLife Stadium, New York</div></div></div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="concept">
+    <div class="concept-head"><span class="n">4</span><div><h2>Diagonal banner</h2><p>Both flags as a split backdrop, names overlaid in white. Boldest / most "broadcast".</p></div></div>
+    <div class="stack">
+      <div class="row" style="grid-template-columns:84px 1fr"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div><div class="banner"><div class="bg"><img class="bh" src="https://flagcdn.com/w320/dz.png"><img class="ba" src="https://flagcdn.com/w320/at.png"></div>
+          <div class="side home"><span>Algeria</span></div><div class="mid">VS</div><div class="side away"><span>Austria</span></div></div>
+          <div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div>
+      <div class="row fav" style="grid-template-columns:84px 1fr"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div><div class="banner"><div class="bg"><img class="bh" src="https://flagcdn.com/w320/br.png"><img class="ba" src="https://flagcdn.com/w320/ma.png"></div>
+          <div class="side home"><span>Brazil</span></div><div class="mid">VS</div><div class="side away"><span>Morocco</span></div></div>
+          <div class="meta">Group C · MetLife Stadium, New York · 🔥 banger</div></div></div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="concept">
+    <div class="concept-head"><span class="n">5</span><div><h2>Split tile + stacked names</h2><p>Square diagonal tile on the left, both names stacked with mini-flags — scoreboard feel.</p></div></div>
+    <div class="stack">
+      <div class="row"><div class="date">Sat Jun 27<span class="t">21:00</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span class="tile"><img class="h" src="https://flagcdn.com/w160/dz.png"><img class="a" src="https://flagcdn.com/w160/at.png"><span class="slash"></span></span>
+          <div><div class="stacked"><span class="vrow"><img class="mini" src="https://flagcdn.com/w80/dz.png">Algeria</span><span class="vrow"><img class="mini" src="https://flagcdn.com/w80/at.png">Austria</span></div><div class="meta">Group J · Arrowhead Stadium, Kansas City</div></div></div></div>
+      <div class="row fav"><div class="date">Sat Jun 13<span class="t">18:00</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span class="tile"><img class="h" src="https://flagcdn.com/w160/br.png"><img class="a" src="https://flagcdn.com/w160/ma.png"><span class="slash"></span></span>
+          <div><div class="stacked"><span class="vrow"><img class="mini" src="https://flagcdn.com/w80/br.png">Brazil</span><span class="vrow"><img class="mini" src="https://flagcdn.com/w80/ma.png">Morocco 🔥</span></div><div class="meta">Group C · MetLife Stadium, New York</div></div></div></div>
+    </div>
+  </div>
+
+</body></html>

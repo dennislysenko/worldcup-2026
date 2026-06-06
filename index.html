@@ -41,6 +41,7 @@
     <button class="nav-link" data-view="calendar">Calendar</button>
     <button class="nav-link" data-view="my-teams">My Teams</button>
     <button class="nav-link" data-view="planner">Planner</button>
+    <button class="nav-link" data-view="projections">Projections</button>
   </nav>
 
   <main>
@@ -95,6 +96,12 @@
       </section>
       <div id="planner-queue"></div>
     </div>
+
+    <!-- ===================== PROJECTIONS VIEW ===================== -->
+    <div class="view" id="view-projections">
+      <section class="panel" id="proj-intro"></section>
+      <div id="proj-list"></div>
+    </div>
   </main>
 
   <div id="popover" class="popover hidden"></div>
@@ -106,6 +113,7 @@
 
   <script src="data.js"></script>
   <script src="elo.js"></script>
+  <script src="sim.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

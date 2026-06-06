@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3-way Buick · 4-way grid</title>
+<style>
+  :root{--bg:#eef1f7;--panel:#fff;--line:#dde3ef;--text:#1a2138;--muted:#5f6b8a;--accent2:#1971c2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--text);padding:24px 18px 60px;line-height:1.4}
+  h1{font-size:20px;margin:0 0 4px}
+  .lede{color:var(--muted);font-size:13.5px;margin:0 0 22px;max-width:640px}
+  h2{font-size:13px;margin:24px 0 12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .grid{display:flex;flex-wrap:wrap;gap:18px}
+  .concept{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;width:230px}
+  .concept .name{font-size:13px;font-weight:700;margin-bottom:3px}
+  .concept .desc{font-size:11.5px;color:var(--muted);margin-bottom:14px;min-height:30px}
+  .samples{display:flex;align-items:center;gap:18px;min-height:44px}
+  .lbl{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;margin-top:14px}
+
+  /* ---- 3-way: Buick tri-shield (diagonal overlapping flags) ---- */
+  .b3{position:relative;display:inline-block;flex:0 0 auto}
+  .b3 img{position:absolute;border:1.5px solid #fff;border-radius:3px;object-fit:cover;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+  /* #1 front, cascading down-right behind it */
+  .b3.lg{width:58px;height:43px}
+  .b3.lg img{width:32px;height:24px}
+  .b3.lg .f1{top:0;left:0;z-index:3}
+  .b3.lg .f2{top:9px;left:13px;z-index:2}
+  .b3.lg .f3{top:18px;left:26px;z-index:1}
+  .b3.sm{width:34px;height:25px}
+  .b3.sm img{width:19px;height:14px;border-width:1px}
+  .b3.sm .f1{top:0;left:0;z-index:3}
+  .b3.sm .f2{top:5px;left:7px;z-index:2}
+  .b3.sm .f3{top:10px;left:14px;z-index:1}
+
+  /* variant: ascending (down-left to up-right) */
+  .b3.up.lg .f1{top:18px;left:0;z-index:3}
+  .b3.up.lg .f2{top:9px;left:13px;z-index:2}
+  .b3.up.lg .f3{top:0;left:26px;z-index:1}
+  .b3.up.sm .f1{top:10px;left:0;z-index:3}
+  .b3.up.sm .f2{top:5px;left:7px;z-index:2}
+  .b3.up.sm .f3{top:0;left:14px;z-index:1}
+
+  /* ---- 4-way: 2x2 grid of whole flags scaled to fit ---- */
+  .g4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1.5px;background:#fff;
+      border-radius:4px;padding:1.5px;flex:0 0 auto;box-shadow:0 1px 2px rgba(0,0,0,.22);outline:1px solid rgba(0,0,0,.06)}
+  .g4 img{width:100%;height:100%;object-fit:cover;border-radius:2px;display:block}
+  .g4.lg{width:60px;height:45px}
+  .g4.sm{width:32px;height:24px}
+
+  /* locked 2-way for reference */
+  .ic{position:relative;border-radius:3px;overflow:hidden;display:inline-block;flex:0 0 auto;box-shadow:0 1px 2px rgba(0,0,0,.22);outline:1px solid rgba(0,0,0,.06);outline-offset:-1px}
+  .ic.lg{width:58px;height:43px;border-radius:5px}.ic.sm{width:26px;height:19px}
+  .ic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .two-1{clip-path:polygon(0 0,100% 0,0 100%)} .two-2{clip-path:polygon(100% 0,100% 100%,0 100%)}
+</style></head>
+<body>
+  <h1>3-way Buick tri-shield · 4-way flag grid</h1>
+  <p class="lede">3-way: three flags overlapped on a diagonal, #1 in front. 4-way: a 2×2 grid of the whole flags shrunk to fit. Each shown enlarged + at real chip size, and inline next to a slot label. Teams: South Korea, Czechia, Mexico (+ South Africa for 4-way).</p>
+
+  <h2>3-way — Buick tri-shield</h2>
+  <div class="grid">
+    <div class="concept"><div class="name">Cascade ↘ (#1 top-left, front)</div><div class="desc">Down-right cascade, favourite fully visible in front.</div>
+      <div class="samples">
+        <span class="b3 lg"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span>
+        <span class="b3 sm"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span></div>
+      <div class="lbl"><span class="b3 sm"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span> Runner-up A</div>
+    </div>
+
+    <div class="concept"><div class="name">Cascade ↗ (#1 bottom-left, front)</div><div class="desc">Ascending diagonal — a bit more "logo".</div>
+      <div class="samples">
+        <span class="b3 up lg"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span>
+        <span class="b3 up sm"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span></div>
+      <div class="lbl"><span class="b3 up sm"><img class="f1" src="https://flagcdn.com/w160/kr.png"><img class="f2" src="https://flagcdn.com/w160/cz.png"><img class="f3" src="https://flagcdn.com/w160/mx.png"></span> Runner-up A</div>
+    </div>
+  </div>
+
+  <h2>4-way — 2×2 grid of whole flags</h2>
+  <div class="grid">
+    <div class="concept"><div class="name">Flag grid</div><div class="desc">Four complete flags shrunk into a 2×2 with hairline gaps.</div>
+      <div class="samples">
+        <span class="g4 lg"><img src="https://flagcdn.com/w160/kr.png"><img src="https://flagcdn.com/w160/cz.png"><img src="https://flagcdn.com/w160/mx.png"><img src="https://flagcdn.com/w160/za.png"></span>
+        <span class="g4 sm"><img src="https://flagcdn.com/w160/kr.png"><img src="https://flagcdn.com/w160/cz.png"><img src="https://flagcdn.com/w160/mx.png"><img src="https://flagcdn.com/w160/za.png"></span></div>
+      <div class="lbl"><span class="g4 sm"><img src="https://flagcdn.com/w160/kr.png"><img src="https://flagcdn.com/w160/cz.png"><img src="https://flagcdn.com/w160/mx.png"><img src="https://flagcdn.com/w160/za.png"></span> Runner-up A</div>
+    </div>
+    <div class="concept"><div class="name">2-way (locked, for scale)</div><div class="desc">Clean diagonal.</div>
+      <div class="samples">
+        <span class="ic lg"><img class="two-1" src="https://flagcdn.com/w160/kr.png"><img class="two-2" src="https://flagcdn.com/w160/cz.png"></span>
+        <span class="ic sm"><img class="two-1" src="https://flagcdn.com/w160/kr.png"><img class="two-2" src="https://flagcdn.com/w160/cz.png"></span></div>
+      <div class="lbl"><span class="ic sm"><img class="two-1" src="https://flagcdn.com/w160/kr.png"><img class="two-2" src="https://flagcdn.com/w160/cz.png"></span> Runner-up A</div>
+    </div>
+  </div>
+</body></html>
