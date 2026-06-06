@@ -1,4 +1,4 @@
-/* World Cup 2026 calendar app. Vanilla JS, no build step. */
+/* World Cup 2026 — calendar, my teams, planner. Vanilla JS, no build step. */
 (function () {
   "use strict";
 
@@ -9,36 +9,48 @@
     "Round of 32": "R32", "Round of 16": "R16", "Quarter-final": "QF",
     "Semi-final": "SF", "Third-place": "3rd", "Final": "F"
   };
+  // timezone → a World Cup nation, for the "based on your location" default chip
+  const TZ_TEAM = {
+    "America/New_York":"United States","America/Detroit":"United States","America/Chicago":"United States",
+    "America/Denver":"United States","America/Phoenix":"United States","America/Los_Angeles":"United States",
+    "America/Anchorage":"United States","Pacific/Honolulu":"United States",
+    "America/Toronto":"Canada","America/Vancouver":"Canada","America/Edmonton":"Canada","America/Winnipeg":"Canada","America/Halifax":"Canada",
+    "America/Mexico_City":"Mexico","America/Monterrey":"Mexico","America/Tijuana":"Mexico","America/Merida":"Mexico",
+    "America/Sao_Paulo":"Brazil","America/Bahia":"Brazil","America/Fortaleza":"Brazil",
+    "America/Argentina/Buenos_Aires":"Argentina","America/Bogota":"Colombia","America/Guayaquil":"Ecuador",
+    "America/Montevideo":"Uruguay","America/Asuncion":"Paraguay","America/Panama":"Panama","America/Port-au-Prince":"Haiti",
+    "Europe/London":"England","Europe/Madrid":"Spain","Europe/Paris":"France","Europe/Berlin":"Germany",
+    "Europe/Amsterdam":"Netherlands","Europe/Brussels":"Belgium","Europe/Lisbon":"Portugal","Europe/Zurich":"Switzerland",
+    "Europe/Vienna":"Austria","Europe/Stockholm":"Sweden","Europe/Oslo":"Norway","Europe/Prague":"Czechia",
+    "Europe/Zagreb":"Croatia","Europe/Sarajevo":"Bosnia and Herzegovina","Europe/Istanbul":"Türkiye",
+    "Africa/Casablanca":"Morocco","Africa/Tunis":"Tunisia","Africa/Algiers":"Algeria","Africa/Cairo":"Egypt",
+    "Africa/Abidjan":"Ivory Coast","Africa/Accra":"Ghana","Africa/Dakar":"Senegal","Africa/Johannesburg":"South Africa",
+    "Africa/Kinshasa":"DR Congo","Atlantic/Cape_Verde":"Cape Verde",
+    "Asia/Tokyo":"Japan","Asia/Seoul":"South Korea","Asia/Tehran":"Iran","Asia/Qatar":"Qatar",
+    "Asia/Riyadh":"Saudi Arabia","Asia/Baghdad":"Iraq","Asia/Amman":"Jordan","Asia/Tashkent":"Uzbekistan",
+    "Australia/Sydney":"Australia","Australia/Melbourne":"Australia","Australia/Perth":"Australia","Pacific/Auckland":"New Zealand"
+  };
 
   // ---- state ----
   let favorites = loadFavorites();
-  let chipsExpanded = false;
-  const ui = {
-    showElo: false,
-    onlyFav: false,
-    showBangers: true,
-    search: ""
-  };
+  let currentView = "calendar";
+  let plannerSel = { start: null, end: null };
+  const ui = { showElo: false, onlyFav: false, showBangers: true, search: "" };
 
   // ---- helpers ----
   function loadFavorites() {
     try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || "[]")); }
     catch (e) { return new Set(); }
   }
-  function saveFavorites() {
-    localStorage.setItem(LS_KEY, JSON.stringify([...favorites]));
-  }
+  function saveFavorites() { localStorage.setItem(LS_KEY, JSON.stringify([...favorites])); }
   function isKnown(name) { return !!WC.teamByName[name]; }
   function flag(iso, cls) {
     return `<img class="${cls}" loading="lazy" src="https://flagcdn.com/w40/${iso}.png" srcset="https://flagcdn.com/w80/${iso}.png 2x" alt="">`;
   }
-  function teamFlag(name, cls) {
-    const t = WC.teamByName[name];
-    return t ? flag(t.iso2, cls) : "";
-  }
+  function teamFlag(name, cls) { const t = WC.teamByName[name]; return t ? flag(t.iso2, cls) : ""; }
   function isFavMatch(m) { return favorites.has(m.home) || favorites.has(m.away); }
+  function parseDate(s) { const [y, mo, d] = s.split("-").map(Number); return new Date(y, mo - 1, d); }
 
-  // marquee "banger" score: high average Elo, penalize blowouts, no minnows
   function bangerInfo(m) {
     if (!isKnown(m.home) || !isKnown(m.away)) return null;
     const a = WC.elo[m.home], b = WC.elo[m.away];
@@ -49,64 +61,103 @@
   }
   function isBanger(m) { const i = bangerInfo(m); return !!(i && i.banger); }
 
-  function parseDate(s) { const [y, mo, d] = s.split("-").map(Number); return new Date(y, mo - 1, d); }
-
-  // ---- chips (team picker) ----
-  const chipsEl = document.getElementById("chips");
-  const expandBtn = document.getElementById("expand-chips");
-  const pickerHint = document.getElementById("picker-hint");
-
-  function renderChips() {
-    const q = ui.search.trim().toLowerCase();
-    // selected first, then alphabetical — so favorites stay visible when collapsed
-    const sorted = [...WC.teams].sort((x, y) => {
-      const fx = favorites.has(x.name), fy = favorites.has(y.name);
-      if (fx !== fy) return fx ? -1 : 1;
-      return x.name.localeCompare(y.name);
-    });
-    chipsEl.innerHTML = sorted.map(t => {
-      const sel = favorites.has(t.name);
-      const hide = q && !t.name.toLowerCase().includes(q);
-      const elo = ui.showElo && WC.elo[t.name] ? `<span class="elo">${WC.elo[t.name]}</span>` : "";
-      return `<button type="button" class="chip ${sel ? "selected" : ""} ${hide ? "hidden" : ""}" data-team="${t.name}">
-        ${flag(t.iso2, "")}<span>${t.name}</span>${elo}</button>`;
-    }).join("");
-    chipsEl.classList.toggle("expanded", chipsExpanded || !!q);
-    expandBtn.textContent = (chipsExpanded || q) ? "Collapse ▲" : `Show all 48 teams ▼`;
-    expandBtn.style.display = q ? "none" : "block";
-
-    const n = favorites.size;
-    pickerHint.textContent = n
-      ? `${n} team${n > 1 ? "s" : ""} selected — saved to this browser. They're starred above and highlighted in the calendar below.`
-      : "Tap a country to follow it. Your picks are remembered on this device and rise to the top.";
+  const TOP10 = [...WC.teams].filter(t => WC.elo[t.name])
+    .sort((a, b) => WC.elo[b.name] - WC.elo[a.name]).slice(0, 10).map(t => t.name);
+  function locationTeam() {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const name = TZ_TEAM[tz];
+      return name && WC.teamByName[name] ? name : "United States";
+    } catch (e) { return "United States"; }
   }
 
-  chipsEl.addEventListener("click", (e) => {
-    const btn = e.target.closest(".chip");
-    if (!btn) return;
-    const name = btn.dataset.team;
+  // matches grouped by date (used everywhere)
+  const byDate = {};
+  WC.matches.forEach(m => { (byDate[m.date] = byDate[m.date] || []).push(m); });
+  Object.values(byDate).forEach(arr => arr.sort((a, b) => (a.time || "").localeCompare(b.time || "")));
+  const allDates = WC.matches.map(m => parseDate(m.date));
+  const minD = new Date(Math.min(...allDates)), maxD = new Date(Math.max(...allDates));
+
+  // ======================================================================
+  // NAV / ROUTER
+  // ======================================================================
+  function showView(v) {
+    currentView = v;
+    ["calendar", "my-teams", "planner"].forEach(x =>
+      document.getElementById("view-" + x).classList.toggle("active", x === v));
+    document.querySelectorAll(".nav-link").forEach(a =>
+      a.classList.toggle("active", a.dataset.view === v));
+    if (location.hash !== "#" + v) history.replaceState(null, "", "#" + v);
+    if (v === "calendar") renderCalendar();
+    else if (v === "my-teams") renderMyMatches();
+    else if (v === "planner") renderPlanner();
+    window.scrollTo({ top: 0, behavior: "instant" in document.documentElement.style ? "instant" : "auto" });
+  }
+  document.getElementById("main-nav").addEventListener("click", e => {
+    const b = e.target.closest(".nav-link"); if (b) showView(b.dataset.view);
+  });
+
+  // ======================================================================
+  // TEAM PICKER
+  // ======================================================================
+  const suggestedRow = document.getElementById("suggested-row");
+  const searchResults = document.getElementById("search-results");
+  const pickerHint = document.getElementById("picker-hint");
+
+  function chipHTML(t, isLoc) {
+    const sel = favorites.has(t.name);
+    const elo = ui.showElo && WC.elo[t.name] ? `<span class="elo">${WC.elo[t.name]}</span>` : "";
+    const pin = isLoc ? `<span class="loc-pin" title="Based on your location">📍</span>` : "";
+    return `<button type="button" class="chip ${sel ? "selected" : ""}" data-team="${t.name}">${pin}${flag(t.iso2, "")}<span>${t.name}</span>${elo}</button>`;
+  }
+
+  function renderPicker() {
+    const q = ui.search.trim().toLowerCase();
+    if (q) {
+      suggestedRow.classList.add("hidden");
+      searchResults.classList.remove("hidden");
+      const hits = WC.teams.filter(t => t.name.toLowerCase().includes(q)).sort((a, b) => a.name.localeCompare(b.name));
+      searchResults.innerHTML = hits.length
+        ? hits.map(t => chipHTML(t, false)).join("")
+        : `<p class="hint">No country matches “${ui.search}”.</p>`;
+    } else {
+      searchResults.classList.add("hidden");
+      suggestedRow.classList.remove("hidden");
+      const loc = locationTeam();
+      const order = [...favorites, loc, ...TOP10];
+      const seen = new Set(), list = [];
+      order.forEach(n => { if (!seen.has(n) && WC.teamByName[n]) { seen.add(n); list.push(n); } });
+      suggestedRow.innerHTML = list.map(n => chipHTML(WC.teamByName[n], n === loc && !favorites.has(n))).join("");
+    }
+    const n = favorites.size;
+    pickerHint.textContent = n
+      ? `${n} team${n > 1 ? "s" : ""} followed — saved on this device, highlighted across the calendar.`
+      : "Tap your team to follow it — your location and the top 10 are below, or search any of the 48.";
+  }
+
+  function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
     saveFavorites();
-    renderChips();
+    renderPicker();
     renderHeaderStats();
-    renderCalendar();
-    renderMyMatches();
-  });
+    if (currentView === "calendar") renderCalendar();
+    else if (currentView === "my-teams") renderMyMatches();
+    else if (currentView === "planner") renderPlanner();
+  }
 
-  expandBtn.addEventListener("click", () => { chipsExpanded = !chipsExpanded; renderChips(); });
-
-  document.getElementById("team-search").addEventListener("input", (e) => {
-    ui.search = e.target.value; renderChips();
+  document.getElementById("picker-panel").addEventListener("click", e => {
+    const btn = e.target.closest(".chip"); if (btn) toggleTeam(btn.dataset.team);
   });
-  document.getElementById("toggle-elo").addEventListener("change", (e) => {
-    ui.showElo = e.target.checked; renderChips();
-  });
+  document.getElementById("team-search").addEventListener("input", e => { ui.search = e.target.value; renderPicker(); });
+  document.getElementById("toggle-elo").addEventListener("change", e => { ui.showElo = e.target.checked; renderPicker(); });
   document.getElementById("clear-fav").addEventListener("click", () => {
-    favorites.clear(); saveFavorites();
-    renderChips(); renderHeaderStats(); renderCalendar(); renderMyMatches();
+    favorites.clear(); saveFavorites(); renderPicker(); renderHeaderStats();
+    if (currentView === "calendar") renderCalendar();
   });
 
-  // ---- header stats ----
+  // ======================================================================
+  // HEADER STATS
+  // ======================================================================
   function renderHeaderStats() {
     const venues = new Set(WC.matches.map(m => m.venue)).size;
     const stats = [
@@ -119,31 +170,17 @@
       `<div class="stat"><b>${s.n}</b><span>${s.l}</span></div>`).join("");
   }
 
-  // ---- calendar ----
-  const byDate = {};
-  WC.matches.forEach(m => { (byDate[m.date] = byDate[m.date] || []).push(m); });
-  Object.values(byDate).forEach(arr => arr.sort((a, b) => (a.time || "").localeCompare(b.time || "")));
-
-  // months spanned by the tournament
-  const allDates = WC.matches.map(m => parseDate(m.date));
-  const minD = new Date(Math.min(...allDates)), maxD = new Date(Math.max(...allDates));
-
+  // ======================================================================
+  // CALENDAR (grid on desktop, agenda on mobile)
+  // ======================================================================
   function matchPill(m) {
-    const fav = isFavMatch(m);
-    const banger = ui.showBangers && isBanger(m);
-    const dim = ui.onlyFav && !fav;
-    const homeKnown = isKnown(m.home), awayKnown = isKnown(m.away);
+    const fav = isFavMatch(m), banger = ui.showBangers && isBanger(m), dim = ui.onlyFav && !fav;
     const abbr = STAGE_ABBR[m.stage] || "";
-
-    function side(name, known) {
-      return known ? teamFlag(name, "flag")
-        : `<span class="ko-badge" title="${name}">${abbr}</span>`;
-    }
+    const side = (name, known) => known ? teamFlag(name, "flag") : `<span class="ko-badge" title="${name}">${abbr}</span>`;
     const cls = ["match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
     const time = m.time ? `<span class="mtime">${m.time}</span>` : "";
-    return `<div class="${cls}" data-match="${m.matchNumber}">
-      ${side(m.home, homeKnown)}<span class="vs">v</span>${side(m.away, awayKnown)}${time}${flame}</div>`;
+    return `<div class="${cls}" data-match="${m.matchNumber}">${side(m.home, isKnown(m.home))}<span class="vs">v</span>${side(m.away, isKnown(m.away))}${time}${flame}</div>`;
   }
 
   function renderMonth(year, month) {
@@ -151,7 +188,6 @@
     const startPad = first.getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const todayStr = "2026-06-06";
-
     let cells = "";
     for (let i = 0; i < startPad; i++) cells += `<div class="day empty"></div>`;
     for (let d = 1; d <= daysInMonth; d++) {
@@ -160,35 +196,26 @@
       const hasFav = matches.some(isFavMatch);
       const favDot = hasFav ? `<span class="dot-fav">★</span>` : "";
       const cls = ["day", hasFav ? "has-fav" : "", ds === todayStr ? "today" : ""].filter(Boolean).join(" ");
-      cells += `<div class="${cls}">
-        <div class="day-num"><span>${d}</span>${favDot}</div>
-        ${matches.map(matchPill).join("")}</div>`;
+      cells += `<div class="${cls}"><div class="day-num"><span>${d}</span>${favDot}</div>${matches.map(matchPill).join("")}</div>`;
     }
-
-    return `<div class="month">
-      <h3 class="month-title">${MONTHS[month]} ${year}</h3>
+    return `<div class="month"><h3 class="month-title">${MONTHS[month]} ${year}</h3>
       <div class="weekdays">${WEEKDAYS.map(w => `<span>${w}</span>`).join("")}</div>
-      <div class="grid">${cells}</div>
-    </div>`;
+      <div class="grid">${cells}</div></div>`;
   }
 
-  // ---- agenda (mobile) view: vertical, one card per match-day ----
   function agendaRow(m) {
-    const fav = isFavMatch(m);
-    const banger = ui.showBangers && isBanger(m);
-    const dim = ui.onlyFav && !fav;
+    const fav = isFavMatch(m), banger = ui.showBangers && isBanger(m), dim = ui.onlyFav && !fav;
     const abbr = STAGE_ABBR[m.stage] || "";
     const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
-    function side(name, known) {
+    const side = (name, known) => {
       const f = known ? teamFlag(name, "flag") : `<span class="ko-badge" title="${name}">${abbr}</span>`;
       return `<span class="ar-team">${f}<span class="ar-name">${name}</span></span>`;
-    }
+    };
     const cls = ["agenda-match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
     return `<div class="${cls}" data-match="${m.matchNumber}">
       <div class="ar-teams">${side(m.home, isKnown(m.home))}<span class="vs">v</span>${side(m.away, isKnown(m.away))}${flame}</div>
-      <div class="ar-meta">${m.time ? m.time + " · " : ""}${stageStr} · ${m.venue}, ${m.city}</div>
-    </div>`;
+      <div class="ar-meta">${m.time ? m.time + " · " : ""}${stageStr} · ${m.venue}, ${m.city}</div></div>`;
   }
 
   function renderAgenda() {
@@ -197,16 +224,11 @@
     dates.forEach(ds => {
       const dt = parseDate(ds);
       const monthKey = `${dt.getFullYear()}-${dt.getMonth()}`;
-      if (monthKey !== curMonth) {
-        curMonth = monthKey;
-        html += `<h3 class="month-title">${MONTHS[dt.getMonth()]} ${dt.getFullYear()}</h3>`;
-      }
-      const matches = byDate[ds];
-      const hasFav = matches.some(isFavMatch);
+      if (monthKey !== curMonth) { curMonth = monthKey; html += `<h3 class="month-title">${MONTHS[dt.getMonth()]} ${dt.getFullYear()}</h3>`; }
+      const matches = byDate[ds], hasFav = matches.some(isFavMatch);
       html += `<div class="agenda-day ${hasFav ? "has-fav" : ""}">
         <div class="agenda-date"><span class="ad-wd">${WEEKDAYS[dt.getDay()]}</span><span class="ad-num">${dt.getDate()}</span></div>
-        <div class="agenda-matches">${matches.map(agendaRow).join("")}</div>
-      </div>`;
+        <div class="agenda-matches">${matches.map(agendaRow).join("")}</div></div>`;
     });
     return html;
   }
@@ -216,71 +238,164 @@
     const el = document.getElementById("calendar");
     el.classList.toggle("agenda-view", mobileMQ.matches);
     if (mobileMQ.matches) { el.innerHTML = renderAgenda(); return; }
-    let html = "";
-    let y = minD.getFullYear(), m = minD.getMonth();
+    let html = "", y = minD.getFullYear(), m = minD.getMonth();
     const endY = maxD.getFullYear(), endM = maxD.getMonth();
-    while (y < endY || (y === endY && m <= endM)) {
-      html += renderMonth(y, m);
-      m++; if (m > 11) { m = 0; y++; }
-    }
+    while (y < endY || (y === endY && m <= endM)) { html += renderMonth(y, m); m++; if (m > 11) { m = 0; y++; } }
     el.innerHTML = html;
   }
-  // re-render when crossing the mobile/desktop breakpoint
-  mobileMQ.addEventListener("change", renderCalendar);
+  mobileMQ.addEventListener("change", () => { if (currentView === "calendar") renderCalendar(); });
 
-  // ---- my matches list ----
+  // ======================================================================
+  // MY TEAMS
+  // ======================================================================
   function renderMyMatches() {
     const el = document.getElementById("my-matches");
     if (favorites.size === 0) {
-      el.innerHTML = `<p class="mm-empty">Pick some teams above and their fixtures will show up here, in date order.</p>`;
+      el.innerHTML = `<div class="empty-state">
+        <div class="es-emoji">⚽</div>
+        <h3>No teams followed yet</h3>
+        <p>Follow a few nations and every one of their fixtures shows up here, in date order — so you always know when they're next on.</p>
+        <button class="cta-btn" id="es-pick">Pick your teams →</button>
+      </div>`;
+      const b = document.getElementById("es-pick");
+      if (b) b.addEventListener("click", () => { showView("calendar"); document.getElementById("team-search").focus(); });
       return;
     }
     const favTeams = [...favorites].sort((a, b) => a.localeCompare(b));
     el.innerHTML = favTeams.map(team => {
-      const games = WC.matches
-        .filter(m => m.home === team || m.away === team)
+      const games = WC.matches.filter(m => m.home === team || m.away === team)
         .sort((a, b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""));
       const t = WC.teamByName[team];
       const rows = games.map(m => {
         const oppName = m.home === team ? m.away : m.home;
-        const oppHtml = isKnown(oppName)
-          ? `${teamFlag(oppName, "")}<span>${oppName}</span>`
-          : `<span>${oppName}</span>`;
+        const oppHtml = isKnown(oppName) ? `${teamFlag(oppName, "")}<span>${oppName}</span>` : `<span>${oppName}</span>`;
         const dt = parseDate(m.date);
-        const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0,3)} ${dt.getDate()}`;
+        const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
         const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
         const flame = (ui.showBangers && isBanger(m)) ? ` <span class="mm-flame" title="Banger">🔥</span>` : "";
-        return `<div class="mm-row">
-          <span class="mm-date">${dateStr}</span>
+        return `<div class="mm-row"><span class="mm-date">${dateStr}</span>
           <span class="mm-opp">vs ${oppHtml}${flame}</span>
-          <span class="mm-meta">${m.time || ""} · ${stageStr} · ${m.city}</span>
-        </div>`;
+          <span class="mm-meta">${m.time || ""} · ${stageStr} · ${m.city}</span></div>`;
       }).join("");
       return `<div class="mm-group">
-        <div class="mm-team-head">${flag(t.iso2, "")} ${team} <span style="color:var(--muted);font-weight:400;font-size:12px;">(${games.length} guaranteed group games)</span></div>
-        ${rows}
-      </div>`;
+        <div class="mm-team-head">${flag(t.iso2, "")} ${team}
+          <span style="color:var(--muted);font-weight:400;font-size:12px;">(${games.length} guaranteed group games)</span></div>
+        ${rows}</div>`;
     }).join("");
   }
 
-  // ---- popover (match details) ----
+  // ======================================================================
+  // PLANNER
+  // ======================================================================
+  function plannerRange() {
+    if (!plannerSel.start) return null;
+    const s = plannerSel.start, e = plannerSel.end || plannerSel.start;
+    return s <= e ? [s, e] : [e, s];
+  }
+  function plannerPick(ds) {
+    if (!plannerSel.start || plannerSel.end) plannerSel = { start: ds, end: null };
+    else plannerSel.end = ds;
+    renderPlanner();
+  }
+
+  function plannerMonth(year, month) {
+    const first = new Date(year, month, 1);
+    const startPad = first.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const range = plannerRange();
+    let cells = "";
+    for (let i = 0; i < startPad; i++) cells += `<div class="pd empty"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const ds = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      const has = !!byDate[ds];
+      const inRange = range && ds >= range[0] && ds <= range[1];
+      const isEnd = ds === plannerSel.start || ds === plannerSel.end;
+      const cls = ["pd", has ? "" : "nomatch", inRange ? "in-range" : "", isEnd ? "sel-end" : ""].filter(Boolean).join(" ");
+      cells += `<button class="${cls}" data-date="${ds}" ${has ? "" : "disabled"}>${d}${has ? `<span class="pd-dot"></span>` : ""}</button>`;
+    }
+    return `<div class="pmonth"><div class="pmonth-title">${MONTHS[month]} ${year}</div>
+      <div class="pweekdays">${WEEKDAYS.map(w => `<span>${w[0]}</span>`).join("")}</div>
+      <div class="pgrid">${cells}</div></div>`;
+  }
+
+  function plannerRow(m, idx) {
+    const fav = isFavMatch(m), banger = isBanger(m), abbr = STAGE_ABBR[m.stage] || "";
+    const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
+    const dt = parseDate(m.date);
+    const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
+    const side = (name, known) => {
+      const f = known ? teamFlag(name, "flag") : `<span class="ko-badge" title="${name}">${abbr}</span>`;
+      return `<span class="ar-team">${f}<span class="ar-name">${name}</span></span>`;
+    };
+    const badges = [
+      fav ? `<span class="q-badge q-fav">★ your team</span>` : "",
+      banger ? `<span class="q-badge q-banger">🔥 banger</span>` : ""
+    ].filter(Boolean).join("");
+    const cls = ["q-row", fav ? "fav" : "", banger ? "banger" : ""].filter(Boolean).join(" ");
+    return `<div class="${cls}" data-match="${m.matchNumber}">
+      <div class="q-date">${dateStr}<span class="q-time">${m.time || ""}</span></div>
+      <div class="q-main">
+        <div class="ar-teams">${side(m.home, isKnown(m.home))}<span class="vs">v</span>${side(m.away, isKnown(m.away))}</div>
+        <div class="ar-meta">${stageStr} · ${m.venue}, ${m.city}</div>
+      </div>
+      <div class="q-badges">${badges}</div></div>`;
+  }
+
+  function renderPlanner() {
+    document.getElementById("planner-cal").innerHTML = plannerMonth(2026, 5) + plannerMonth(2026, 6);
+    const range = plannerRange();
+    const summaryEl = document.getElementById("planner-summary");
+    const queueEl = document.getElementById("planner-queue");
+    if (!range) {
+      summaryEl.innerHTML = "";
+      queueEl.innerHTML = `<div class="empty-state small"><p>Pick a day above to build your watch queue.</p></div>`;
+      return;
+    }
+    const [s, e] = range;
+    const games = WC.matches.filter(m => m.date >= s && m.date <= e);
+    const prio = m => (isFavMatch(m) ? 2 : 0) + (isBanger(m) ? 1 : 0);
+    games.sort((a, b) => prio(b) - prio(a) || a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""));
+    const favCount = games.filter(isFavMatch).length, bangerCount = games.filter(isBanger).length;
+    const ds = parseDate(s), de = parseDate(e);
+    const span = s === e
+      ? `${WEEKDAYS[ds.getDay()]} ${MONTHS[ds.getMonth()].slice(0, 3)} ${ds.getDate()}`
+      : `${MONTHS[ds.getMonth()].slice(0, 3)} ${ds.getDate()} – ${MONTHS[de.getMonth()].slice(0, 3)} ${de.getDate()}`;
+    summaryEl.innerHTML = `<div class="planner-summary-bar">
+      <b>${span}</b> · ${games.length} game${games.length !== 1 ? "s" : ""}
+      ${favCount ? ` · <span class="ss-fav">★ ${favCount} with your teams</span>` : ""}
+      ${bangerCount ? ` · <span class="ss-banger">🔥 ${bangerCount} banger${bangerCount !== 1 ? "s" : ""}</span>` : ""}
+      <button class="ghost-btn pl-clear" id="planner-clear">Clear</button></div>`;
+    document.getElementById("planner-clear").addEventListener("click", () => { plannerSel = { start: null, end: null }; renderPlanner(); });
+
+    // insert a divider between prioritized games and the rest
+    let html = "", dividerDone = false;
+    games.forEach((m, i) => {
+      if (!dividerDone && prio(m) === 0 && i > 0) { html += `<div class="q-divider">Everything else in this window</div>`; dividerDone = true; }
+      html += plannerRow(m, i);
+    });
+    if (games.length && prio(games[0]) === 0) html = `<div class="q-divider">Games in this window</div>` + html;
+    queueEl.innerHTML = html || `<div class="empty-state small"><p>No matches in that span.</p></div>`;
+  }
+
+  document.getElementById("planner-cal").addEventListener("click", e => {
+    const b = e.target.closest(".pd"); if (b && !b.disabled && b.dataset.date) plannerPick(b.dataset.date);
+  });
+
+  // ======================================================================
+  // POPOVER (desktop match details, calendar + planner)
+  // ======================================================================
   const pop = document.getElementById("popover");
   function showPopover(m, x, y) {
     const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
     const dt = parseDate(m.date);
     const dateStr = `${WEEKDAYS[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
     const bi = bangerInfo(m);
-    const eloRow = bi
-      ? `<div class="pv-row pv-elo">Elo: ${m.home} ${bi.a} · ${m.away} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>`
-      : "";
-    const teamCell = (name) => isKnown(name)
-      ? `${teamFlag(name, "")}<span>${name}</span>` : `<span>${name}</span>`;
-    pop.innerHTML = `
-      <h4>Match ${m.matchNumber} · ${stageStr}</h4>
-      <div class="pv-teams">${teamCell(m.home)}<span class="vs">v</span>${teamCell(m.away)}</div>
+    const eloRow = bi ? `<div class="pv-row pv-elo">Elo: ${m.home} ${bi.a} · ${m.away} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>` : "";
+    const cell = name => isKnown(name) ? `${teamFlag(name, "")}<span>${name}</span>` : `<span>${name}</span>`;
+    pop.innerHTML = `<h4>Match ${m.matchNumber} · ${stageStr}</h4>
+      <div class="pv-teams">${cell(m.home)}<span class="vs">v</span>${cell(m.away)}</div>
       <div class="pv-row">📅 ${dateStr}${m.time ? " · " + m.time + " local" : ""}</div>
-      <div class="pv-row">📍 ${m.venue}, ${m.city}</div>
-      ${eloRow}`;
+      <div class="pv-row">📍 ${m.venue}, ${m.city}</div>${eloRow}`;
     pop.classList.remove("hidden");
     const pw = 280, ph = pop.offsetHeight || 120;
     let left = x + 14, top = y + 14;
@@ -290,35 +405,28 @@
     pop.style.top = Math.max(8, top) + "px";
   }
   function hidePopover() { pop.classList.add("hidden"); }
-
-  document.getElementById("calendar").addEventListener("mouseover", (e) => {
-    const el = e.target.closest(".match");
-    if (!el) return;
-    const m = WC.matches.find(x => x.matchNumber === +el.dataset.match);
-    if (m) showPopover(m, e.clientX, e.clientY);
+  function matchFromEl(el) { return WC.matches.find(x => x.matchNumber === +el.dataset.match); }
+  document.body.addEventListener("mouseover", e => {
+    const el = e.target.closest("[data-match]"); if (!el) return;
+    const m = matchFromEl(el); if (m) showPopover(m, e.clientX, e.clientY);
   });
-  document.getElementById("calendar").addEventListener("mousemove", (e) => {
-    const el = e.target.closest(".match");
-    if (el && !pop.classList.contains("hidden")) {
-      const m = WC.matches.find(x => x.matchNumber === +el.dataset.match);
-      if (m) showPopover(m, e.clientX, e.clientY);
-    }
+  document.body.addEventListener("mousemove", e => {
+    const el = e.target.closest("[data-match]");
+    if (el && !pop.classList.contains("hidden")) { const m = matchFromEl(el); if (m) showPopover(m, e.clientX, e.clientY); }
   });
-  document.getElementById("calendar").addEventListener("mouseout", (e) => {
-    if (!e.relatedTarget || !e.relatedTarget.closest(".match")) hidePopover();
+  document.body.addEventListener("mouseout", e => {
+    if (!e.relatedTarget || !e.relatedTarget.closest("[data-match]")) hidePopover();
   });
 
-  // ---- view toggles ----
-  document.getElementById("toggle-only-fav").addEventListener("change", (e) => {
-    ui.onlyFav = e.target.checked; renderCalendar();
-  });
-  document.getElementById("toggle-bangers").addEventListener("change", (e) => {
-    ui.showBangers = e.target.checked; renderCalendar(); renderMyMatches();
-  });
+  // ---- calendar view toggles ----
+  document.getElementById("toggle-only-fav").addEventListener("change", e => { ui.onlyFav = e.target.checked; renderCalendar(); });
+  document.getElementById("toggle-bangers").addEventListener("change", e => { ui.showBangers = e.target.checked; renderCalendar(); });
 
-  // ---- init ----
-  renderChips();
+  // ======================================================================
+  // INIT
+  // ======================================================================
+  renderPicker();
   renderHeaderStats();
-  renderCalendar();
-  renderMyMatches();
+  const initial = (location.hash || "").replace("#", "");
+  showView(["calendar", "my-teams", "planner"].includes(initial) ? initial : "calendar");
 })();

@@ -30,64 +30,72 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="title-block">
-        <h1>FIFA World Cup 2026 <span class="trophy">🏆</span></h1>
-        <p class="subtitle">United States · Canada · Mexico — June 11 to July 19, 2026 · 48 teams · 104 matches</p>
+        <h1>World Cup 2026 <span class="trophy">🏆</span></h1>
+        <p class="subtitle">United States · Canada · Mexico — June 11 to July 19, 2026</p>
       </div>
       <div class="header-stats" id="header-stats"></div>
     </div>
+    <nav class="main-nav" id="main-nav">
+      <button class="nav-link" data-view="calendar">Calendar</button>
+      <button class="nav-link" data-view="my-teams">My Teams</button>
+      <button class="nav-link" data-view="planner">Planner</button>
+    </nav>
   </header>
 
   <main>
-    <!-- TEAM PICKER -->
-    <section class="panel" id="picker-panel">
-      <div class="panel-head">
-        <h2>Pick the teams you care about</h2>
-        <div class="picker-controls">
-          <input type="search" id="team-search" placeholder="Search a country…" autocomplete="off" />
-          <label class="toggle">
-            <input type="checkbox" id="toggle-elo" />
-            <span>Show Elo</span>
-          </label>
-          <button id="clear-fav" class="ghost-btn" type="button">Clear</button>
+    <!-- ===================== CALENDAR VIEW ===================== -->
+    <div class="view" id="view-calendar">
+      <!-- TEAM PICKER -->
+      <section class="panel" id="picker-panel">
+        <div class="panel-head">
+          <h2>Follow your teams</h2>
+          <div class="picker-controls">
+            <input type="search" id="team-search" placeholder="Search all 48 teams…" autocomplete="off" />
+            <label class="toggle"><input type="checkbox" id="toggle-elo" /><span>Elo</span></label>
+            <button id="clear-fav" class="ghost-btn" type="button">Clear</button>
+          </div>
         </div>
-      </div>
-      <p class="hint" id="picker-hint"></p>
-      <div class="chips" id="chips"></div>
-      <button id="expand-chips" class="expand-btn" type="button"></button>
-    </section>
+        <p class="hint" id="picker-hint"></p>
+        <div id="suggested-row" class="chip-row"></div>
+        <div id="search-results" class="chips hidden"></div>
+      </section>
 
-    <!-- CALENDAR CONTROLS -->
-    <section class="controls-bar">
-      <div class="legend">
-        <span class="legend-item"><span class="swatch swatch-fav"></span> Your team plays</span>
-        <span class="legend-item"><span class="swatch swatch-banger"></span> 🔥 Banger (Elo)</span>
-        <span class="legend-item"><span class="swatch swatch-ko"></span> Knockout (TBD)</span>
-      </div>
-      <div class="view-toggles">
-        <label class="toggle">
-          <input type="checkbox" id="toggle-only-fav" />
-          <span>Only my matches</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-bangers" checked />
-          <span>🔥 Highlight bangers</span>
-        </label>
-      </div>
-    </section>
+      <!-- CALENDAR CONTROLS -->
+      <section class="controls-bar">
+        <div class="legend">
+          <span class="legend-item"><span class="swatch swatch-fav"></span> Your team plays</span>
+          <span class="legend-item"><span class="swatch swatch-banger"></span> 🔥 Banger (Elo)</span>
+          <span class="legend-item"><span class="swatch swatch-ko"></span> Knockout (TBD)</span>
+        </div>
+        <div class="view-toggles">
+          <label class="toggle"><input type="checkbox" id="toggle-only-fav" /><span>Only my matches</span></label>
+          <label class="toggle"><input type="checkbox" id="toggle-bangers" checked /><span>🔥 Highlight bangers</span></label>
+        </div>
+      </section>
 
-    <!-- CALENDAR -->
-    <section id="calendar"></section>
+      <section id="calendar"></section>
+    </div>
 
-    <!-- MY MATCHES -->
-    <section class="panel" id="my-matches-panel">
-      <div class="panel-head">
-        <h2>When my teams play</h2>
-      </div>
-      <div id="my-matches"></div>
-    </section>
+    <!-- ===================== MY TEAMS VIEW ===================== -->
+    <div class="view" id="view-my-teams">
+      <section class="panel">
+        <div class="panel-head"><h2>When my teams play</h2></div>
+        <div id="my-matches"></div>
+      </section>
+    </div>
+
+    <!-- ===================== PLANNER VIEW ===================== -->
+    <div class="view" id="view-planner">
+      <section class="panel">
+        <div class="panel-head"><h2>Plan a window</h2></div>
+        <p class="hint">Tap a day — or a start and an end — to see everything on in that span. Your teams and the bangers jump to the top of the queue.</p>
+        <div id="planner-cal"></div>
+        <div id="planner-summary"></div>
+      </section>
+      <div id="planner-queue"></div>
+    </div>
   </main>
 
-  <!-- match detail popover -->
   <div id="popover" class="popover hidden"></div>
 
   <footer>
