@@ -74,17 +74,28 @@
   function projDist(matchNumber, side) {
     return (WC.proj && WC.proj[matchNumber]) ? WC.proj[matchNumber][side] : null;
   }
-  // cliff-aware: #1 always; +#2 if ≥15%; +#3/#4 only while each ≥70% of the one above
+  // Single flag ONLY for a genuine favourite (#1 ≥ 60%). Otherwise show the leaders
+  // that cover the bulk of outcomes (cumulative ≥ 60%), and keep extending while the
+  // next contender stays within 70% of the one above (a tight pack). Clamped 2–4.
   function pickIcon(dist) {
     const p = i => (dist[i] ? dist[i].p : 0);
-    let n = 1;
-    if (p(1) >= 0.15) { n = 2; if (p(2) >= 0.7 * p(1)) { n = 3; if (p(3) >= 0.7 * p(2)) n = 4; } }
-    const style = n === 1 ? "single" : n === 2 ? ((p(0) - p(1) <= 0.06) ? "even2" : "b2") : n === 3 ? "b3" : "g4";
+    if (p(0) >= 0.60) return { n: 1, style: "single", teams: dist.slice(0, 1) };
+    let n = 2;
+    while (n < 4 && p(n) > 0) {
+      let cum = 0; for (let i = 0; i < n; i++) cum += p(i);
+      if (cum < 0.60 || p(n) >= 0.7 * p(n - 1)) n++;
+      else break;
+    }
+    const style = n === 2 ? ((p(0) - p(1) <= 0.06) ? "even2" : "b2") : n === 3 ? "b3" : "g4";
     return { n, style, teams: dist.slice(0, n) };
   }
-  function projIconHTML(dist) {
+  function projIconHTML(dist, cap) {
     if (!dist || !dist.length) return "";
-    const { style, teams } = pickIcon(dist);
+    let { n, style, teams } = pickIcon(dist);
+    if (cap && n > cap) { // compact contexts (dense month grid): cap the flag count
+      n = cap; teams = dist.slice(0, cap);
+      style = n === 1 ? "single" : n === 2 ? ((teams[0].p - teams[1].p <= 0.06) ? "even2" : "b2") : n === 3 ? "b3" : "g4";
+    }
     const im = (t, c) => `<img class="${c || ""}" loading="lazy" src="https://flagcdn.com/w80/${iso(t.team)}.png" alt="">`;
     if (style === "single") return `<span class="pic single">${im(teams[0])}</span>`;
     if (style === "even2") return `<span class="pic even2">${im(teams[0])}${im(teams[1])}</span>`;
@@ -224,7 +235,7 @@
     const fav = isFavMatch(m), banger = ui.showBangers && isBanger(m), dim = ui.onlyFav && !fav;
     const abbr = STAGE_ABBR[m.stage] || "";
     const side = (name, which) => isKnown(name) ? teamFlag(name, "flag")
-      : (projIconHTML(projDist(m.matchNumber, which)) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
+      : (projIconHTML(projDist(m.matchNumber, which), 2) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
     const cls = ["match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
     const time = m.time ? `<span class="mtime">${m.time}</span>` : "";
@@ -465,7 +476,7 @@
     document.getElementById("proj-intro").innerHTML = `
       <div class="panel-head"><h2>Knockout projections</h2></div>
       <p>Group fixtures are set; the knockout bracket isn't. We simulate the whole tournament ${meta.sims ? meta.sims.toLocaleString() : ""} times from current Elo ratings — group games as Poisson-goal matches, knockout ties as single games — and tally how often each nation reaches each slot.</p>
-      <p class="proj-rule"><b>Reading the icons:</b> always shows #1; adds #2 if it's ≥<code>15%</code>; adds #3/#4 only while each stays ≥<code>70%</code> of the team above it — so a clear drop-off stops the list.
+      <p class="proj-rule"><b>Reading the icons:</b> a single flag means a genuine favourite (≥<code>60%</code>). Otherwise the icon shows the leaders that cover the likely outcomes, expanding to 3–4 flags when the field is tightly packed — so an open slot looks open.
       <span style="color:var(--muted)">Winner/runner-up slots are exact; the eight best third-placed teams' allocation is approximated (FIFA uses a fixed table).</span></p>`;
     const ko = WC.matches.filter(m => m.stage !== "Group").sort((a, b) => a.matchNumber - b.matchNumber);
     const stages = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Third-place", "Final"];
@@ -486,16 +497,28 @@
   function showPopover(m, x, y) {
     const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
     const dt = parseDate(m.date);
-    const dateStr = `${WEEKDAYS[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
-    const bi = bangerInfo(m);
-    const eloRow = bi ? `<div class="pv-row pv-elo">Elo: ${m.home} ${bi.a} · ${m.away} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>` : "";
-    const cell = name => isKnown(name) ? `${teamFlag(name, "")}<span>${name}</span>` : `<span>${name}</span>`;
-    pop.innerHTML = `<h4>Match ${m.matchNumber} · ${stageStr}</h4>
-      <div class="pv-teams">${cell(m.home)}<span class="vs">v</span>${cell(m.away)}</div>
-      <div class="pv-row">📅 ${dateStr}${m.time ? " · " + m.time + " local" : ""}</div>
-      <div class="pv-row">📍 ${m.venue}, ${m.city}</div>${eloRow}`;
+    const dateStr = `${WEEKDAYS[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${dt.getDate()}${m.time ? " · " + m.time : ""}`;
+    const isKO = !isKnown(m.home) || !isKnown(m.away);
+    let body;
+    if (isKO) {
+      const side = (which, name) => {
+        const dist = projDist(m.matchNumber, which);
+        const odds = dist ? dist.slice(0, 5).map((d, i) =>
+          `<div class="pv-odd${i === 0 ? " lead" : ""}">${teamFlag(d.team, "")}<span class="pv-nm">${d.team}</span><span class="pv-pct">${Math.round(d.p * 100)}%</span></div>`).join("") : "";
+        return `<div class="pv-side"><div class="pv-slot">${projIconHTML(dist)}<span>${shortLabel(name)}</span></div><div class="pv-odds">${odds}</div></div>`;
+      };
+      body = `<div class="pv-ko">${side("home", m.home)}<div class="pv-mid">vs</div>${side("away", m.away)}</div>`;
+    } else {
+      const bi = bangerInfo(m);
+      const eloRow = bi ? `<div class="pv-row pv-elo">Elo: ${m.home} ${bi.a} · ${m.away} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>` : "";
+      body = `<div class="pv-teams">${teamFlag(m.home, "")}<span>${m.home}</span><span class="vs">v</span>${teamFlag(m.away, "")}<span>${m.away}</span></div>${eloRow}`;
+    }
+    pop.classList.toggle("ko", isKO);
+    pop.innerHTML = `<h4>Match ${m.matchNumber} · ${stageStr}</h4>${body}
+      <div class="pv-row">📅 ${dateStr}</div>
+      <div class="pv-row">📍 ${m.venue}, ${m.city}</div>`;
     pop.classList.remove("hidden");
-    const pw = 280, ph = pop.offsetHeight || 120;
+    const pw = isKO ? 348 : 280, ph = pop.offsetHeight || 120;
     let left = x + 14, top = y + 14;
     if (left + pw > window.innerWidth) left = x - pw - 14;
     if (top + ph > window.innerHeight) top = y - ph - 14;
