@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Cup 2026 — Calendar &amp; Match Planner</title>
+  <meta name="description" content="Plan the 2026 World Cup: a full calendar of all 104 matches, follow your teams, and spot the banger matchups by Elo." />
+  <meta name="theme-color" content="#1971c2" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="World Cup 2026 — Calendar &amp; Match Planner" />
+  <meta property="og:description" content="A full calendar of all 104 matches. Follow your teams, find the banger matchups, plan which games to watch." />
+  <meta property="og:url" content="https://banger-watch.vercel.app/" />
+  <meta property="og:image" content="https://banger-watch.vercel.app/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="World Cup 2026 — Calendar &amp; Match Planner" />
+  <meta name="twitter:description" content="A full calendar of all 104 matches. Follow your teams, find the banger matchups, plan which games to watch." />
+  <meta name="twitter:image" content="https://banger-watch.vercel.app/og.png" />
+
+  <link rel="preconnect" href="https://flagcdn.com" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="title-block">
+        <h1>FIFA World Cup 2026 <span class="trophy">🏆</span></h1>
+        <p class="subtitle">United States · Canada · Mexico — June 11 to July 19, 2026 · 48 teams · 104 matches</p>
+      </div>
+      <div class="header-stats" id="header-stats"></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TEAM PICKER -->
+    <section class="panel" id="picker-panel">
+      <div class="panel-head">
+        <h2>Pick the teams you care about</h2>
+        <div class="picker-controls">
+          <input type="search" id="team-search" placeholder="Search a country…" autocomplete="off" />
+          <label class="toggle">
+            <input type="checkbox" id="toggle-elo" />
+            <span>Show Elo</span>
+          </label>
+          <button id="clear-fav" class="ghost-btn" type="button">Clear</button>
+        </div>
+      </div>
+      <p class="hint" id="picker-hint"></p>
+      <div class="chips" id="chips"></div>
+      <button id="expand-chips" class="expand-btn" type="button"></button>
+    </section>
+
+    <!-- CALENDAR CONTROLS -->
+    <section class="controls-bar">
+      <div class="legend">
+        <span class="legend-item"><span class="swatch swatch-fav"></span> Your team plays</span>
+        <span class="legend-item"><span class="swatch swatch-banger"></span> 🔥 Banger (Elo)</span>
+        <span class="legend-item"><span class="swatch swatch-ko"></span> Knockout (TBD)</span>
+      </div>
+      <div class="view-toggles">
+        <label class="toggle">
+          <input type="checkbox" id="toggle-only-fav" />
+          <span>Only my matches</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-bangers" checked />
+          <span>🔥 Highlight bangers</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="calendar"></section>
+
+    <!-- MY MATCHES -->
+    <section class="panel" id="my-matches-panel">
+      <div class="panel-head">
+        <h2>When my teams play</h2>
+      </div>
+      <div id="my-matches"></div>
+    </section>
+  </main>
+
+  <!-- match detail popover -->
+  <div id="popover" class="popover hidden"></div>
+
+  <footer>
+    Schedule from the Dec 5 2025 final draw, spot-checked vs FIFA / Wikipedia / ESPN.
+    Flags via flagcdn.com · Elo via eloratings.net. Knockout fixtures show bracket slots until groups resolve.
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="elo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
