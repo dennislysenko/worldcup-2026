@@ -127,7 +127,8 @@
       const order = [...favorites, loc, ...TOP10];
       const seen = new Set(), list = [];
       order.forEach(n => { if (!seen.has(n) && WC.teamByName[n]) { seen.add(n); list.push(n); } });
-      suggestedRow.innerHTML = list.map(n => chipHTML(WC.teamByName[n], n === loc && !favorites.has(n))).join("");
+      suggestedRow.innerHTML = list.map(n => chipHTML(WC.teamByName[n], n === loc && !favorites.has(n))).join("")
+        + `<button type="button" class="chip chip-more" data-action="more">🔍 <span>Search all 48…</span></button>`;
     }
     const n = favorites.size;
     pickerHint.textContent = n
@@ -146,7 +147,9 @@
   }
 
   document.getElementById("picker-panel").addEventListener("click", e => {
-    const btn = e.target.closest(".chip"); if (btn) toggleTeam(btn.dataset.team);
+    const btn = e.target.closest(".chip"); if (!btn) return;
+    if (btn.dataset.action === "more") { document.getElementById("team-search").focus(); return; }
+    toggleTeam(btn.dataset.team);
   });
   document.getElementById("team-search").addEventListener("input", e => { ui.search = e.target.value; renderPicker(); });
   document.getElementById("toggle-elo").addEventListener("change", e => { ui.showElo = e.target.checked; renderPicker(); });

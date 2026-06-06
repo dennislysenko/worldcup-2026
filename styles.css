@@ -403,6 +403,15 @@ footer {
 }
 .chip-row .chip { flex: 0 0 auto; }
 .chip-row.hidden, .chips.hidden { display: none; }
+.chip-more {
+  border-style: dashed;
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+  background: transparent;
+  font-weight: 600;
+  padding: 6px 14px;
+}
+.chip-more:hover { background: rgba(25, 113, 194, 0.07); transform: none; }
 .loc-pin { font-size: 11px; margin-right: -2px; }
 
 /* ====================================================================== */
