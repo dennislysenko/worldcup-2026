@@ -720,7 +720,8 @@ footer {
 .chip, .ub-card, .pcard, .drill, .planner-summary-bar, .intro-card .node, .cta-btn { filter: url(#rough); }
 
 /* chips */
-.chip { border: 2px solid var(--line); background: transparent; }
+.chip { border: 2px solid var(--line); background: rgba(255,255,255,.055); }
+.chip:hover { background: rgba(255,255,255,.09); }
 .chip.selected { background: var(--fav-dim); border-color: var(--fav); color: var(--text); }
 .chip-more { border-color: var(--accent-2); color: var(--accent-2); }
 

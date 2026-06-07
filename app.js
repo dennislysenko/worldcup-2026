@@ -184,7 +184,8 @@
       searchResults.classList.add("hidden");
       suggestedRow.classList.remove("hidden");
       const loc = locationTeam();
-      const order = [...favorites, loc, ...TOP10];
+      // stable order: location + top 10 stay put; followed-but-not-listed append at the end.
+      const order = [loc, ...TOP10, ...favorites];
       const seen = new Set(), list = [];
       order.forEach(n => { if (!seen.has(n) && WC.teamByName[n]) { seen.add(n); list.push(n); } });
       suggestedRow.innerHTML = list.map(n => chipHTML(WC.teamByName[n], n === loc && !favorites.has(n))).join("")
@@ -193,7 +194,7 @@
     const n = favorites.size;
     pickerHint.textContent = n
       ? `${n} team${n > 1 ? "s" : ""} followed — saved on this device, highlighted across the calendar.`
-      : "Tap your team to follow it — your location and the top 10 are below, or search any of the 48.";
+      : "Tap your teams below.";
     renderPickerPreview();
   }
 
@@ -271,8 +272,9 @@
     for (let i = 0; i < startPad; i++) cells += `<div class="day empty"></div>`;
     for (let d = 1; d <= daysInMonth; d++) {
       const ds = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-      const matches = byDate[ds] || [];
-      const hasFav = matches.some(isFavMatch);
+      const all = byDate[ds] || [];
+      const hasFav = all.some(isFavMatch);
+      const matches = ui.onlyFav ? all.filter(isFavMatch) : all;
       const favDot = hasFav ? `<span class="dot-fav">★</span>` : "";
       const cls = ["day", hasFav ? "has-fav" : "", ds === todayStr ? "today" : ""].filter(Boolean).join(" ");
       cells += `<div class="${cls}"><div class="day-num"><span>${d}</span>${favDot}</div>${matches.map(matchPill).join("")}</div>`;
@@ -305,8 +307,11 @@
     dates.forEach(ds => {
       const dt = parseDate(ds);
       const monthKey = `${dt.getFullYear()}-${dt.getMonth()}`;
+      const all = byDate[ds];
+      const matches = ui.onlyFav ? all.filter(isFavMatch) : all;
+      if (!matches.length) return;
       if (monthKey !== curMonth) { curMonth = monthKey; html += `<h3 class="month-title">${MONTHS[dt.getMonth()]} ${dt.getFullYear()}</h3>`; }
-      const matches = byDate[ds], hasFav = matches.some(isFavMatch);
+      const hasFav = matches.some(isFavMatch);
       html += `<div class="agenda-day ${hasFav ? "has-fav" : ""}">
         <div class="agenda-date"><span class="ad-wd">${WEEKDAYS[dt.getDay()]}</span><span class="ad-num">${dt.getDate()}</span></div>
         <div class="agenda-matches">${matches.map(agendaRow).join("")}</div></div>`;
