@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stadium Night</title>
+<style>
+  :root{--bg:#06080f;--panel:#0d1322;--panel2:#111a2e;--line:#1f2c49;--text:#e9eeff;--muted:#8595bd;
+        --green:#2bff95;--mag:#ff3da6;--cyan:#36e6ff;--amber:#ffc24b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       color:var(--text);background:
+       radial-gradient(1100px 500px at 80% -10%,rgba(43,255,149,.10),transparent 60%),
+       radial-gradient(900px 500px at 10% 0%,rgba(255,61,166,.10),transparent 55%),
+       var(--bg)}
+  img{display:block}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* header — glowing marquee with pitch lines */
+  .hdr{position:relative;border-bottom:1px solid var(--line);overflow:hidden}
+  .hdr .pitch{position:absolute;inset:0;opacity:.5;
+    background:
+      linear-gradient(90deg,transparent 49.6%,rgba(43,255,149,.12) 50%,transparent 50.4%),
+      repeating-linear-gradient(90deg,transparent 0 78px,rgba(54,230,255,.05) 78px 80px)}
+  .hdr-in{position:relative;max-width:1100px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-size:27px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;
+         text-shadow:0 0 18px rgba(43,255,149,.55)}
+  .brand .yr{color:var(--green)}
+  .brand small{display:block;font-size:11px;letter-spacing:3px;color:var(--cyan);font-weight:700;margin-top:3px;text-shadow:0 0 10px rgba(54,230,255,.5)}
+  .live{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--green);border:1px solid var(--green);border-radius:999px;padding:7px 15px;box-shadow:0 0 16px rgba(43,255,149,.35),inset 0 0 12px rgba(43,255,149,.12)}
+
+  .nav{position:sticky;top:0;z-index:5;background:rgba(6,8,15,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1100px;margin:0 auto;padding:10px 24px;display:flex;gap:8px}
+  .tab{font-size:12.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:9px 16px;border-radius:8px;cursor:pointer}
+  .tab.on{color:#06080f;background:var(--green);box-shadow:0 0 18px rgba(43,255,149,.5)}
+
+  main{padding:26px 24px 70px}
+
+  /* HERO E */
+  .hero{position:relative;border-radius:18px;padding:30px 26px;text-align:center;margin-bottom:26px;
+        background:linear-gradient(160deg,rgba(43,255,149,.10),rgba(255,61,166,.10));
+        border:1px solid var(--line);box-shadow:0 0 50px rgba(255,61,166,.12),inset 0 0 50px rgba(43,255,149,.05)}
+  .hero .x{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:21px;cursor:pointer}
+  .hero h1{margin:0 0 6px;font-size:31px;font-weight:900;letter-spacing:-.4px;text-shadow:0 0 24px rgba(43,255,149,.4)}
+  .hero .tag{margin:0 0 22px;color:var(--muted);font-size:14px}
+  .hero .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:780px;margin:0 auto}
+  .hero .col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 10px}
+  .hero .col .e{font-size:26px;filter:drop-shadow(0 0 8px rgba(54,230,255,.5))}
+  .hero .col b{display:block;font-size:14px;margin-top:7px}
+  .hero .col p{margin:3px 0 0;font-size:11.5px;color:var(--muted)}
+
+  .sec{font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:0 0 13px}
+  .sec .b{color:var(--mag);text-shadow:0 0 12px rgba(255,61,166,.5)}
+
+  /* follow teams */
+  .chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:28px}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 7px;font-weight:700;font-size:13px}
+  .chip img{width:22px;height:16px;border-radius:3px}
+  .chip.on{border-color:var(--green);box-shadow:0 0 16px rgba(43,255,149,.35);color:#fff}
+  .chip.on::after{content:"★";color:var(--green)}
+
+  /* bangers */
+  .brow{display:flex;gap:13px;overflow-x:auto;padding-bottom:8px;margin-bottom:30px}
+  .bcard{flex:0 0 auto;width:196px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 15px;position:relative;
+         box-shadow:0 0 0 1px rgba(255,61,166,.18),0 0 26px rgba(255,61,166,.12)}
+  .bcard .fl{position:absolute;top:-9px;right:13px;font-size:19px;filter:drop-shadow(0 0 8px rgba(255,120,40,.7))}
+  .bcard .bd{font-size:11.5px;font-weight:800;letter-spacing:.6px;color:var(--cyan)}
+  .bcard .bt{display:flex;align-items:center;gap:8px;margin-top:9px;font-weight:800;font-size:14px}
+  .bcard .bt img{width:25px;height:18px;border-radius:3px}
+  .bcard .bm{font-size:11px;color:var(--muted);margin-top:9px}
+
+  /* calendar */
+  .cal-title{font-size:20px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;margin:4px 0 12px}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px}
+  .cal-weekdays span{text-align:center;font-size:10.5px;font-weight:800;letter-spacing:1px;color:var(--muted)}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .cell{background:var(--panel);border:1px solid var(--line);border-radius:11px;min-height:120px;padding:7px;display:flex;flex-direction:column;gap:5px}
+  .cell.empty{background:transparent;border:1px dashed rgba(31,44,73,.5)}
+  .dnum{font-size:13px;font-weight:800;color:var(--muted)}
+  .pill{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:3px 6px;font-size:11px;position:relative}
+  .pill img{width:18px;height:13px;border-radius:2px}
+  .pill .vs{color:var(--muted);font-size:9px}
+  .pill .t{margin-left:auto;color:var(--cyan);font-size:9.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .pill.banger{border-color:var(--mag);box-shadow:0 0 14px rgba(255,61,166,.3)}
+  .pill.banger .t{color:var(--mag)}
+  .pill .fl{position:absolute;top:-7px;right:-3px;font-size:11px}
+  @media(max-width:720px){.hero .cols{grid-template-columns:1fr 1fr}.cell{min-height:84px}}
+</style></head>
+<body>
+  <header class="hdr"><div class="pitch"></div><div class="hdr-in">
+    <div class="brand">World Cup <span class="yr">2026</span><small>USA · CANADA · MEXICO</small></div>
+    <span class="live">● KICKOFF JUN 11</span>
+  </div></header>
+  <nav class="nav"><div class="nav-in">
+    <span class="tab on">Calendar</span><span class="tab">My Teams</span><span class="tab">Planner</span><span class="tab">Projections</span>
+  </div></nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <button class="x">×</button>
+      <h1>Your World Cup, organized.</h1>
+      <p class="tag">48 teams, 104 matches — here's how to make sense of it.</p>
+      <div class="cols">
+        <div class="col"><div class="e">📅</div><b>Full calendar</b><p>Every match, one view</p></div>
+        <div class="col"><div class="e">🔥</div><b>Banger alerts</b><p>Top matchups by Elo</p></div>
+        <div class="col"><div class="e">🗓️</div><b>Planner</b><p>Plan a weekend</p></div>
+        <div class="col"><div class="e">⭐</div><b>Follow teams</b><p>Yours, everywhere</p></div>
+      </div>
+    </section>
+
+    <h2 class="sec">Follow your teams</h2>
+    <div class="chips">
+      <span class="chip on"><img src="https://flagcdn.com/w40/us.png">USA</span>
+      <span class="chip on"><img src="https://flagcdn.com/w40/br.png">Brazil</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/es.png">Spain</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/ar.png">Argentina</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/fr.png">France</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/gb-eng.png">England</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/pt.png">Portugal</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/nl.png">Netherlands</span>
+      <span class="chip" style="border-style:dashed;color:var(--cyan)">🔍 All 48</span>
+    </div>
+
+    <h2 class="sec"><span class="b">🔥 Upcoming bangers</span></h2>
+    <div class="brow" id="bangers"></div>
+
+    <h2 class="cal-title">June 2026</h2>
+    <section id="cal"></section>
+  </main>
+
+  <script>
+    const NAMES={mx:'Mexico',za:'S. Africa',kr:'S. Korea',cz:'Czechia',ca:'Canada',ba:'Bosnia',qa:'Qatar',ch:'Switzerland',br:'Brazil',ma:'Morocco',ht:'Haiti','gb-sct':'Scotland',us:'USA',py:'Paraguay',au:'Australia',tr:'Türkiye',de:'Germany',cw:'Curaçao',ci:'Ivory Coast',ec:'Ecuador',nl:'Netherlands',jp:'Japan',se:'Sweden',tn:'Tunisia',be:'Belgium',eg:'Egypt',ir:'Iran',nz:'N. Zealand',es:'Spain',cv:'Cape Verde',sa:'Saudi Arabia',uy:'Uruguay',fr:'France',sn:'Senegal',iq:'Iraq',no:'Norway',ar:'Argentina',dz:'Algeria',at:'Austria',jo:'Jordan',pt:'Portugal',cd:'DR Congo',uz:'Uzbekistan',co:'Colombia','gb-eng':'England',hr:'Croatia',gh:'Ghana',pa:'Panama'};
+    const M={11:[['mx','za','12:00',0],['kr','cz','21:00',0]],12:[['ca','ba','15:00',0],['us','py','18:00',0]],13:[['qa','ch','12:00',0],['br','ma','18:00',1],['ht','gb-sct','21:00',0],['au','tr','21:00',0]],14:[['de','cw','12:00',0],['nl','jp','15:00',1],['ci','ec','19:00',0],['se','tn','21:00',0]],15:[['es','cv','13:00',0],['be','eg','15:00',0],['sa','uy','18:00',0],['ir','nz','21:00',0]],16:[['fr','sn','15:00',1],['iq','no','18:00',0],['ar','dz','20:00',0],['at','jo','21:00',0]],17:[['pt','cd','12:00',0],['gb-eng','hr','15:00',1],['gh','pa','19:00',0],['uz','co','21:00',0]]};
+    const BANGERS=[['SAT JUN 13','18:00','br','ma','MetLife, NY'],['SUN JUN 14','15:00','nl','jp','Dallas'],['TUE JUN 16','15:00','fr','sn','MetLife, NY'],['WED JUN 17','15:00','gb-eng','hr','Dallas'],['FRI JUN 26','19:00','uy','es','Guadalajara']];
+    const F=(i,w=40)=>`https://flagcdn.com/w${w}/${i}.png`;
+    document.getElementById('bangers').innerHTML=BANGERS.map(([d,t,h,a,v])=>`<div class="bcard"><span class="fl">🔥</span><div class="bd">${d} · ${t}</div><div class="bt"><img src="${F(h,80)}">${NAMES[h]}</div><div class="bt"><img src="${F(a,80)}">${NAMES[a]}</div><div class="bm">📍 ${v}</div></div>`).join('');
+    const wd=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    let html='<div class="cal-weekdays">'+wd.map(w=>`<span>${w}</span>`).join('')+'</div><div class="cal-grid">';
+    const first=new Date(2026,5,1).getDay();
+    for(let i=0;i<first;i++) html+='<div class="cell empty"></div>';
+    for(let d=1;d<=30;d++){const ms=M[d]||[];html+=`<div class="cell"><div class="dnum">${d}</div>`+ms.map(([h,a,t,b])=>`<div class="pill${b?' banger':''}"><img src="${F(h)}"><span class="vs">v</span><img src="${F(a)}"><span class="t">${t}</span>${b?'<span class="fl">🔥</span>':''}</div>`).join('')+'</div>';}
+    html+='</div>';document.getElementById('cal').innerHTML=html;
+  </script>
+</body></html>

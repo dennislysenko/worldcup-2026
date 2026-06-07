@@ -1,32 +1,46 @@
 :root {
-  --bg: #eef1f7;
-  --bg-2: #f6f8fc;
-  --panel: #ffffff;
-  --panel-2: #f1f4fa;
-  --line: #dde3ef;
-  --text: #1a2138;
-  --muted: #5f6b8a;
-  --accent: #0ca678;
-  --accent-2: #1971c2;
-  --fav: #f08c00;
-  --fav-dim: rgba(240, 140, 0, 0.13);
-  --banger: #e8590c;
-  --ko: #6b78c4;
-  --radius: 14px;
-  --shadow: 0 8px 24px rgba(23, 37, 84, 0.08);
+  /* Chalkboard palette */
+  --bg: #15332a;
+  --bg-2: rgba(255, 255, 255, 0.045);
+  --panel: rgba(255, 255, 255, 0.035);
+  --panel-2: rgba(255, 255, 255, 0.07);
+  --line: rgba(242, 245, 238, 0.5);
+  --text: #f2f5ee;
+  --muted: #a9c2b4;
+  --accent: #9be6a6;      /* green chalk */
+  --accent-2: #9ec9ff;    /* blue chalk */
+  --fav: #ffe08a;         /* yellow chalk */
+  --fav-dim: rgba(255, 224, 138, 0.14);
+  --banger: #ff9ec4;      /* pink chalk */
+  --ko: #c9b6ff;          /* lilac chalk */
+  --radius: 13px;
+  --shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --chalk-font: "Patrick Hand", -apple-system, system-ui, sans-serif;
+  --script-font: "Caveat", cursive;
 }
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; color-scheme: dark; }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 80% -10%, #e3ecff 0%, var(--bg) 55%) fixed;
+  font-family: var(--chalk-font);
+  font-size: 16px;
+  background:
+    radial-gradient(1200px 700px at 70% -10%, #1c4537, transparent 60%),
+    radial-gradient(900px 600px at 0% 100%, #123026, transparent 55%),
+    #15332a fixed;
   color: var(--text);
   line-height: 1.45;
 }
+/* chalk dust + vignette */
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  opacity: .05; background-image: radial-gradient(#fff .7px, transparent .7px); background-size: 5px 5px; }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  box-shadow: inset 0 0 220px rgba(0, 0, 0, .45); }
+main, .site-header, .main-nav { position: relative; z-index: 1; }
+.drawn { filter: url(#rough); }
 
 main {
   max-width: 1180px;
@@ -671,3 +685,129 @@ footer {
   .q-row { grid-template-columns: 70px 1fr; }
   .q-badges { grid-column: 1 / -1; flex-direction: row; align-items: center; }
 }
+
+/* ====================================================================== */
+/* CHALKBOARD THEME — structural overrides                                */
+/* ====================================================================== */
+
+/* hand fonts on headings (body is already Patrick Hand) */
+.title-block h1 { font-family: var(--script-font); font-size: 42px; font-weight: 700;
+  letter-spacing: .5px; text-shadow: 0 0 2px rgba(255,255,255,.25); }
+.trophy { filter: none; }
+
+/* header = chalk board band with faint pitch lines */
+.site-header { background: transparent; border-bottom: 2px solid var(--line); color: var(--text); overflow: hidden; }
+.site-header .subtitle { color: var(--muted); }
+.header-pitch { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .13; pointer-events: none; }
+.header-inner { position: relative; z-index: 1; }
+
+/* nav: chalk tabs, hand-circled active */
+.main-nav { background: rgba(21,51,42,.86); backdrop-filter: blur(6px); border-bottom: 2px solid var(--line); }
+.nav-link { color: var(--muted); position: relative; }
+.nav-link:hover { color: var(--text); }
+.nav-link.active { color: var(--text); border-bottom-color: transparent; }
+.nav-link.active::after { content: ""; position: absolute; left: 7px; right: 7px; top: 7px; bottom: 8px;
+  border: 2.5px solid var(--fav); border-radius: 60% 40% 55% 45% / 55% 60% 40% 45%; filter: url(#rough); pointer-events: none; }
+
+/* flatten shadows; cards become chalk-outlined regions */
+.panel, .pcard, .ub-card, .q-row, .pd, .planner-summary-bar, .popover, .drill,
+.day, .agenda-day, .mm-row, .cta-btn, .chip, .ub-teams img, .chip img { box-shadow: none; }
+.panel { border: 2px solid var(--line); }
+.pcard, .q-row { border: 2px solid var(--line); background: var(--panel); }
+.mm-row { border: 1px solid var(--line); }
+
+/* gentle hand-drawn wobble on the showcase pieces (NOT the dense calendar, for perf) */
+.chip, .ub-card, .pcard, .drill, .planner-summary-bar, .intro-card .node, .cta-btn { filter: url(#rough); }
+
+/* chips */
+.chip { border: 2px solid var(--line); background: transparent; }
+.chip.selected { background: var(--fav-dim); border-color: var(--fav); color: var(--text); }
+.chip-more { border-color: var(--accent-2); color: var(--accent-2); }
+
+/* upcoming bangers */
+.ub-card { background: transparent; border: 2px solid var(--banger); }
+.upcoming-head { color: var(--banger); }
+
+/* favourite + banger accents in chalk */
+.match.fav, .agenda-match.fav { border-color: var(--fav); }
+.day.has-fav { border-color: var(--fav); }
+.match.banger, .agenda-match.banger { box-shadow: 0 0 0 1.5px var(--banger); }
+.q-row.fav { border-color: var(--fav); }
+.q-row.banger { box-shadow: inset 0 0 0 1.5px var(--banger); }
+.q-fav { color: var(--fav); background: var(--fav-dim); }
+
+/* buttons */
+.cta-btn { background: transparent; border: 2px solid var(--accent-2); color: var(--accent-2); }
+.cta-btn:hover { background: rgba(158,201,255,.12); filter: url(#rough); }
+.ghost-btn { border-color: var(--line); color: var(--muted); }
+
+/* planner range select readable on yellow chalk */
+.pd.sel-end { color: #15332a; }
+.pd.in-range { background: var(--fav-dim); border-color: var(--fav); }
+
+/* solid boards for floating surfaces so they read over content */
+.popover { background: #1b3b30; border: 2px solid var(--line); }
+.drill { background: #1b3b30; border: 2px solid var(--line); }
+.drill-group { background: rgba(0,0,0,.18); }
+
+/* ---- intro = "team talk" board ---- */
+.intro-card { background: transparent; border: 2px solid var(--line); text-align: center; padding: 22px 24px 26px; }
+.intro-tt { font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--fav); }
+.intro-h { font-family: var(--script-font); font-size: 34px; font-weight: 700; margin: 4px 0 2px; }
+.intro-dek { color: var(--muted); font-size: 15px; margin: 0 0 20px; }
+.intro-nodes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 800px; margin: 0 auto; }
+.intro-card .node { border: 2.5px solid var(--line); border-radius: 14px; padding: 14px 10px; }
+.intro-card .node:nth-child(1) { border-color: var(--accent-2); }
+.intro-card .node:nth-child(2) { border-color: var(--banger); }
+.intro-card .node:nth-child(3) { border-color: var(--accent); }
+.intro-card .node:nth-child(4) { border-color: var(--fav); }
+.intro-card .node .e { font-size: 25px; }
+.intro-card .node b { display: block; font-size: 17px; margin-top: 5px; }
+.intro-card .node p { margin: 1px 0 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 640px) { .intro-nodes { grid-template-columns: 1fr 1fr; } }
+
+/* ====================================================================== */
+/* CHALK THEME — round 2 tweaks                                           */
+/* ====================================================================== */
+
+/* collapsible picker: Done -> one-line preview -> Edit */
+.picker-preview { display: none; align-items: center; gap: 10px; flex-wrap: wrap; }
+#picker-panel.collapsed .picker-preview { display: flex; }
+#picker-panel.collapsed .picker-body { display: none; }
+.pp-text { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1; min-width: 0; }
+.pp-label { font-size: 16px; }
+.pp-flag { width: 24px; height: 17px; border-radius: 3px; object-fit: cover; }
+.pp-count { color: var(--muted); font-size: 13px; }
+.picker-foot { display: flex; justify-content: flex-end; margin-top: 14px; }
+.done-btn { background: var(--fav); color: #15332a; border: none; border-radius: 10px; padding: 8px 24px;
+  font-family: var(--chalk-font); font-size: 16px; cursor: pointer; filter: url(#rough); }
+.done-btn:hover { filter: none; }
+
+/* checkboxes -> switches */
+.toggle input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none; width: 38px; height: 22px; border-radius: 999px; margin: 0;
+  background: rgba(255,255,255,.12); border: 1.5px solid var(--line); position: relative; cursor: pointer;
+  transition: background .15s; flex: 0 0 auto;
+}
+.toggle input[type="checkbox"]::after {
+  content: ""; position: absolute; top: 1.5px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--text); transition: transform .15s;
+}
+.toggle input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.toggle input[type="checkbox"]:checked::after { transform: translateX(15px); background: #15332a; }
+
+/* legend squares -> dots */
+.swatch { border-radius: 50%; }
+
+/* upcoming bangers as a banner (remove the `banner` class to roll back) */
+.upcoming.banner { border: 2px solid var(--banger); border-radius: var(--radius);
+  padding: 12px 16px 8px; background: rgba(255,158,196,.05); margin-bottom: 24px; }
+.upcoming.banner .upcoming-head { font-size: 14px; }
+
+/* footer matches the board */
+footer { background: transparent; border-top: 1px solid var(--line); color: var(--muted); }
+
+/* planner range selection — cleaner, continuous, readable numbers */
+.pd.in-range { background: var(--fav-dim); border-color: transparent; color: var(--text); }
+.pd.sel-end { background: var(--fav-dim); border: 2px solid var(--fav); color: var(--text); }
+.pd.sel-end .pd-dot { background: var(--accent); }

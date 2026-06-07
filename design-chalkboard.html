@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chalkboard Tactics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{--board:#173a2e;--chalk:#f2f5ee;--dim:#a9c2b4;--yellow:#ffe08a;--pink:#ff9ec4;--blue:#9ec9ff;--green:#9be6a6}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Patrick Hand",-apple-system,system-ui,sans-serif;color:var(--chalk);font-size:17px;
+    background:
+      radial-gradient(1200px 700px at 70% -10%,#1c4537,transparent 60%),
+      radial-gradient(900px 600px at 0% 100%,#123026,transparent 55%),
+      #15332a}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;z-index:0;
+    background-image:radial-gradient(#fff .7px,transparent .7px);background-size:5px 5px}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 220px rgba(0,0,0,.5)}
+  img{display:block}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 30px;position:relative;z-index:1}
+  .drawn{filter:url(#rough)}
+  h1,h2,.big{font-family:"Patrick Hand",sans-serif;letter-spacing:0}
+  .chalk-shadow{text-shadow:0 0 1px rgba(255,255,255,.25)}
+
+  /* header */
+  .hdr{position:relative;text-align:center;padding:30px 30px 18px;border-bottom:2px solid rgba(242,245,238,.5)}
+  .hdr svg.pitch{position:absolute;inset:0;width:100%;height:100%;opacity:.16;pointer-events:none}
+  .brand{font-family:"Caveat",cursive;font-size:52px;font-weight:700;line-height:1;text-shadow:0 0 2px rgba(255,255,255,.3)}
+  .brand .u{display:inline-block;border-bottom:4px solid var(--yellow);padding-bottom:2px}
+  .sub{color:var(--dim);font-size:18px;margin-top:6px}
+
+  /* nav */
+  .nav{display:flex;justify-content:center;gap:8px;padding:14px 0 0;flex-wrap:wrap}
+  .tab{font-size:18px;padding:6px 16px;color:var(--dim);cursor:pointer;position:relative}
+  .tab.on{color:var(--chalk)}
+  .tab.on::after{content:"";position:absolute;inset:-2px -6px;border:2.5px solid var(--yellow);border-radius:60% 40% 55% 45%/55% 60% 40% 45%;filter:url(#rough)}
+
+  main{padding:26px 0 70px}
+
+  /* HERO E — team talk */
+  .hero{position:relative;border:2.5px solid var(--chalk);border-radius:14px;padding:24px 26px 28px;margin-bottom:30px;text-align:center}
+  .hero .x{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer;font-family:"Patrick Hand"}
+  .hero .tt{font-size:16px;color:var(--yellow);letter-spacing:2px;text-transform:uppercase}
+  .hero h1{font-size:37px;margin:6px 0 4px;font-weight:400}
+  .hero .dek{color:var(--dim);font-size:17px;margin:0 0 22px}
+  .hero .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:780px;margin:0 auto}
+  .node{border:2.5px solid var(--chalk);border-radius:14px;padding:14px 10px}
+  .node:nth-child(1){border-color:var(--blue)}.node:nth-child(2){border-color:var(--pink)}
+  .node:nth-child(3){border-color:var(--green)}.node:nth-child(4){border-color:var(--yellow)}
+  .node .e{font-size:25px}
+  .node b{display:block;font-size:18px;font-family:"Patrick Hand";margin-top:5px}
+  .node p{margin:1px 0 0;font-size:14px;color:var(--dim)}
+
+  .sec{font-family:"Patrick Hand";font-size:25px;margin:0 0 14px;display:flex;align-items:center;gap:12px}
+  .sec .arw{color:var(--yellow);font-size:26px}
+
+  /* follow teams */
+  .chips{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:30px}
+  .chip{display:inline-flex;align-items:center;gap:9px;border:2.5px solid var(--chalk);border-radius:12px;padding:7px 15px 7px 8px;font-size:16px}
+  .chip img{width:24px;height:17px;border-radius:2px;opacity:.95}
+  .chip.on{border-color:var(--yellow);color:var(--yellow)}
+  .chip.on::after{content:"✓";color:var(--yellow)}
+
+  /* bangers */
+  .brow{display:flex;gap:15px;overflow-x:auto;padding:6px 2px 12px;margin-bottom:30px}
+  .bcard{flex:0 0 auto;width:202px;border:2.5px solid var(--pink);border-radius:14px;padding:14px 16px;position:relative}
+  .bcard .fl{position:absolute;top:-14px;right:12px;font-size:22px}
+  .bcard .bd{color:var(--yellow);font-size:16px;letter-spacing:1px}
+  .bcard .bt{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:18px;font-family:"Patrick Hand"}
+  .bcard .bt img{width:26px;height:19px;border-radius:3px}
+  .bcard .bm{margin-top:9px;font-size:14px;color:var(--dim)}
+
+  /* calendar */
+  .cal-title{font-family:"Patrick Hand";font-size:25px;margin:6px 0 12px}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px}
+  .cal-weekdays span{text-align:center;font-size:15px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .cell{border:2px solid rgba(242,245,238,.55);border-radius:10px;min-height:122px;padding:7px;display:flex;flex-direction:column;gap:4px}
+  .cell.empty{border:2px dashed rgba(242,245,238,.16)}
+  .dnum{font-family:"Patrick Hand";font-size:19px;line-height:1}
+  .pill{display:flex;align-items:center;gap:5px;font-size:14px;padding:2px 3px;border-bottom:1px dotted rgba(242,245,238,.25)}
+  .pill img{width:18px;height:13px;border-radius:2px}
+  .pill .vs{color:var(--dim);font-size:12px}
+  .pill .t{margin-left:auto;color:var(--dim);font-size:12px}
+  .pill.banger{color:var(--pink)}
+  .pill.banger .t{color:var(--pink)}
+  .pill.banger .fl{margin-left:3px}
+  @media(max-width:720px){.hero .cols{grid-template-columns:1fr 1fr}.cell{min-height:88px}.brand{font-size:40px}}
+</style></head>
+<body>
+  <svg width="0" height="0" style="position:absolute"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2"/></filter></svg>
+
+  <header class="hdr">
+    <svg class="pitch" viewBox="0 0 1000 180" preserveAspectRatio="none"><g fill="none" stroke="#f2f5ee" stroke-width="2">
+      <line x1="500" y1="0" x2="500" y2="180"/><circle cx="500" cy="90" r="52"/>
+      <rect x="0" y="40" width="80" height="100"/><rect x="920" y="40" width="80" height="100"/></g></svg>
+    <div class="brand chalk-shadow">World Cup <span class="u">2026</span> ⚽</div>
+    <div class="sub">USA · Canada · Mexico — June 11 to July 19</div>
+    <nav class="nav">
+      <span class="tab on">Calendar</span><span class="tab">My Teams</span><span class="tab">Planner</span><span class="tab">Projections</span>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero drawn">
+      <button class="x">×</button>
+      <div class="tt">📋 Team talk</div>
+      <h1>Your World Cup, organized.</h1>
+      <p class="dek">48 teams, 104 matches — here's the game plan.</p>
+      <div class="cols">
+        <div class="node"><div class="e">📅</div><b>Full calendar</b><p>Every match, one view</p></div>
+        <div class="node"><div class="e">🔥</div><b>Banger alerts</b><p>Top matchups by Elo</p></div>
+        <div class="node"><div class="e">🗓️</div><b>Planner</b><p>Plan a weekend</p></div>
+        <div class="node"><div class="e">⭐</div><b>Follow teams</b><p>Yours, everywhere</p></div>
+      </div>
+    </section>
+
+    <h2 class="sec"><span class="arw">↳</span> Follow your teams</h2>
+    <div class="chips">
+      <span class="chip on drawn"><img src="https://flagcdn.com/w40/us.png">USA</span>
+      <span class="chip on drawn"><img src="https://flagcdn.com/w40/br.png">Brazil</span>
+      <span class="chip drawn"><img src="https://flagcdn.com/w40/es.png">Spain</span>
+      <span class="chip drawn"><img src="https://flagcdn.com/w40/ar.png">Argentina</span>
+      <span class="chip drawn"><img src="https://flagcdn.com/w40/fr.png">France</span>
+      <span class="chip drawn"><img src="https://flagcdn.com/w40/gb-eng.png">England</span>
+      <span class="chip drawn"><img src="https://flagcdn.com/w40/pt.png">Portugal</span>
+      <span class="chip drawn" style="border-style:dashed">＋ All 48</span>
+    </div>
+
+    <h2 class="sec"><span class="arw">↳</span> 🔥 Upcoming bangers</h2>
+    <div class="brow" id="bangers"></div>
+
+    <h2 class="cal-title">June 2026</h2>
+    <section id="cal"></section>
+  </main>
+
+  <script>
+    const NAMES={mx:'Mexico',za:'S. Africa',kr:'S. Korea',cz:'Czechia',ca:'Canada',ba:'Bosnia',qa:'Qatar',ch:'Switzerland',br:'Brazil',ma:'Morocco',ht:'Haiti','gb-sct':'Scotland',us:'USA',py:'Paraguay',au:'Australia',tr:'Türkiye',de:'Germany',cw:'Curaçao',ci:'Ivory Coast',ec:'Ecuador',nl:'Netherlands',jp:'Japan',se:'Sweden',tn:'Tunisia',be:'Belgium',eg:'Egypt',ir:'Iran',nz:'N. Zealand',es:'Spain',cv:'Cape Verde',sa:'Saudi Arabia',uy:'Uruguay',fr:'France',sn:'Senegal',iq:'Iraq',no:'Norway',ar:'Argentina',dz:'Algeria',at:'Austria',jo:'Jordan',pt:'Portugal',cd:'DR Congo',uz:'Uzbekistan',co:'Colombia','gb-eng':'England',hr:'Croatia',gh:'Ghana',pa:'Panama'};
+    const M={11:[['mx','za','12:00',0],['kr','cz','21:00',0]],12:[['ca','ba','15:00',0],['us','py','18:00',0]],13:[['qa','ch','12:00',0],['br','ma','18:00',1],['ht','gb-sct','21:00',0],['au','tr','21:00',0]],14:[['de','cw','12:00',0],['nl','jp','15:00',1],['ci','ec','19:00',0],['se','tn','21:00',0]],15:[['es','cv','13:00',0],['be','eg','15:00',0],['sa','uy','18:00',0],['ir','nz','21:00',0]],16:[['fr','sn','15:00',1],['iq','no','18:00',0],['ar','dz','20:00',0],['at','jo','21:00',0]],17:[['pt','cd','12:00',0],['gb-eng','hr','15:00',1],['gh','pa','19:00',0],['uz','co','21:00',0]]};
+    const BANGERS=[['SAT JUN 13','br','ma','MetLife, NY'],['SUN JUN 14','nl','jp','Dallas'],['TUE JUN 16','fr','sn','MetLife, NY'],['WED JUN 17','gb-eng','hr','Dallas'],['FRI JUN 26','uy','es','Guadalajara']];
+    const F=(i,w=40)=>`https://flagcdn.com/w${w}/${i}.png`;
+    document.getElementById('bangers').innerHTML=BANGERS.map(([d,h,a,v])=>`<div class="bcard drawn"><span class="fl">🔥</span><div class="bd">${d}</div><div class="bt"><img src="${F(h,80)}">${NAMES[h]}</div><div class="bt"><img src="${F(a,80)}">${NAMES[a]}</div><div class="bm">📍 ${v}</div></div>`).join('');
+    const wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let html='<div class="cal-weekdays">'+wd.map(w=>`<span>${w}</span>`).join('')+'</div><div class="cal-grid">';
+    const first=new Date(2026,5,1).getDay();
+    for(let i=0;i<first;i++) html+='<div class="cell empty drawn"></div>';
+    for(let d=1;d<=30;d++){const ms=M[d]||[];html+=`<div class="cell drawn"><div class="dnum">${d}</div>`+ms.map(([h,a,t,b])=>`<div class="pill${b?' banger':''}"><img src="${F(h)}"><span class="vs">v</span><img src="${F(a)}"><span class="t">${t}</span>${b?'<span class="fl">🔥</span>':''}</div>`).join('')+'</div>';}
+    html+='</div>';document.getElementById('cal').innerHTML=html;
+  </script>
+</body></html>

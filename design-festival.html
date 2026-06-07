@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design 3 — Festival</title>
+<style>
+  :root{--ink:#2a2350;--muted:#7d77a3;--line:#ece8f6;--pink:#f0407f;--orange:#ff8a3d;--teal:#13c2b3;--purple:#7a4dff;--amber:#ffb020}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:#fbf7ff;color:var(--ink)}
+  img{display:block}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* header — playful gradient with confetti */
+  .hdr{position:relative;background:linear-gradient(115deg,#f0407f,#ff8a3d 45%,#ffb020);overflow:hidden;color:#fff;border-radius:0 0 28px 28px}
+  .hdr .dot{position:absolute;border-radius:50%;opacity:.5}
+  .hdr-in{max-width:1080px;margin:0 auto;padding:22px 22px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+  .brand{font-size:27px;font-weight:900;letter-spacing:-.5px}
+  .brand small{display:block;font-size:12px;font-weight:700;opacity:.92}
+  .hpill{background:rgba(255,255,255,.25);border-radius:999px;padding:8px 16px;font-weight:800;font-size:13px}
+
+  /* nav — rounded chip tabs */
+  .nav{max-width:1080px;margin:-22px auto 0;padding:0 22px;position:relative;z-index:2}
+  .nav-in{background:#fff;border-radius:999px;padding:7px;display:inline-flex;gap:4px;box-shadow:0 10px 30px rgba(122,77,255,.16)}
+  .tab{padding:9px 18px;border-radius:999px;font-weight:800;font-size:13.5px;color:var(--muted);cursor:pointer}
+  .tab.on{background:linear-gradient(120deg,#7a4dff,#f0407f);color:#fff}
+
+  main{padding:24px 0 70px}
+
+  /* HERO E — festive */
+  .hero{position:relative;border-radius:26px;padding:30px 28px;text-align:center;color:#fff;margin-bottom:26px;overflow:hidden;
+        background:linear-gradient(125deg,#7a4dff,#f0407f 60%,#ff8a3d)}
+  .hero .x{position:absolute;top:16px;right:18px;background:rgba(255,255,255,.25);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer}
+  .hero h1{margin:0 0 6px;font-size:30px;font-weight:900;letter-spacing:-.5px}
+  .hero .tag{margin:0 0 22px;opacity:.95;font-size:14px;font-weight:600}
+  .hero .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:780px;margin:0 auto}
+  .hero .col{background:rgba(255,255,255,.16);border-radius:18px;padding:16px 10px}
+  .hero .col .e{font-size:30px}
+  .hero .col b{display:block;font-size:14px;margin-top:7px;font-weight:800}
+  .hero .col p{margin:3px 0 0;font-size:11.5px;opacity:.9;font-weight:600}
+
+  .sec{font-size:21px;font-weight:900;letter-spacing:-.3px;margin:0 0 14px}
+
+  /* your teams — pastel rounded chips */
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+  .chip{display:inline-flex;align-items:center;gap:9px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:8px 16px 8px 9px;font-weight:800;font-size:14px;box-shadow:0 3px 10px rgba(122,77,255,.06)}
+  .chip img{width:24px;height:17px;border-radius:4px}
+  .chip.on{background:linear-gradient(120deg,#fff0f6,#fff6ec);border-color:var(--pink)}
+  .chip.on::after{content:"💜"}
+
+  /* bangers — bubbly cards */
+  .brow{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;margin-bottom:28px}
+  .bcard{flex:0 0 auto;width:200px;background:#fff;border-radius:20px;padding:15px 16px;box-shadow:0 8px 24px rgba(255,138,61,.16);border:2px solid #fff4ee;position:relative}
+  .bcard .flame{position:absolute;top:-10px;right:14px;font-size:22px;filter:drop-shadow(0 3px 5px rgba(255,80,0,.4))}
+  .bcard .bd{font-weight:800;font-size:12.5px;color:var(--pink)}
+  .bcard .bt{display:flex;align-items:center;gap:8px;margin-top:9px;font-weight:800;font-size:15px}
+  .bcard .bt img{width:26px;height:19px;border-radius:5px}
+  .bcard .bm{margin-top:9px;font-size:11.5px;color:var(--muted);font-weight:600}
+
+  /* calendar — big rounded colorful */
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-bottom:8px}
+  .cal-weekdays span{text-align:center;font-size:11px;font-weight:800;color:var(--purple);letter-spacing:.5px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:9px}
+  .cell{background:#fff;border-radius:16px;min-height:118px;padding:8px;box-shadow:0 4px 14px rgba(122,77,255,.06);display:flex;flex-direction:column;gap:5px}
+  .cell.empty{background:transparent;box-shadow:none}
+  .dnum{font-size:14px;font-weight:900;color:var(--purple)}
+  .pill{display:flex;align-items:center;gap:5px;background:#f6f2ff;border-radius:10px;padding:4px 7px;font-size:11px;font-weight:700;position:relative}
+  .pill.banger{background:linear-gradient(120deg,#fff0f6,#fff4ea);box-shadow:0 0 0 1.5px rgba(240,64,127,.25)}
+  .pill img{width:18px;height:13px;border-radius:3px}
+  .pill .vs{color:var(--muted);font-size:9px}
+  .pill .t{margin-left:auto;color:var(--muted);font-size:9.5px;font-weight:800}
+  .pill .fl{position:absolute;top:-8px;right:-2px;font-size:12px}
+  @media(max-width:720px){.hero .cols{grid-template-columns:1fr 1fr}.cell{min-height:86px}}
+</style></head>
+<body>
+  <header class="hdr">
+    <span class="dot" style="width:70px;height:70px;background:#fff;top:-20px;left:12%"></span>
+    <span class="dot" style="width:36px;height:36px;background:#7a4dff;top:30px;left:42%"></span>
+    <span class="dot" style="width:50px;height:50px;background:#13c2b3;top:-10px;right:18%"></span>
+    <span class="dot" style="width:24px;height:24px;background:#fff;bottom:14px;right:34%"></span>
+    <div class="hdr-in">
+      <div class="brand">World Cup 2026 🎉<small>United States · Canada · Mexico</small></div>
+      <span class="hpill">Jun 11 – Jul 19</span>
+    </div>
+  </header>
+  <nav class="nav"><div class="nav-in">
+    <span class="tab on">Calendar</span><span class="tab">My Teams</span><span class="tab">Planner</span><span class="tab">Projections</span>
+  </div></nav>
+
+  <main class="wrap">
+    <!-- HERO E -->
+    <section class="hero">
+      <button class="x">×</button>
+      <h1>Your World Cup, organized.</h1>
+      <p class="tag">48 teams, 104 matches — here's how to make sense of it.</p>
+      <div class="cols">
+        <div class="col"><div class="e">📅</div><b>Full calendar</b><p>Every match, one view</p></div>
+        <div class="col"><div class="e">🔥</div><b>Banger alerts</b><p>Top matchups by Elo</p></div>
+        <div class="col"><div class="e">🗓️</div><b>Planner</b><p>Plan a weekend</p></div>
+        <div class="col"><div class="e">⭐</div><b>Follow teams</b><p>Yours, everywhere</p></div>
+      </div>
+    </section>
+
+    <h2 class="sec">Follow your teams</h2>
+    <div class="chips">
+      <span class="chip on"><img src="https://flagcdn.com/w40/us.png">USA</span>
+      <span class="chip on"><img src="https://flagcdn.com/w40/br.png">Brazil</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/es.png">Spain</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/ar.png">Argentina</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/fr.png">France</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/gb-eng.png">England</span>
+      <span class="chip"><img src="https://flagcdn.com/w40/pt.png">Portugal</span>
+      <span class="chip" style="border-style:dashed;color:var(--purple)">🔍 All 48</span>
+    </div>
+
+    <h2 class="sec">🔥 Upcoming bangers</h2>
+    <div class="brow" id="bangers"></div>
+
+    <h2 class="sec">June 2026</h2>
+    <section id="cal"></section>
+  </main>
+
+  <script>
+    const NAMES={mx:'Mexico',za:'S. Africa',kr:'S. Korea',cz:'Czechia',ca:'Canada',ba:'Bosnia',qa:'Qatar',ch:'Switzerland',br:'Brazil',ma:'Morocco',ht:'Haiti','gb-sct':'Scotland',us:'USA',py:'Paraguay',au:'Australia',tr:'Türkiye',de:'Germany',cw:'Curaçao',ci:'Ivory Coast',ec:'Ecuador',nl:'Netherlands',jp:'Japan',se:'Sweden',tn:'Tunisia',be:'Belgium',eg:'Egypt',ir:'Iran',nz:'N. Zealand',es:'Spain',cv:'Cape Verde',sa:'Saudi Arabia',uy:'Uruguay',fr:'France',sn:'Senegal',iq:'Iraq',no:'Norway',ar:'Argentina',dz:'Algeria',at:'Austria',jo:'Jordan',pt:'Portugal',cd:'DR Congo',uz:'Uzbekistan',co:'Colombia','gb-eng':'England',hr:'Croatia',gh:'Ghana',pa:'Panama'};
+    const M={11:[['mx','za','12:00',0],['kr','cz','21:00',0]],12:[['ca','ba','15:00',0],['us','py','18:00',0]],13:[['qa','ch','12:00',0],['br','ma','18:00',1],['ht','gb-sct','21:00',0],['au','tr','21:00',0]],14:[['de','cw','12:00',0],['nl','jp','15:00',1],['ci','ec','19:00',0],['se','tn','21:00',0]],15:[['es','cv','13:00',0],['be','eg','15:00',0],['sa','uy','18:00',0],['ir','nz','21:00',0]],16:[['fr','sn','15:00',1],['iq','no','18:00',0],['ar','dz','20:00',0],['at','jo','21:00',0]],17:[['pt','cd','12:00',0],['gb-eng','hr','15:00',1],['gh','pa','19:00',0],['uz','co','21:00',0]]};
+    const BANGERS=[['Sat Jun 13','18:00','br','ma','MetLife, NY'],['Sun Jun 14','15:00','nl','jp','Dallas'],['Tue Jun 16','15:00','fr','sn','MetLife, NY'],['Wed Jun 17','15:00','gb-eng','hr','Dallas']];
+    const F=(i,w=40)=>`https://flagcdn.com/w${w}/${i}.png`;
+    document.getElementById('bangers').innerHTML=BANGERS.map(([d,t,h,a,v])=>`<div class="bcard"><span class="flame">🔥</span><div class="bd">${d} · ${t}</div><div class="bt"><img src="${F(h,80)}">${NAMES[h]}</div><div class="bt"><img src="${F(a,80)}">${NAMES[a]}</div><div class="bm">📍 ${v}</div></div>`).join('');
+    const wd=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    let html='<div class="cal-weekdays">'+wd.map(w=>`<span>${w}</span>`).join('')+'</div><div class="cal-grid">';
+    const first=new Date(2026,5,1).getDay();
+    for(let i=0;i<first;i++) html+='<div class="cell empty"></div>';
+    for(let d=1;d<=30;d++){const ms=M[d]||[];html+=`<div class="cell"><div class="dnum">${d}</div>`+ms.map(([h,a,t,b])=>`<div class="pill${b?' banger':''}"><img src="${F(h)}"><span class="vs">v</span><img src="${F(a)}"><span class="t">${t}</span>${b?'<span class="fl">🔥</span>':''}</div>`).join('')+'</div>';}
+    html+='</div>';document.getElementById('cal').innerHTML=html;
+  </script>
+</body></html>

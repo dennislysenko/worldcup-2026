@@ -194,7 +194,28 @@
     pickerHint.textContent = n
       ? `${n} team${n > 1 ? "s" : ""} followed — saved on this device, highlighted across the calendar.`
       : "Tap your team to follow it — your location and the top 10 are below, or search any of the 48.";
+    renderPickerPreview();
   }
+
+  // ---- collapsible picker (Done / one-line preview / Edit) ----
+  const PICKER_KEY = "wc2026.pickerCollapsed";
+  const pickerPanel = document.getElementById("picker-panel");
+  function renderPickerPreview() {
+    const fav = [...favorites];
+    const flags = fav.slice(0, 10).map(name => teamFlag(name, "pp-flag")).join("");
+    const txt = fav.length
+      ? `<span class="pp-label">Following</span>${flags}<span class="pp-count">${fav.length} team${fav.length > 1 ? "s" : ""}</span>`
+      : `<span class="pp-label">No teams followed yet</span>`;
+    document.getElementById("pp-text").innerHTML = txt;
+  }
+  function setPickerCollapsed(c) {
+    pickerPanel.classList.toggle("collapsed", c);
+    localStorage.setItem(PICKER_KEY, c ? "1" : "0");
+  }
+  document.getElementById("picker-done").addEventListener("click", () => setPickerCollapsed(true));
+  document.getElementById("picker-edit").addEventListener("click", () => {
+    setPickerCollapsed(false); document.getElementById("team-search").focus();
+  });
 
   function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderMyMatches(); renderPlanner(); }
 
@@ -613,6 +634,7 @@
   // INIT
   // ======================================================================
   renderPicker();
+  setPickerCollapsed(localStorage.getItem(PICKER_KEY) === "1");
   renderCalendar();
   renderUpcomingBangers();
   renderMyMatches();

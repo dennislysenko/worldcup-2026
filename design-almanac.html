@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The World Cup Almanac</title>
+<style>
+  :root{--paper:#f4f0e6;--paper2:#efe9da;--ink:#1c1a15;--soft:#5c574a;--rule:#cfc7b3;--red:#9c1f1f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);
+       background:var(--paper);
+       background-image:radial-gradient(rgba(0,0,0,.018) 1px,transparent 1px);background-size:3px 3px}
+  img{display:block}
+  .wrap{max-width:960px;margin:0 auto;padding:0 44px}
+
+  /* masthead */
+  .mast{text-align:center;padding:44px 28px 24px;border-bottom:4px double var(--ink);max-width:1040px;margin:0 auto}
+  .mast .kick{font-variant:small-caps;letter-spacing:3px;font-size:11px;color:var(--soft);
+              border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:4px 0;margin-bottom:10px}
+  .mast h1{margin:0;font-size:46px;font-weight:900;letter-spacing:-1px;line-height:1}
+  .mast .dline{margin-top:9px;font-variant:small-caps;letter-spacing:1.5px;font-size:11.5px;color:var(--soft);
+               display:flex;justify-content:center;gap:14px}
+  .mast .dline b{color:var(--red)}
+
+  /* section nav */
+  .nav{max-width:1040px;margin:22px auto 0;display:flex;justify-content:center;align-items:center}
+  .tab{font-variant:small-caps;letter-spacing:1.6px;font-size:13px;font-weight:700;padding:3px 24px;color:var(--soft);cursor:pointer;position:relative}
+  .tab + .tab{border-left:1px solid var(--rule)}
+  .tab.on{color:var(--ink)}
+  .tab.on::after{content:"";position:absolute;left:24px;right:24px;bottom:-7px;height:3px;background:var(--red)}
+
+  main{padding:62px 0 100px}
+
+  /* HERO E — editor's box */
+  .lede{position:relative;border:1px solid var(--ink);background:var(--paper2);padding:30px 34px 32px;margin-bottom:52px}
+  .lede .x{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--soft);font-size:20px;cursor:pointer;font-family:Georgia,serif}
+  .lede h2{margin:6px 0 0;text-align:center;font-size:24px;letter-spacing:-.3px}
+  .lede .sub{text-align:center;font-style:italic;color:var(--soft);font-size:13.5px;margin:7px 0 26px}
+  .lede .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .lede .col{padding:0 26px;border-left:1px solid var(--rule)}
+  .lede .col:first-child{border-left:none;padding-left:0}
+  .lede .col h3{margin:0 0 4px;font-size:14px;font-variant:small-caps;letter-spacing:.5px}
+  .lede .col p{margin:0;font-size:12.5px;color:var(--soft);line-height:1.5}
+  .lede .col .dc{float:left;font-size:30px;line-height:.8;font-weight:900;margin:2px 7px 0 0}
+
+  .head{font-size:13px;font-variant:small-caps;letter-spacing:2px;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:7px;margin:0 0 20px}
+  .head .r{color:var(--red)}
+
+  /* follow teams */
+  .clubs{display:flex;gap:12px 22px;flex-wrap:wrap;margin-bottom:48px;font-size:14.5px}
+  .club{display:inline-flex;align-items:center;gap:7px}
+  .club img{width:22px;height:16px;border:1px solid var(--rule)}
+  .club.on{font-weight:700;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
+  .club.more{font-style:italic;color:var(--red)}
+
+  /* matches of the day — box scores */
+  .mod{columns:2;column-gap:44px;column-rule:1px solid var(--rule);margin-bottom:52px}
+  .modrow{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px dotted var(--rule);break-inside:avoid;font-size:13.5px}
+  .modrow .mk{color:var(--red);font-weight:900}
+  .modrow img{width:19px;height:14px;border:1px solid var(--rule)}
+  .modrow .nm{font-weight:600}
+  .modrow .vs{color:var(--soft);font-style:italic;font-size:12px}
+  .modrow .when{margin-left:auto;font-variant:small-caps;letter-spacing:.5px;color:var(--soft);font-size:11.5px;white-space:nowrap}
+
+  /* fixtures calendar */
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);border-top:2px solid var(--ink);border-left:1px solid var(--rule)}
+  .cal-weekdays span{font-variant:small-caps;letter-spacing:1px;font-size:11px;font-weight:700;color:var(--soft);text-align:center;padding:9px 0;border-right:1px solid var(--rule)}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid var(--rule)}
+  .cell{min-height:148px;padding:10px 11px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .cell.empty{background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,0,0,.02) 6px 7px)}
+  .dnum{font-size:15px;font-weight:900;margin-bottom:9px}
+  .fx{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 0;border-top:1px dotted var(--rule)}
+  .fx:first-of-type{border-top:none}
+  .fx img{width:15px;height:11px;border:1px solid var(--rule)}
+  .fx .vs{color:var(--soft);font-style:italic}
+  .fx .t{margin-left:auto;font-variant:small-caps;color:var(--soft);font-size:10px}
+  .fx.banger .t{color:var(--red);font-weight:700}
+  .fx.banger::before{content:"▸";color:var(--red);font-weight:900;margin-right:-2px}
+  @media(max-width:720px){.lede .cols{grid-template-columns:1fr 1fr;gap:14px 0}.mod{columns:1}.cell{min-height:80px}.mast h1{font-size:32px}}
+</style></head>
+<body>
+  <header class="mast">
+    <div class="kick">Established MMXXVI · The Complete Fixture &amp; Form Guide</div>
+    <h1>The World Cup Almanac</h1>
+    <div class="dline"><span>Sunday Edition</span><span>·</span><span><b>USA · Canada · Mexico</b></span><span>·</span><span>June 11 – July 19, 2026</span></div>
+  </header>
+  <nav class="nav">
+    <span class="tab on">Calendar</span><span class="tab">My Teams</span><span class="tab">Planner</span><span class="tab">Projections</span>
+  </nav>
+
+  <main class="wrap">
+    <!-- HERO E -->
+    <section class="lede">
+      <button class="x">×</button>
+      <h2>Your World Cup, organized.</h2>
+      <p class="sub">Forty-eight teams, one hundred and four matches — a reader's guide.</p>
+      <div class="cols">
+        <div class="col"><h3>Full Calendar</h3><p><span class="dc">E</span>very match of the tournament, gathered in a single view.</p></div>
+        <div class="col"><h3>Banger Alerts</h3><p>The marquee ties, ranked by Elo and flagged throughout.</p></div>
+        <div class="col"><h3>The Planner</h3><p>Name your dates; we list every fixture that falls upon them.</p></div>
+        <div class="col"><h3>Your Teams</h3><p>Follow your sides and they stand out at every turn.</p></div>
+      </div>
+    </section>
+
+    <h2 class="head">Follow Your Teams</h2>
+    <div class="clubs">
+      <span class="club on"><img src="https://flagcdn.com/w40/us.png">United States</span>
+      <span class="club on"><img src="https://flagcdn.com/w40/br.png">Brazil</span>
+      <span class="club"><img src="https://flagcdn.com/w40/es.png">Spain</span>
+      <span class="club"><img src="https://flagcdn.com/w40/ar.png">Argentina</span>
+      <span class="club"><img src="https://flagcdn.com/w40/fr.png">France</span>
+      <span class="club"><img src="https://flagcdn.com/w40/gb-eng.png">England</span>
+      <span class="club"><img src="https://flagcdn.com/w40/pt.png">Portugal</span>
+      <span class="club"><img src="https://flagcdn.com/w40/nl.png">Netherlands</span>
+      <span class="club more">+ all forty-eight »</span>
+    </div>
+
+    <h2 class="head"><span class="r">Matches of the Day</span> — The Pick Ties</h2>
+    <div class="mod" id="bangers"></div>
+
+    <h2 class="head">The Fixtures — June 2026</h2>
+    <section id="cal"></section>
+  </main>
+
+  <script>
+    const NAMES={mx:'Mexico',za:'S. Africa',kr:'S. Korea',cz:'Czechia',ca:'Canada',ba:'Bosnia',qa:'Qatar',ch:'Switzerland',br:'Brazil',ma:'Morocco',ht:'Haiti','gb-sct':'Scotland',us:'USA',py:'Paraguay',au:'Australia',tr:'Türkiye',de:'Germany',cw:'Curaçao',ci:'Ivory Coast',ec:'Ecuador',nl:'Netherlands',jp:'Japan',se:'Sweden',tn:'Tunisia',be:'Belgium',eg:'Egypt',ir:'Iran',nz:'N. Zealand',es:'Spain',cv:'Cape Verde',sa:'Saudi Arabia',uy:'Uruguay',fr:'France',sn:'Senegal',iq:'Iraq',no:'Norway',ar:'Argentina',dz:'Algeria',at:'Austria',jo:'Jordan',pt:'Portugal',cd:'DR Congo',uz:'Uzbekistan',co:'Colombia','gb-eng':'England',hr:'Croatia',gh:'Ghana',pa:'Panama'};
+    const M={11:[['mx','za','12:00',0],['kr','cz','21:00',0]],12:[['ca','ba','15:00',0],['us','py','18:00',0]],13:[['qa','ch','12:00',0],['br','ma','18:00',1],['ht','gb-sct','21:00',0],['au','tr','21:00',0]],14:[['de','cw','12:00',0],['nl','jp','15:00',1],['ci','ec','19:00',0],['se','tn','21:00',0]],15:[['es','cv','13:00',0],['be','eg','15:00',0],['sa','uy','18:00',0],['ir','nz','21:00',0]],16:[['fr','sn','15:00',1],['iq','no','18:00',0],['ar','dz','20:00',0],['at','jo','21:00',0]],17:[['pt','cd','12:00',0],['gb-eng','hr','15:00',1],['gh','pa','19:00',0],['uz','co','21:00',0]]};
+    const BANGERS=[['Sat Jun 13','br','ma','MetLife'],['Sun Jun 14','nl','jp','Dallas'],['Tue Jun 16','fr','sn','MetLife'],['Wed Jun 17','gb-eng','hr','Dallas'],['Fri Jun 26','uy','es','Guadalajara']];
+    const F=(i,w=40)=>`https://flagcdn.com/w${w}/${i}.png`;
+    document.getElementById('bangers').innerHTML=BANGERS.map(([d,h,a,v])=>`<div class="modrow"><span class="mk">★</span><img src="${F(h,80)}"><span class="nm">${NAMES[h]}</span><span class="vs">v</span><img src="${F(a,80)}"><span class="nm">${NAMES[a]}</span><span class="when">${d} · ${v}</span></div>`).join('');
+    const wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let html='<div class="cal-weekdays">'+wd.map(w=>`<span>${w}</span>`).join('')+'</div><div class="cal-grid">';
+    const first=new Date(2026,5,1).getDay();
+    for(let i=0;i<first;i++) html+='<div class="cell empty"></div>';
+    for(let d=1;d<=30;d++){const ms=M[d]||[];html+=`<div class="cell"><div class="dnum">${d}</div>`+ms.map(([h,a,t,b])=>`<div class="fx${b?' banger':''}"><img src="${F(h)}"><span class="vs">v</span><img src="${F(a)}"><span class="t">${t}</span></div>`).join('')+'</div>';}
+    html+='</div>';document.getElementById('cal').innerHTML=html;
+  </script>
+</body></html>

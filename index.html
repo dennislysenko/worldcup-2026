@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World Cup 2026 — Calendar &amp; Match Planner</title>
   <meta name="description" content="Plan the 2026 World Cup: a full calendar of all 104 matches, follow your teams, and spot the banger matchups by Elo." />
-  <meta name="theme-color" content="#1971c2" />
+  <meta name="theme-color" content="#15332a" />
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="favicon.svg" />
@@ -24,13 +24,20 @@
   <meta name="twitter:image" content="https://banger-watch.vercel.app/og.png" />
 
   <link rel="preconnect" href="https://flagcdn.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- hand-drawn roughen filter (chalk) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2"/></filter></svg>
+
   <header class="site-header">
+    <svg class="header-pitch" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#f2f5ee" stroke-width="2"><line x1="500" y1="0" x2="500" y2="160"/><circle cx="500" cy="80" r="46"/><rect x="0" y="34" width="76" height="92"/><rect x="924" y="34" width="76" height="92"/></g></svg>
     <div class="header-inner">
       <div class="title-block">
-        <h1>World Cup 2026 <span class="trophy">🏆</span></h1>
+        <h1>World Cup 2026 <span class="trophy">⚽</span></h1>
         <p class="subtitle">United States · Canada · Mexico — June 11 to July 19, 2026</p>
       </div>
     </div>
@@ -40,45 +47,56 @@
     <button class="nav-link" data-view="calendar">Calendar</button>
     <button class="nav-link" data-view="my-teams">My Teams</button>
     <button class="nav-link" data-view="planner">Planner</button>
-    <button class="nav-link" data-view="projections">Projections</button>
+    <button class="nav-link" data-view="projections">How We Predict</button>
   </nav>
 
   <main>
     <!-- ===================== CALENDAR VIEW ===================== -->
     <div class="view" id="view-calendar">
+      <!-- UPCOMING BANGERS (banner, top) -->
+      <section class="upcoming banner" id="upcoming-bangers" hidden>
+        <div class="upcoming-head">🔥 Upcoming bangers</div>
+        <div class="upcoming-row" id="upcoming-row"></div>
+      </section>
+
       <!-- INTRO (dismissible) -->
       <section class="intro-card" id="intro-card" hidden>
         <button class="intro-close" id="intro-close" aria-label="Dismiss">×</button>
-        <h2>New here?</h2>
-        <ul class="intro-list">
-          <li><b>📅 Full World Cup calendar</b> — see all 104 matchups in one view.</li>
-          <li><b>🔥 Banger alerts</b> — the marquee matchups, ranked by Elo and highlighted everywhere.</li>
-          <li><b>🗓️ Planner</b> — can't decide when to catch a World Cup weekend? Pick some dates and we'll show every match that falls on them — bangers first, of course.</li>
-          <li><b>⭐ Follow your teams</b> — star the teams you want to watch and they'll jump out across every view.</li>
-        </ul>
+        <div class="intro-tt">📋 Team talk</div>
+        <h2 class="intro-h">Your World Cup, organized.</h2>
+        <p class="intro-dek">48 teams, 104 matches — here's the game plan.</p>
+        <div class="intro-nodes">
+          <div class="node"><div class="e">📅</div><b>Full calendar</b><p>Every match, one view</p></div>
+          <div class="node"><div class="e">🔥</div><b>Banger alerts</b><p>Top matchups by Elo</p></div>
+          <div class="node"><div class="e">🗓️</div><b>Planner</b><p>Pick dates, get the slate</p></div>
+          <div class="node"><div class="e">⭐</div><b>Follow your teams</b><p>Yours, everywhere</p></div>
+        </div>
       </section>
 
       <h2 class="section-title">Calendar<span class="st-sub">Every match of the tournament, June 11 – July 19</span></h2>
 
       <!-- TEAM PICKER -->
       <section class="panel" id="picker-panel">
-        <div class="panel-head">
-          <h2>Follow your teams</h2>
-          <div class="picker-controls">
-            <input type="search" id="team-search" placeholder="Search all 48 teams…" autocomplete="off" />
-            <label class="toggle"><input type="checkbox" id="toggle-elo" /><span>Elo</span></label>
-            <button id="clear-fav" class="ghost-btn" type="button">Clear</button>
-          </div>
+        <!-- collapsed one-line preview -->
+        <div class="picker-preview" id="picker-preview">
+          <span class="pp-text" id="pp-text"></span>
+          <button id="picker-edit" class="ghost-btn" type="button">Edit</button>
         </div>
-        <p class="hint" id="picker-hint"></p>
-        <div id="suggested-row" class="chip-row"></div>
-        <div id="search-results" class="chips hidden"></div>
-      </section>
-
-      <!-- UPCOMING BANGERS (compact strip) -->
-      <section class="upcoming" id="upcoming-bangers" hidden>
-        <div class="upcoming-head">🔥 Upcoming bangers</div>
-        <div class="upcoming-row" id="upcoming-row"></div>
+        <!-- expanded body -->
+        <div class="picker-body" id="picker-body">
+          <div class="panel-head">
+            <h2>Follow your teams</h2>
+            <div class="picker-controls">
+              <input type="search" id="team-search" placeholder="Search all 48 teams…" autocomplete="off" />
+              <label class="toggle"><input type="checkbox" id="toggle-elo" /><span>Elo</span></label>
+              <button id="clear-fav" class="ghost-btn" type="button">Clear</button>
+            </div>
+          </div>
+          <p class="hint" id="picker-hint"></p>
+          <div id="suggested-row" class="chip-row"></div>
+          <div id="search-results" class="chips hidden"></div>
+          <div class="picker-foot"><button id="picker-done" class="done-btn" type="button">Done</button></div>
+        </div>
       </section>
 
       <!-- CALENDAR CONTROLS -->
@@ -117,7 +135,7 @@
 
     <!-- ===================== PROJECTIONS VIEW ===================== -->
     <div class="view" id="view-projections">
-      <h2 class="section-title">Projections<span class="st-sub">Who's likely to fill each knockout slot — click a team for its path</span></h2>
+      <h2 class="section-title">How We Predict<span class="st-sub">Who's likely to fill each knockout slot — click a team for its path</span></h2>
       <section class="panel" id="proj-intro"></section>
       <div id="proj-list"></div>
     </div>
