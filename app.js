@@ -118,36 +118,13 @@
     } catch (e) { return "United States"; }
   }
 
-  // ---- kickoff times: data.js stores venue-local; convert once to the viewer's timezone ----
-  const CITY_TZ = {
-    "Atlanta": "America/New_York", "Boston": "America/New_York", "Miami": "America/New_York",
-    "New York New Jersey": "America/New_York", "Philadelphia": "America/New_York", "Toronto": "America/Toronto",
-    "Dallas": "America/Chicago", "Houston": "America/Chicago", "Kansas City": "America/Chicago",
-    "Guadalajara": "America/Mexico_City", "Mexico City": "America/Mexico_City", "Monterrey": "America/Monterrey",
-    "Los Angeles": "America/Los_Angeles", "San Francisco Bay Area": "America/Los_Angeles",
-    "Seattle": "America/Los_Angeles", "Vancouver": "America/Vancouver"
-  };
-  function tzWallAsUTC(ms, tz) {
-    const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23",
-      year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })
-      .formatToParts(new Date(ms));
-    const get = t => Number(parts.find(p => p.type === t).value);
-    return Date.UTC(get("year"), get("month") - 1, get("day"), get("hour") % 24, get("minute"));
-  }
-  // the real instant whose wall clock in tz reads (dateStr, timeStr)
-  function venueInstant(dateStr, timeStr, tz) {
-    const [y, mo, d] = dateStr.split("-").map(Number);
-    const [h, mi] = timeStr.split(":").map(Number);
-    const want = Date.UTC(y, mo - 1, d, h, mi);
-    let utc = want;
-    for (let i = 0; i < 2; i++) utc += want - tzWallAsUTC(utc, tz);
-    return new Date(utc);
-  }
+  // ---- kickoff times ----
+  // data.js stores venue-local date/time plus the verified UTC instant (`utc`);
+  // display everything in the viewer's timezone straight from that instant.
   const fmtKickoff = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
   WC.matches.forEach(m => {
-    const tz = CITY_TZ[m.city];
-    if (!m.time || !tz) return;
-    const dt = venueInstant(m.date, m.time, tz);
+    if (!m.utc) return;
+    const dt = new Date(m.utc);
     m.venueDate = m.date; m.venueTime = m.time;
     m.date = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
     m.time = fmtKickoff.format(dt);
