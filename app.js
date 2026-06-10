@@ -421,6 +421,23 @@
     if (!plannerSel.start || plannerSel.end) plannerSel = { start: ds, end: null };
     else plannerSel.end = ds;
     renderPlanner();
+    // on phones the queue starts below the fold — nudge it into view on selection
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      const s = document.getElementById("planner-summary");
+      if (s && s.firstElementChild) s.firstElementChild.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }
+
+  let plannerPage = 0; // which month page the mobile pager is on (0 = June, 1 = July)
+  function syncPlannerSeg() {
+    document.querySelectorAll(".pseg-btn").forEach(b =>
+      b.classList.toggle("active", Number(b.dataset.page) === plannerPage));
+  }
+  function plannerGoTo(page) {
+    plannerPage = page;
+    syncPlannerSeg();
+    const t = document.querySelector("#planner-cal .pmonths");
+    if (t) t.scrollTo({ left: page * t.clientWidth, behavior: "smooth" });
   }
 
   function plannerMonth(year, month) {
@@ -469,7 +486,21 @@
   }
 
   function renderPlanner() {
-    document.getElementById("planner-cal").innerHTML = plannerMonth(2026, 5) + plannerMonth(2026, 6);
+    const cal = document.getElementById("planner-cal");
+    cal.innerHTML = `
+      <div class="pseg" role="tablist">
+        <button type="button" class="pseg-btn" data-page="0" role="tab">June</button>
+        <button type="button" class="pseg-btn" data-page="1" role="tab">July</button>
+      </div>
+      <div class="pmonths">${plannerMonth(2026, 5)}${plannerMonth(2026, 6)}</div>
+      <div class="pclear-row"><button type="button" class="ghost-btn" id="planner-clear" ${plannerSel.start ? "" : "hidden"}>Clear selection</button></div>`;
+    const track = cal.querySelector(".pmonths");
+    track.addEventListener("scroll", () => {
+      const p = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      if (p !== plannerPage) { plannerPage = p; syncPlannerSeg(); }
+    }, { passive: true });
+    syncPlannerSeg();
+    if (plannerPage) track.scrollLeft = plannerPage * track.clientWidth;
     const range = plannerRange();
     const summaryEl = document.getElementById("planner-summary");
     const queueEl = document.getElementById("planner-queue");
@@ -490,9 +521,7 @@
     summaryEl.innerHTML = `<div class="planner-summary-bar">
       <b>${span}</b> · ${games.length} game${games.length !== 1 ? "s" : ""}
       ${favCount ? ` · <span class="ss-fav">★ ${favCount} with your teams</span>` : ""}
-      ${bangerCount ? ` · <span class="ss-banger">🔥 ${bangerCount} banger${bangerCount !== 1 ? "s" : ""}</span>` : ""}
-      <button class="ghost-btn pl-clear" id="planner-clear">Clear</button></div>`;
-    document.getElementById("planner-clear").addEventListener("click", () => { plannerSel = { start: null, end: null }; renderPlanner(); });
+      ${bangerCount ? ` · <span class="ss-banger">🔥 ${bangerCount} banger${bangerCount !== 1 ? "s" : ""}</span>` : ""}</div>`;
 
     // insert a divider between prioritized games and the rest
     let html = "", dividerDone = false;
@@ -505,6 +534,9 @@
   }
 
   document.getElementById("planner-cal").addEventListener("click", e => {
+    const seg = e.target.closest(".pseg-btn");
+    if (seg) { plannerGoTo(Number(seg.dataset.page)); return; }
+    if (e.target.closest("#planner-clear")) { plannerSel = { start: null, end: null }; renderPlanner(); return; }
     const b = e.target.closest(".pd"); if (b && !b.disabled && b.dataset.date) plannerPick(b.dataset.date);
   });
 

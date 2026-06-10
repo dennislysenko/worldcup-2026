@@ -530,7 +530,11 @@ footer {
 /* ====================================================================== */
 /* PLANNER                                                                */
 /* ====================================================================== */
-#planner-cal { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 8px; }
+#planner-cal { margin-top: 8px; }
+.pseg { display: none; } /* month pager — phones only */
+.pmonths { display: flex; gap: 26px; flex-wrap: wrap; }
+.pclear-row { margin-top: 12px; }
+.pclear-row .ghost-btn { padding: 6px 16px; font-size: 12px; }
 .pmonth { flex: 1 1 280px; max-width: 360px; }
 .pmonth-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
 .pweekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
@@ -680,8 +684,40 @@ footer {
 @media (max-width: 640px) {
   .main-nav { padding: 0 4px; }
   .nav-link { flex: 1; padding: 13px 4px 11px; font-size: 13px; }
-  #planner-cal { gap: 18px; }
-  .pmonth { flex: 1 1 100%; max-width: none; }
+  /* planner: segmented June|July pager over a one-month-per-page swipe track */
+  .pseg {
+    display: flex;
+    margin: 2px 0 12px;
+    padding: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .pseg-btn {
+    flex: 1;
+    padding: 8px 0;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .pseg-btn.active { background: var(--panel); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); }
+  .pmonths {
+    flex-wrap: nowrap;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pmonths::-webkit-scrollbar { display: none; }
+  .pmonth { flex: 0 0 100%; max-width: none; scroll-snap-align: start; scroll-snap-stop: always; }
+  .pmonth-title { display: none; } /* the pager already names the month */
+  .pclear-row { text-align: center; }
   .q-row { grid-template-columns: 70px 1fr; }
   .q-badges { grid-column: 1 / -1; flex-direction: row; align-items: center; }
 }
