@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '30 6 * * *' # 06:30 UTC nightly — after the last North-American match ends
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: # e.g. the nightly Claude routine pushing cited overrides
+      - set-piece-goals.json
+      - set-piece-overrides.json
 
 permissions:
   contents: write
@@ -28,11 +33,11 @@ jobs:
           node-version: 22
 
       - name: Rebake goals from ESPN
-        if: env.SKIP != '1'
+        if: env.SKIP != '1' && github.event_name != 'push'
         run: node scripts/update-setpieces.mjs
 
       - name: Commit if changed
-        if: env.SKIP != '1'
+        if: env.SKIP != '1' && github.event_name != 'push'
         id: commit
         run: |
           if git diff --quiet set-piece-goals.json; then
@@ -47,7 +52,7 @@ jobs:
           fi
 
       - name: Deploy to Vercel production
-        if: env.SKIP != '1' && steps.commit.outputs.changed == 'true'
+        if: env.SKIP != '1' && (github.event_name == 'push' || steps.commit.outputs.changed == 'true')
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: team_8ichAE5u6FUb1OJCSCthh9fQ
