@@ -1,0 +1,14 @@
+{
+  "_meta": {
+    "purpose": "Hand-tagged corrections for goals ESPN/Opta commentary can't classify — mainly throw-ins, which Opta never attributes. Every override must cite a source and quote.",
+    "key": "espnPlayId"
+  },
+  "overrides": {
+    "49485589": {
+      "category": "throw_in",
+      "source": "https://www.skysports.com/football/news/12098/13552607/world-cup-2026-south-korea-2-1-czech-republic-in-beom-hwang-inspires-comeback-win-after-ladislav-krejci-goal",
+      "sourceName": "Sky Sports match report",
+      "quote": "Krejci headed home Vladimir Coufal's second-half long throw"
+    }
+  }
+}

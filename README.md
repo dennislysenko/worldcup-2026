@@ -35,3 +35,13 @@ python3 -m http.server 8770
 ## Data notes
 
 Schedule reflects the official draw; group-stage fixtures are concrete, knockout matchups are bracket slots. Elo ratings are a mid-2026 snapshot.
+
+## Set-piece tracker (`/set-piece-tracker`)
+
+Live share of 2026 goals from corners & free kicks, compared to 2018/2022, with per-goal evidence (minute, scoreline, verbatim Opta/ESPN commentary). Arteta supervises.
+
+- `set-piece-tracker.html` — the page; fetches ESPN's public API client-side (CORS is open) every minute during live matches.
+- `setpiece-espn.mjs` — shared goal classifier (regex over Opta commentary phrases), used by the page and the updater.
+- `set-piece-goals.json` — baked 2026 goals; refresh with `node scripts/update-setpieces.mjs` (run nightly-ish so first paint doesn't refetch the whole tournament).
+- `set-piece-overrides.json` — hand-tagged corrections, mainly long throws (Opta commentary never attributes throw-ins). Every override must cite a published match report; the citation renders inline (✎).
+- `set-piece-baselines.json` — 2018/2022 baselines computed from StatsBomb open data by `scripts/compute-baselines.py` (one-time; ~5 min, downloads 128 event files). Headline definition: goal ≤ 15 s after the corner/free-kick/throw-in delivery, penalties separate.

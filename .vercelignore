@@ -1,0 +1,6 @@
+# local experiments / server-side files — never deploy
+votes-server.js
+vote.html
+.votes.json
+scripts/
+*.log

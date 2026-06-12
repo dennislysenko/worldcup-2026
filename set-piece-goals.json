@@ -1,0 +1,138 @@
+{
+ "_meta": {
+  "generated": "2026-06-12T20:32:52.889Z",
+  "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
+  "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
+ },
+ "aggregate": {
+  "total": 6,
+  "counts": {
+   "corner": 1,
+   "free_kick": 0,
+   "throw_in": 1,
+   "penalty": 0,
+   "open_play": 4
+  },
+  "setPieceExclPens": 2,
+  "pctExclPens": 33.333333333333336,
+  "pctInclPens": 33.333333333333336
+ },
+ "matches": [
+  {
+   "espnId": "760415",
+   "name": "South Africa at Mexico",
+   "kickoff": "2026-06-11T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Mexico",
+   "away": "South Africa",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49483413",
+     "minute": "9'",
+     "team": "Mexico",
+     "scorer": "Julián Quiñones",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Mexico 1, South Africa 0. Julián Quiñones (Mexico) right footed shot from the centre of the box to the centre of the goal. Assisted by Érik Lira.",
+     "wallclock": "2026-06-11T19:14:30Z"
+    },
+    {
+     "espnPlayId": "49484266",
+     "minute": "67'",
+     "team": "Mexico",
+     "scorer": "Raúl Jiménez",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Mexico 2, South Africa 0. Raúl Jiménez (Mexico) header from very close range to the bottom left corner. Assisted by Roberto Alvarado with a cross.",
+     "wallclock": "2026-06-11T20:33:07Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760414",
+   "name": "Czechia at South Korea",
+   "kickoff": "2026-06-12T02:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "South Korea",
+   "away": "Czechia",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49485589",
+     "minute": "59'",
+     "team": "Czechia",
+     "scorer": "Ladislav Krejcí",
+     "ownGoal": false,
+     "header": true,
+     "category": "throw_in",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Korea Republic 0, Czechia 1. Ladislav Krejcí (Czechia) header from very close range to the bottom right corner. Assisted by Vladimír Coufal.",
+     "wallclock": "2026-06-12T03:17:08Z",
+     "override": {
+      "source": "https://www.skysports.com/football/news/12098/13552607/world-cup-2026-south-korea-2-1-czech-republic-in-beom-hwang-inspires-comeback-win-after-ladislav-krejci-goal",
+      "sourceName": "Sky Sports match report",
+      "quote": "Krejci headed home Vladimir Coufal's second-half long throw"
+     }
+    },
+    {
+     "espnPlayId": "49485726",
+     "minute": "67'",
+     "team": "South Korea",
+     "scorer": "Hwang In-Beom",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Korea Republic 1, Czechia 1. Hwang In-Beom (Korea Republic) right footed shot from the centre of the box to the bottom right corner. Assisted by Lee Kang-In.",
+     "wallclock": "2026-06-12T03:25:42Z"
+    },
+    {
+     "espnPlayId": "49485808",
+     "minute": "80'",
+     "team": "South Korea",
+     "scorer": "Oh Hyeon-Gyu",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Korea Republic 2, Czechia 1. Oh Hyeon-Gyu (Korea Republic) left footed shot from very close range to the bottom left corner. Assisted by Hwang In-Beom.",
+     "wallclock": "2026-06-12T03:38:21Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760416",
+   "name": "Bosnia-Herzegovina at Canada",
+   "kickoff": "2026-06-12T19:00Z",
+   "state": "in",
+   "statusText": "Second Half",
+   "home": "Canada",
+   "away": "Bosnia-Herzegovina",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49486368",
+     "minute": "21'",
+     "team": "Bosnia-Herzegovina",
+     "scorer": "Jovo Lukic",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac following a corner.",
+     "wallclock": "2026-06-12T19:22:46Z"
+    }
+   ]
+  }
+ ]
+}

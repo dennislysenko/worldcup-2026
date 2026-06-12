@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set-Piece Tracker — World Cup 2026</title>
+  <meta name="description" content="What share of 2026 World Cup goals come from corners and free kicks? Live-updating tracker with per-goal evidence, compared against 2018 and 2022." />
+  <meta name="theme-color" content="#15332a" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Set-Piece Tracker — World Cup 2026" />
+  <meta property="og:description" content="Are we in the set-piece era? Live % of WC 2026 goals from dead balls, vs 2018 and 2022. Arteta is watching." />
+  <meta property="og:url" content="https://banger-watch.vercel.app/set-piece-tracker" />
+  <meta property="og:image" content="https://banger-watch.vercel.app/og.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .spt-hero { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; align-items: stretch; margin-bottom: 22px; }
+    @media (max-width: 760px) { .spt-hero { grid-template-columns: 1fr; } }
+
+    .spt-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; position: relative; }
+
+    .spt-bignum { font-family: var(--script-font); font-size: 92px; line-height: 1; color: var(--accent); letter-spacing: 1px; }
+    .spt-bignum small { font-size: 40px; }
+    .spt-of { color: var(--muted); font-size: 15px; margin-top: 4px; }
+    .spt-live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--banger); border: 1px solid var(--banger); border-radius: 999px; padding: 2px 10px; margin-left: 10px; vertical-align: middle; }
+    .spt-live .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--banger); animation: sptpulse 1.4s infinite; }
+    @keyframes sptpulse { 50% { opacity: .25; } }
+
+    .spt-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .spt-chip { font-size: 13px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; color: var(--muted); }
+    .spt-chip b { color: var(--text); margin-right: 4px; }
+    .spt-chip.c-corner b { color: var(--accent); }
+    .spt-chip.c-free_kick b { color: var(--accent-2); }
+    .spt-chip.c-throw_in b { color: var(--ko); }
+    .spt-chip.c-penalty b { color: var(--fav); }
+
+    .spt-toggle { margin-top: 14px; font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .spt-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
+
+    /* Arteta card */
+    .arteta-card { display: flex; flex-direction: column; align-items: center; text-align: center; overflow: hidden; }
+    .arteta-wrap { position: relative; margin-top: 6px; }
+    .arteta-wrap img { width: 168px; border-radius: 10px; border: 1px solid var(--line); filter: saturate(.85) contrast(1.05); display: block; }
+    .arteta-bubble { font-family: var(--script-font); font-size: 19px; line-height: 1.2; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; margin-bottom: 12px; position: relative; }
+    .arteta-bubble::after { content: ""; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: inherit; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .arteta-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+    .arteta-credit { font-size: 10px; color: var(--muted); opacity: .75; margin-top: 5px; }
+    .arteta-credit a { color: inherit; }
+
+    /* comparison bars */
+    .spt-bars { display: grid; gap: 12px; margin-top: 6px; }
+    .spt-bar-row { display: grid; grid-template-columns: 130px 1fr 64px; gap: 12px; align-items: center; }
+    .spt-bar-label { font-size: 15px; text-align: right; color: var(--muted); }
+    .spt-bar-label b { color: var(--text); display: block; line-height: 1.1; }
+    .spt-bar-track { height: 26px; border: 1px solid var(--line); border-radius: 7px; background: var(--bg-2); overflow: hidden; }
+    .spt-bar-fill { height: 100%; border-radius: 6px 0 0 6px; transition: width .6s ease; }
+    .spt-bar-val { font-family: var(--script-font); font-size: 23px; color: var(--text); }
+    .b-2026 { background: linear-gradient(90deg, rgba(155,230,166,.75), rgba(155,230,166,.45)); }
+    .b-2022 { background: linear-gradient(90deg, rgba(158,201,255,.7), rgba(158,201,255,.4)); }
+    .b-2018 { background: linear-gradient(90deg, rgba(201,182,255,.7), rgba(201,182,255,.4)); }
+    .spt-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; line-height: 1.55; }
+
+    /* ledger */
+    .spt-match { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); margin-bottom: 12px; overflow: hidden; }
+    .spt-match-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 16px; background: var(--panel-2); font-size: 15.5px; flex-wrap: wrap; }
+    .spt-match-head a { color: var(--muted); font-size: 12px; text-decoration: none; border-bottom: 1px dashed var(--line); }
+    .spt-goal { display: grid; grid-template-columns: 46px 56px 1fr auto; gap: 10px; align-items: baseline; padding: 9px 16px; border-top: 1px dashed rgba(242,245,238,.18); font-size: 14.5px; }
+    .spt-goal .min { color: var(--accent-2); font-weight: 700; }
+    .spt-goal .score { color: var(--fav); font-weight: 700; }
+    .spt-goal .who { color: var(--text); }
+    .spt-goal .who .og { color: var(--banger); font-size: 12px; margin-left: 5px; }
+    .spt-cat { font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 2px 9px; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+    .cat-corner { color: var(--accent); border-color: var(--accent); }
+    .cat-free_kick { color: var(--accent-2); border-color: var(--accent-2); }
+    .cat-throw_in { color: var(--ko); border-color: var(--ko); }
+    .cat-penalty { color: var(--fav); border-color: var(--fav); }
+    .cat-open_play { color: var(--muted); border-color: var(--line); }
+    .spt-evidence { grid-column: 1 / -1; }
+    .spt-evidence summary { cursor: pointer; font-size: 12px; color: var(--muted); }
+    .spt-evidence blockquote { margin: 7px 0 2px; padding: 7px 12px; border-left: 2px solid var(--accent); font-size: 13px; color: var(--muted); font-style: italic; }
+    .spt-nogoals { padding: 10px 16px; color: var(--muted); font-size: 13.5px; border-top: 1px dashed rgba(242,245,238,.18); }
+
+    .spt-meta-line { font-size: 12px; color: var(--muted); margin: -8px 2px 18px; }
+    .spt-cites { font-size: 13px; color: var(--muted); line-height: 1.8; }
+    .spt-cites a { color: var(--accent-2); }
+    .spt-sens { width: 100%; border-collapse: collapse; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+    .spt-sens th, .spt-sens td { border: 1px dashed rgba(242,245,238,.25); padding: 4px 9px; text-align: center; }
+    .back-link { color: var(--accent-2); text-decoration: none; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2"/></filter></svg>
+
+  <header class="site-header">
+    <svg class="header-pitch" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#f2f5ee" stroke-width="2"><line x1="500" y1="0" x2="500" y2="160"/><circle cx="500" cy="80" r="46"/><rect x="0" y="34" width="76" height="92"/><rect x="924" y="34" width="76" height="92"/></g></svg>
+    <div class="header-inner">
+      <div class="title-block">
+        <h1>Set-Piece Tracker <span class="trophy">🎯</span></h1>
+        <p class="subtitle"><a class="back-link" href="./">← World Cup 2026 calendar</a> &nbsp;·&nbsp; what share of goals start from a dead ball?</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-title">The set-piece share<span class="st-sub" id="spt-updated">Loading goals…</span></h2>
+
+    <div class="spt-hero">
+      <div class="spt-panel">
+        <div class="spt-bignum"><span id="spt-pct">…</span><small>%</small><span class="spt-live" id="spt-live" hidden><span class="dot"></span>LIVE</span></div>
+        <div class="spt-of" id="spt-of">of 2026 goals have come from corners &amp; free kicks</div>
+        <div class="spt-chips" id="spt-chips"></div>
+        <label class="spt-toggle"><input type="checkbox" id="spt-pens" /> count penalties as set pieces <span title="FIFA's 2018 headline (43%) counted penalties; most analysts don't. Toggle and watch the argument change.">ⓘ</span></label>
+      </div>
+
+      <div class="spt-panel arteta-card">
+        <div class="arteta-bubble" id="arteta-quip">…</div>
+        <div class="arteta-wrap"><img src="arteta.png" alt="Mikel Arteta watching, unimpressed" width="168" height="229" /></div>
+        <div class="arteta-label">Arteta Approval Index: <b id="arteta-mood">calibrating</b></div>
+        <div class="arteta-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Mikel_Arteta_2021_(cropped).png">Prime Video AU &amp; NZ</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, via Wikimedia Commons. Not affiliated; he has a tournament off, he's just here for the corners.</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">vs previous World Cups<span class="st-sub">Same definition for every tournament: goal within 15 seconds of a corner, free-kick or throw-in delivery (direct free kicks count). Penalties only when toggled.</span></h2>
+    <div class="spt-panel">
+      <div class="spt-bars" id="spt-bars"></div>
+      <div class="spt-note" id="spt-basenote"></div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:26px">Every goal, with receipts<span class="st-sub">Minute, scoreline and the verbatim Opta/ESPN commentary each classification rests on</span></h2>
+    <div id="spt-ledger"></div>
+
+    <h2 class="section-title" style="margin-top:26px">Method &amp; sources<span class="st-sub">So the classifications are defensible</span></h2>
+    <div class="spt-panel spt-cites">
+      <p><b>2026 (live):</b> goals come from <a href="https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard">ESPN's public World Cup API</a>, whose Opta-sourced commentary attributes goals with fixed phrases (<i>“following a corner”</i>, <i>“following a set piece”</i>, <i>“direct free kick”</i>, <i>“converts the penalty”</i>). Each goal above shows that verbatim line. The page re-checks the feed every minute while a match is live; goals without a dead-ball phrase count as open play.</p>
+      <p><b>The throw-in exception:</b> Opta commentary never attributes throw-ins (Krejčí's goal vs South Korea just says “Assisted by Vladimír Coufal”), so long-throw goals are tagged by hand in <code>set-piece-overrides.json</code> — every override must cite a published match report, shown inline next to the ESPN line (marked ✎).</p>
+      <p><b>2018 &amp; 2022 baselines:</b> computed from <a href="https://github.com/statsbomb/open-data">StatsBomb open data</a> (full event data, 64 matches each). Headline = goal scored within 15s of the corner / free-kick / throw-in delivery, penalties separate, shootouts excluded. Sensitivity of the window choice:</p>
+      <table class="spt-sens" id="spt-sens"></table>
+      <p style="margin-bottom:0"><b>Context elsewhere:</b> FIFA's analysis put 2018's dead-ball share at a record ~43% <i>including penalties</i> (<a href="https://www.si.com/soccer/2018/07/10/world-cup-set-pieces-2018-russia-free-kick-corner">SI, 2018</a>; <a href="https://www.cbssports.com/soccer/news/world-cups-set-piece-corner-kicks-fifa-rule-change/">CBS Sports, 2026</a>) — our 41.4% with the toggle on agrees. Peer-reviewed comparisons report 39–42% for 2018 and a drop in 2022 (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11150567/">Front. Sports Act. Living, 2024</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/33969954/">Int. J. Perform. Anal. Sport, 2021</a>). StatsBomb's own 2018 deep-dive: <a href="https://blogarchive.statsbomb.com/articles/soccer/the-world-cup-of-set-pieces/">“The World Cup of Set Pieces”</a>. Ranges differ because definitions differ — which is exactly why every number on this page states its definition and shows its receipts.</p>
+    </div>
+  </main>
+
+  <script type="module">
+    import { ESPN_BASE, goalsFromSummary, matchFromScoreboardEvent, aggregate, applyOverrides } from './setpiece-espn.mjs';
+
+    const $ = (id) => document.getElementById(id);
+    const state = { matches: [], baselines: null, overrides: null, pens: false };
+
+    const CAT_LABEL = { corner: 'CORNER', free_kick: 'FREE KICK', throw_in: 'LONG THROW', penalty: 'PENALTY', open_play: 'OPEN PLAY' };
+
+    function pct(matches) {
+      const a = aggregate(matches);
+      return state.pens ? a.pctInclPens : a.pctExclPens;
+    }
+    function basePct(year) {
+      const t = state.baselines.tournaments[year];
+      const c = t.windows.direct_15s.counts;
+      const sp = c.corner + c.free_kick + c.throw_in + (state.pens ? c.penalty : 0);
+      return (100 * sp) / t.total_goals;
+    }
+
+    /* Mister Arteta, in full All or Nothing mode */
+    const QUIPS = {
+      nogoals: [
+        ['Be humble. Be hungry. The dead balls will come, guys.', 'humble & hungry'],
+        ['Right now we wait. And when it comes — boom. We are there.', 'lurking'],
+      ],
+      zero: [
+        ['Listen. Zero from set pieces is non-negotiable. NON. NEGOTIABLE. Nicolas, the laptop.', 'non-negotiable'],
+        ['We have to suffer, guys. We have to suffer. But not like this.', 'suffering'],
+      ],
+      low: [
+        ['Look me in the eyes. The duels. WIN your duels in the box. The world is losing the first contact.', 'eyes locked'],
+        ['You have to play with the heart connected to the brain. At the corner flag, BOTH.', 'drawing on whiteboard'],
+      ],
+      mid: [
+        ['Good. But now — ruthless. Killers. With a smile. 🙂', 'killer (smiling)'],
+        ['Big moments, big cojones. The deliveries are getting flatter. I like it a lot.', 'approving the delivery'],
+        ['Above 2022. The near-post run is being respected. We carry on. We insist.', 'insisting'],
+      ],
+      high: [
+        ['PHE-NO-ME-NAL. Can you smell it, guys? That energy? That is set pieces.', 'smelling the energy'],
+        ['This is what we talked about. Bring the storm into the six-yard box.', 'bringing the storm'],
+      ],
+    };
+    function quip(a, p2022, p2018) {
+      const p = state.pens ? a.pctInclPens : a.pctExclPens;
+      const sp = a.setPieceExclPens + (state.pens ? a.counts.penalty : 0);
+      const band = a.total === 0 ? 'nogoals' : sp === 0 ? 'zero' : p >= p2018 ? 'high' : p >= p2022 ? 'mid' : 'low';
+      const list = QUIPS[band];
+      return list[a.total % list.length];
+    }
+
+    function render() {
+      const matches = state.matches;
+      const a = aggregate(matches);
+      const played = matches.length;
+      const anyLive = matches.some((m) => m.state === 'in');
+
+      $('spt-pct').textContent = a.total ? pct(matches).toFixed(1) : '0';
+      $('spt-of').textContent = state.pens
+        ? `of ${a.total} goals (incl. penalties) from corners, free kicks, long throws & pens — across ${played} matches`
+        : `of ${a.total} goals so far have come from corners, free kicks & long throws — across ${played} matches`;
+      $('spt-live').hidden = !anyLive;
+      const chipLabel = { corner: ['corner', 'corners'], free_kick: ['free kick', 'free kicks'], throw_in: ['long throw', 'long throws'], penalty: ['penalty', 'penalties'], open_play: ['open play', 'open play'] };
+      $('spt-chips').innerHTML = ['corner', 'free_kick', 'throw_in', 'penalty', 'open_play']
+        .map((c) => `<span class="spt-chip c-${c}"><b>${a.counts[c]}</b>${chipLabel[c][a.counts[c] === 1 ? 0 : 1]}</span>`)
+        .join('');
+
+      // bars
+      const rows = [
+        ['2026', 'so far · live', pct(matches), 'b-2026'],
+        ['2022', 'Qatar · 172 goals', basePct('2022'), 'b-2022'],
+        ['2018', 'Russia · 169 goals', basePct('2018'), 'b-2018'],
+      ];
+      const max = Math.max(...rows.map((r) => r[2]), 10) * 1.15;
+      $('spt-bars').innerHTML = rows.map(([y, sub, v, cls]) =>
+        `<div class="spt-bar-row"><div class="spt-bar-label"><b>${y}</b>${sub}</div>
+         <div class="spt-bar-track"><div class="spt-bar-fill ${cls}" style="width:${(100 * v / max).toFixed(1)}%"></div></div>
+         <div class="spt-bar-val">${v.toFixed(1)}%</div></div>`).join('');
+      $('spt-basenote').innerHTML = `2018/2022 computed from StatsBomb event data with the definition above${state.pens ? ', penalties included' : ', penalties excluded'}. 2026 sample is tiny early on — one goal swings it a lot. Sources &amp; sensitivity below.`;
+
+      // Arteta
+      const [line, mood] = quip(a, basePct('2022'), basePct('2018'));
+      $('arteta-quip').textContent = '“' + line + '”';
+      $('arteta-mood').textContent = mood;
+
+      // ledger
+      $('spt-ledger').innerHTML = matches.slice().reverse().map((m) => {
+        const head = `<div class="spt-match-head"><span><b>${m.home} ${m.homeScore ?? '–'}–${m.awayScore ?? '–'} ${m.away}</b> &nbsp;<span style="color:var(--muted);font-size:12.5px">${m.state === 'in' ? '🔴 ' + m.statusText : m.statusText}</span></span><a href="https://www.espn.com/soccer/match/_/gameId/${m.espnId}" target="_blank" rel="noopener">ESPN ↗</a></div>`;
+        const goals = (m.goals || []).map((g) => `
+          <div class="spt-goal">
+            <span class="min">${g.minute}</span>
+            <span class="score">${g.scoreAfter || ''}</span>
+            <span class="who">${g.scorer}${g.header ? ' <span style="color:var(--muted);font-size:12px">(header)</span>' : ''}${g.ownGoal ? '<span class="og">OG</span>' : ''} <span style="color:var(--muted)">· ${g.team}</span></span>
+            <span class="spt-cat cat-${g.category}">${CAT_LABEL[g.category]}${g.override ? ' ✎' : ''}</span>
+            <details class="spt-evidence"><summary>evidence${g.override ? ' (hand-tagged, cited)' : ''}</summary>
+              <blockquote>${g.evidence} <span style="font-style:normal;opacity:.7">— ESPN/Opta</span></blockquote>
+              ${g.override ? `<blockquote>“${g.override.quote}” — <a href="${g.override.source}" target="_blank" rel="noopener" style="color:var(--accent-2)">${g.override.sourceName} ↗</a><br><span style="font-style:normal;font-size:11.5px;opacity:.75">Opta commentary never attributes throw-ins, so this one is tagged by hand with the source above.</span></blockquote>` : ''}
+            </details>
+          </div>`).join('');
+        return `<div class="spt-match">${head}${goals || '<div class="spt-nogoals">0–0 — the rarest set piece of all: none.</div>'}</div>`;
+      }).join('');
+    }
+
+    /* live top-up: re-pull today's + yesterday's matches from ESPN (CORS is open) */
+    async function topUp() {
+      const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
+      const now = new Date();
+      const days = [now, new Date(now - 864e5)].map((d) => fmt.format(d).replace(/-/g, ''));
+      for (const d of [...new Set(days)]) {
+        try {
+          const sb = await (await fetch(`${ESPN_BASE}/scoreboard?dates=${d}`)).json();
+          for (const e of sb.events || []) {
+            const m = matchFromScoreboardEvent(e);
+            if (m.state === 'pre') continue;
+            const i = state.matches.findIndex((x) => x.espnId === m.espnId);
+            if (i >= 0 && state.matches[i].state === 'post') continue; // finished + already baked
+            const summary = await (await fetch(`${ESPN_BASE}/summary?event=${m.espnId}`)).json();
+            m.goals = goalsFromSummary(summary, m);
+            if (i >= 0) state.matches[i] = m; else state.matches.push(m);
+          }
+        } catch (err) { console.warn('top-up failed', err); }
+      }
+      state.matches.sort((x, y) => x.kickoff.localeCompare(y.kickoff));
+      if (state.overrides) applyOverrides(state.matches, state.overrides);
+      $('spt-updated').textContent = `Live from ESPN's feed · checked ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} · baselines from StatsBomb event data`;
+      render();
+    }
+
+    function renderSensitivity() {
+      const t = state.baselines.tournaments;
+      const win = (y, w) => t[y].windows[w];
+      $('spt-sens').innerHTML = `
+        <tr><th>definition</th><th>2018</th><th>2022</th></tr>
+        ${[['direct_10s', '≤ 10s from delivery'], ['direct_15s', '≤ 15s (used here)'], ['whole_possession', 'whole possession']].map(([k, label]) => {
+          const f = (y) => {
+            const c = win(y, k).counts;
+            return (100 * (c.corner + c.free_kick + c.throw_in) / t[y].total_goals).toFixed(1) + '%';
+          };
+          return `<tr><td style="text-align:left">${label}</td><td>${f('2018')}</td><td>${f('2022')}</td></tr>`;
+        }).join('')}`;
+    }
+
+    (async () => {
+      const [goals, baselines, overrides] = await Promise.all([
+        fetch('set-piece-goals.json').then((r) => r.json()),
+        fetch('set-piece-baselines.json').then((r) => r.json()),
+        fetch('set-piece-overrides.json').then((r) => r.json()),
+      ]);
+      state.matches = goals.matches;
+      state.baselines = baselines;
+      state.overrides = overrides;
+      applyOverrides(state.matches, overrides);
+      renderSensitivity();
+      render();
+      $('spt-pens').addEventListener('change', (e) => { state.pens = e.target.checked; render(); });
+      await topUp();
+      // every minute while a match is live, every 5 minutes otherwise
+      let lastSlow = 0;
+      setInterval(() => {
+        const live = state.matches.some((m) => m.state === 'in');
+        if (live || Date.now() - lastSlow > 300_000) { lastSlow = Date.now(); topUp(); }
+      }, 60_000);
+    })();
+  </script>
+</body>
+</html>
