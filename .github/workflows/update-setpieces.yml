@@ -1,0 +1,55 @@
+name: Update set-piece data
+
+on:
+  schedule:
+    - cron: '30 6 * * *' # 06:30 UTC nightly — after the last North-American match ends
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stop after the tournament
+        run: |
+          if [ "$(date -u +%Y%m%d)" -gt 20260725 ]; then
+            echo "Tournament over — nothing to do."
+            echo "SKIP=1" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/checkout@v4
+        if: env.SKIP != '1'
+
+      - uses: actions/setup-node@v4
+        if: env.SKIP != '1'
+        with:
+          node-version: 22
+
+      - name: Rebake goals from ESPN
+        if: env.SKIP != '1'
+        run: node scripts/update-setpieces.mjs
+
+      - name: Commit if changed
+        if: env.SKIP != '1'
+        id: commit
+        run: |
+          if git diff --quiet set-piece-goals.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "setpiece-bot"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add set-piece-goals.json
+            git commit -m "chore: rebake set-piece goals"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy to Vercel production
+        if: env.SKIP != '1' && steps.commit.outputs.changed == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_8ichAE5u6FUb1OJCSCthh9fQ
+          VERCEL_PROJECT_ID: prj_aVCxW8XEL4lWxwnvlOFoWqAAS50d
+        run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"

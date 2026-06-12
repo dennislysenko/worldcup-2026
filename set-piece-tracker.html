@@ -251,11 +251,22 @@
       }).join('');
     }
 
-    /* live top-up: re-pull today's + yesterday's matches from ESPN (CORS is open) */
+    /* Live top-up from ESPN (CORS is open). Self-healing: covers every date
+       from the last baked match through today, so a stale bake just means a
+       few extra scoreboard fetches, never missing matches. */
     async function topUp() {
       const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
-      const now = new Date();
-      const days = [now, new Date(now - 864e5)].map((d) => fmt.format(d).replace(/-/g, ''));
+      const DAY = 864e5;
+      const today = fmt.format(new Date());
+      const yesterday = fmt.format(new Date(Date.now() - DAY));
+      const bakedDays = state.matches.map((m) => fmt.format(new Date(m.kickoff))).sort();
+      let start = bakedDays.length ? bakedDays[bakedDays.length - 1] : '2026-06-11';
+      if (yesterday < start) start = yesterday;   // always re-check yesterday
+      if (start < '2026-06-11') start = '2026-06-11';
+      const days = [];
+      for (let d = new Date(start + 'T12:00:00Z'); fmt.format(d) <= today && days.length < 45; d = new Date(+d + DAY)) {
+        days.push(fmt.format(d).replace(/-/g, ''));
+      }
       for (const d of [...new Set(days)]) {
         try {
           const sb = await (await fetch(`${ESPN_BASE}/scoreboard?dates=${d}`)).json();

@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-12T20:32:52.889Z",
+  "generated": "2026-06-12T21:12:51.736Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 6,
+  "total": 7,
   "counts": {
    "corner": 1,
    "free_kick": 0,
    "throw_in": 1,
    "penalty": 0,
-   "open_play": 4
+   "open_play": 5
   },
   "setPieceExclPens": 2,
-  "pctExclPens": 33.333333333333336,
-  "pctInclPens": 33.333333333333336
+  "pctExclPens": 28.571428571428573,
+  "pctInclPens": 28.571428571428573
  },
  "matches": [
   {
@@ -93,7 +93,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Goal! Korea Republic 1, Czechia 1. Hwang In-Beom (Korea Republic) right footed shot from the centre of the box to the bottom right corner. Assisted by Lee Kang-In.",
-     "wallclock": "2026-06-12T03:25:42Z"
+     "wallclock": "2026-06-12T03:25:41Z"
     },
     {
      "espnPlayId": "49485808",
@@ -105,7 +105,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Korea Republic 2, Czechia 1. Oh Hyeon-Gyu (Korea Republic) left footed shot from very close range to the bottom left corner. Assisted by Hwang In-Beom.",
-     "wallclock": "2026-06-12T03:38:21Z"
+     "wallclock": "2026-06-12T03:38:20Z"
     }
    ]
   },
@@ -113,11 +113,11 @@
    "espnId": "760416",
    "name": "Bosnia-Herzegovina at Canada",
    "kickoff": "2026-06-12T19:00Z",
-   "state": "in",
-   "statusText": "Second Half",
+   "state": "post",
+   "statusText": "Full Time",
    "home": "Canada",
    "away": "Bosnia-Herzegovina",
-   "homeScore": 0,
+   "homeScore": 1,
    "awayScore": 1,
    "goals": [
     {
@@ -130,7 +130,19 @@
      "category": "corner",
      "scoreAfter": "0–1",
      "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac following a corner.",
-     "wallclock": "2026-06-12T19:22:46Z"
+     "wallclock": "2026-06-12T19:22:45Z"
+    },
+    {
+     "espnPlayId": "49487265",
+     "minute": "78'",
+     "team": "Canada",
+     "scorer": "Cyle Larin",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Canada 1, Bosnia and Herzegovina 1. Cyle Larin (Canada) right footed shot from the centre of the box to the bottom right corner. Assisted by Promise David.",
+     "wallclock": "2026-06-12T20:39:34Z"
     }
    ]
   }
