@@ -11,7 +11,13 @@
   <meta property="og:title" content="Set-Piece Tracker — World Cup 2026" />
   <meta property="og:description" content="Are we in the set-piece era? Live % of WC 2026 goals from dead balls, vs 2018 and 2022. Arteta is watching." />
   <meta property="og:url" content="https://banger-watch.vercel.app/set-piece-tracker" />
-  <meta property="og:image" content="https://banger-watch.vercel.app/og.png" />
+  <meta property="og:image" content="https://banger-watch.vercel.app/og-setpiece.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Set-Piece Tracker — World Cup 2026" />
+  <meta name="twitter:description" content="Live % of WC 2026 goals from dead balls — corners, free kicks, long throws — vs 2018 and 2022." />
+  <meta name="twitter:image" content="https://banger-watch.vercel.app/og-setpiece.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
@@ -129,10 +135,10 @@
       <div class="spt-note" id="spt-basenote"></div>
     </div>
 
-    <h2 class="section-title" style="margin-top:26px">Every goal, with receipts<span class="st-sub">Minute, scoreline and the verbatim Opta/ESPN commentary each classification rests on</span></h2>
+    <h2 class="section-title" style="margin-top:26px">Goal log<span class="st-sub">Every 2026 goal — minute, scoreline, and the commentary line behind each classification</span></h2>
     <div id="spt-ledger"></div>
 
-    <h2 class="section-title" style="margin-top:26px">Method &amp; sources<span class="st-sub">So the classifications are defensible</span></h2>
+    <h2 class="section-title" style="margin-top:26px">Method &amp; sources<span class="st-sub">Definitions, data and citations</span></h2>
     <div class="spt-panel spt-cites">
       <p><b>2026 (live):</b> goals come from <a href="https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard">ESPN's public World Cup API</a>, whose Opta-sourced commentary attributes goals with fixed phrases (<i>“following a corner”</i>, <i>“following a set piece”</i>, <i>“direct free kick”</i>, <i>“converts the penalty”</i>). Each goal above shows that verbatim line. The page re-checks the feed every minute while a match is live; goals without a dead-ball phrase count as open play.</p>
       <p><b>The throw-in exception:</b> Opta commentary never attributes throw-ins (Krejčí's goal vs South Korea just says “Assisted by Vladimír Coufal”), so long-throw goals are tagged by hand in <code>set-piece-overrides.json</code> — every override must cite a published match report, shown inline next to the ESPN line (marked ✎).</p>

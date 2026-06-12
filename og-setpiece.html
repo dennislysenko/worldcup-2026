@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    font-family: "Patrick Hand", sans-serif; color: #f2f5ee; position: relative; overflow: hidden;
+    background: radial-gradient(1200px 700px at 70% -10%, #1c4537, transparent 60%), #15332a;
+    padding: 64px 80px 48px; display: flex; gap: 56px; align-items: center;
+  }
+  .pitch { position: absolute; inset: 0; opacity: .14; }
+  .dust { position: absolute; inset: 0; opacity: .05; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 7px 7px; }
+  .vig { position: absolute; inset: 0; box-shadow: inset 0 0 240px rgba(0,0,0,.5); }
+  .z { position: relative; z-index: 2; }
+  .left { flex: 1; }
+  .kicker { font-size: 26px; letter-spacing: 3px; text-transform: uppercase; color: #ffe08a; }
+  h1 { font-family: "Caveat", cursive; font-size: 116px; line-height: .9; margin: 6px 0 16px; text-shadow: 0 0 3px rgba(255,255,255,.3); }
+  .sub { font-size: 33px; color: #a9c2b4; line-height: 1.25; }
+  .bars { margin-top: 38px; display: grid; gap: 14px; max-width: 620px; }
+  .brow { display: grid; grid-template-columns: 92px 1fr 96px; gap: 16px; align-items: center; font-size: 28px; }
+  .brow b { text-align: right; }
+  .track { height: 30px; border: 2px solid rgba(242,245,238,.5); border-radius: 8px; background: rgba(255,255,255,.05); overflow: hidden; }
+  .fill { height: 100%; }
+  .f26 { width: 62%; background: rgba(155,230,166,.7); }
+  .f18 { width: 61%; background: rgba(201,182,255,.6); }
+  .f22 { width: 36%; background: rgba(158,201,255,.6); }
+  .val { font-family: "Caveat", cursive; font-size: 38px; }
+  .live { color: #ff9ec4; font-size: 24px; letter-spacing: 2px; }
+  .right { width: 290px; text-align: center; }
+  .bubble { font-family: "Caveat", cursive; font-size: 33px; line-height: 1.05; background: rgba(255,255,255,.08); border: 2px solid rgba(242,245,238,.5); border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; position: relative; }
+  .bubble::after { content: ""; position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 16px; height: 16px; background: #224b3c; border-right: 2px solid rgba(242,245,238,.5); border-bottom: 2px solid rgba(242,245,238,.5); }
+  .right img { width: 230px; border-radius: 14px; border: 2px solid rgba(242,245,238,.55); filter: saturate(.85) contrast(1.05); }
+  .credit { font-size: 13px; color: #a9c2b4; opacity: .8; margin-top: 8px; }
+</style></head>
+<body>
+  <svg class="pitch" viewBox="0 0 1200 630" preserveAspectRatio="none"><g fill="none" stroke="#f2f5ee" stroke-width="3"><line x1="600" y1="0" x2="600" y2="630"/><circle cx="600" cy="315" r="150"/><rect x="0" y="170" width="150" height="290"/><rect x="1050" y="170" width="150" height="290"/></g></svg>
+  <div class="dust"></div><div class="vig"></div>
+  <div class="left z">
+    <div class="kicker">🎯 World Cup 2026</div>
+    <h1>Set-Piece Tracker</h1>
+    <div class="sub">What share of goals come from dead balls?<br>Corners · free kicks · long throws — live all tournament.</div>
+    <div class="bars">
+      <div class="brow"><b>2026</b><div class="track"><div class="fill f26"></div></div><span class="val live">LIVE ●</span></div>
+      <div class="brow"><b>2018</b><div class="track"><div class="fill f18"></div></div><span class="val">33.1%</span></div>
+      <div class="brow"><b>2022</b><div class="track"><div class="fill f22"></div></div><span class="val">19.2%</span></div>
+    </div>
+  </div>
+  <div class="right z">
+    <div class="bubble">“Can you smell it, guys? That energy? That is set pieces.”</div>
+    <img src="arteta.png" alt="">
+    <div class="credit">Photo: Prime Video AU &amp; NZ · CC BY 3.0 · Wikimedia Commons</div>
+  </div>
+</body></html>
