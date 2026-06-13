@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-13T01:56:57.088Z",
+  "generated": "2026-06-13T09:42:08.554Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 10,
+  "total": 12,
   "counts": {
    "corner": 1,
-   "free_kick": 0,
+   "free_kick": 1,
    "throw_in": 1,
    "penalty": 0,
-   "open_play": 8
+   "open_play": 9
   },
-  "setPieceExclPens": 2,
-  "pctExclPens": 20,
-  "pctInclPens": 20
+  "setPieceExclPens": 3,
+  "pctExclPens": 25,
+  "pctInclPens": 25
  },
  "matches": [
   {
@@ -130,7 +130,7 @@
      "category": "corner",
      "scoreAfter": "0–1",
      "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac with a headed pass following a corner.",
-     "wallclock": "2026-06-12T19:22:46Z"
+     "wallclock": "2026-06-12T19:22:45Z"
     },
     {
      "espnPlayId": "49487265",
@@ -150,12 +150,12 @@
    "espnId": "760417",
    "name": "Paraguay at United States",
    "kickoff": "2026-06-13T01:00Z",
-   "state": "in",
-   "statusText": "Halftime",
+   "state": "post",
+   "statusText": "Full Time",
    "home": "United States",
    "away": "Paraguay",
-   "homeScore": 3,
-   "awayScore": 0,
+   "homeScore": 4,
+   "awayScore": 1,
    "goals": [
     {
      "espnPlayId": "49489736",
@@ -179,7 +179,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! USA 2, Paraguay 0. Folarin Balogun (USA) right footed shot from the centre of the box to the bottom right corner. Assisted by Christian Pulisic.",
-     "wallclock": "2026-06-13T01:32:34Z"
+     "wallclock": "2026-06-13T01:32:33Z"
     },
     {
      "espnPlayId": "49491046",
@@ -192,6 +192,30 @@
      "scoreAfter": "3–0",
      "evidence": "Goal! USA 3, Paraguay 0. Folarin Balogun (USA) left footed shot from the centre of the box to the top left corner. Assisted by Malik Tillman.",
      "wallclock": "2026-06-13T01:51:16Z"
+    },
+    {
+     "espnPlayId": "49491561",
+     "minute": "73'",
+     "team": "Paraguay",
+     "scorer": "Maurício",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "3–1",
+     "evidence": "Goal! USA 3, Paraguay 1. Mauricio (Paraguay) left footed shot from the centre of the box to the bottom right corner. Assisted by Julio Enciso following a set piece situation.",
+     "wallclock": "2026-06-13T02:36:48Z"
+    },
+    {
+     "espnPlayId": "49491938",
+     "minute": "90'+8'",
+     "team": "United States",
+     "scorer": "Giovanni Reyna",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–1",
+     "evidence": "Goal! USA 4, Paraguay 1. Giovanni Reyna (USA) right footed shot from the centre of the box to the bottom left corner. Assisted by Alex Freeman.",
+     "wallclock": "2026-06-13T03:01:26Z"
     }
    ]
   }
