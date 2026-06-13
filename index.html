@@ -45,6 +45,7 @@
 
   <nav class="main-nav" id="main-nav">
     <button class="nav-link" data-view="calendar">Calendar</button>
+    <button class="nav-link" data-view="groups">Groups</button>
     <button class="nav-link" data-view="my-teams">My Teams</button>
     <button class="nav-link" data-view="planner">Plan Watch Party</button>
     <a class="nav-link nav-page" href="set-piece-tracker.html">Set Pieces 🎯</a>
@@ -114,6 +115,16 @@
       </section>
 
       <section id="calendar"></section>
+    </div>
+
+    <!-- ===================== GROUPS VIEW ===================== -->
+    <div class="view" id="view-groups">
+      <h2 class="section-title">Groups<span class="st-sub">Live standings from results · 1st / 2nd / Adv = chance to win the group, finish runner-up, or reach the knockouts (simulated from results so far)</span></h2>
+      <div class="groups-ctl">
+        <label class="toggle"><input type="checkbox" id="toggle-groups-detail" /><span>Detailed (all stats)</span></label>
+        <span class="groups-hint">tip: tap any group to expand it</span>
+      </div>
+      <div id="groups" class="groups-wrap"></div>
     </div>
 
     <!-- ===================== MY TEAMS VIEW ===================== -->

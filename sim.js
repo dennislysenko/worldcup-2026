@@ -116,6 +116,49 @@
     for (const L of GROUP_LETTERS) { paths[gw[L]].groupWin++; paths[ru[L]].groupRunner++; }
   }
 
+  // ---- live group odds, conditioned on actual results ----
+  // results: { [matchNumber]: { homeScore, awayScore, state } } — only `post`
+  // (final) games are locked in; the rest are simulated from Elo. Returns
+  // { [team]: { win, runnerUp, advance } } as probabilities. Group-stage only,
+  // so it's cheap enough to re-run whenever a new result lands.
+  WC.runGroupOdds = function (results, Nopt) {
+    results = results || {};
+    const N = Nopt || 4000;
+    const NQ = thirdSlots.length; // 8 best third-placed teams advance
+    const tally = {};
+    WC.teams.forEach(t => { tally[t.name] = { win: 0, ru: 0, adv: 0 }; });
+    for (let i = 0; i < N; i++) {
+      const thirds = [];
+      for (const L of GROUP_LETTERS) {
+        const teams = groups[L];
+        const st = {};
+        teams.forEach(t => { st[t] = { pts: 0, gd: 0, gf: 0, r: Math.random() }; });
+        for (const m of groupMatches[L]) {
+          const res = results[m.matchNumber];
+          let ga, gb;
+          if (res && res.state === "post" && res.homeScore != null) { ga = res.homeScore; gb = res.awayScore; }
+          else { [ga, gb] = goals(m.home, m.away); }
+          st[m.home].gf += ga; st[m.away].gf += gb;
+          st[m.home].gd += ga - gb; st[m.away].gd += gb - ga;
+          if (ga > gb) st[m.home].pts += 3;
+          else if (gb > ga) st[m.away].pts += 3;
+          else { st[m.home].pts++; st[m.away].pts++; }
+        }
+        const ranked = teams.slice().sort((x, y) =>
+          st[y].pts - st[x].pts || st[y].gd - st[x].gd || st[y].gf - st[x].gf || st[x].r - st[y].r);
+        tally[ranked[0]].win++; tally[ranked[0]].adv++;
+        tally[ranked[1]].ru++; tally[ranked[1]].adv++;
+        const t3 = ranked[2];
+        thirds.push({ team: t3, pts: st[t3].pts, gd: st[t3].gd, gf: st[t3].gf, r: Math.random() });
+      }
+      thirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.r - b.r);
+      for (let k = 0; k < NQ; k++) tally[thirds[k].team].adv++;
+    }
+    const out = {};
+    WC.teams.forEach(t => { const c = tally[t.name]; out[t.name] = { win: c.win / N, runnerUp: c.ru / N, advance: c.adv / N }; });
+    return out;
+  };
+
   // ---- run ----
   const N = 12000;
   const t0 = (typeof performance !== "undefined" && performance.now) ? performance.now() : 0;

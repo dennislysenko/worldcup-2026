@@ -121,6 +121,138 @@
     pollScores();
   }
 
+  // ======================================================================
+  // GROUPS — live standings from real results + results-conditioned odds
+  // ======================================================================
+  const GROUP_LETTERS = [...new Set(WC.matches.filter(m => m.stage === "Group").map(m => m.group))].sort();
+  const groupTeams = {}, groupGames = {};
+  WC.matches.filter(m => m.stage === "Group").forEach(m => {
+    const g = groupTeams[m.group] = groupTeams[m.group] || [];
+    if (!g.includes(m.home)) g.push(m.home);
+    if (!g.includes(m.away)) g.push(m.away);
+    (groupGames[m.group] = groupGames[m.group] || []).push(m);
+  });
+
+  let groupOdds = {}, oddsSig = null; // team -> {win,runnerUp,advance}; recomputed when finals change
+  function finalResultsMap() {
+    const r = {};
+    for (const mn in scores) { const s = scores[mn]; if (s.state === "post" && s.homeScore != null) r[mn] = s; }
+    return r;
+  }
+  function ensureGroupOdds() {
+    const finals = finalResultsMap();
+    const sig = Object.keys(finals).sort().map(mn => `${mn}:${finals[mn].homeScore}-${finals[mn].awayScore}`).join("|");
+    if (sig === oddsSig && Object.keys(groupOdds).length) return;
+    oddsSig = sig;
+    groupOdds = WC.runGroupOdds ? WC.runGroupOdds(finals) : {};
+  }
+
+  // standings for one group from FINAL results, with FIFA-ish tiebreakers
+  function groupStanding(letter) {
+    const teams = groupTeams[letter];
+    const st = {};
+    teams.forEach(t => { st[t] = { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 }; });
+    const finals = [];
+    let dirty = false, played = 0, total = groupGames[letter].length, now = Date.now();
+    groupGames[letter].forEach(m => {
+      const s = scores[m.matchNumber];
+      if (s && s.state === "post" && s.homeScore != null) {
+        finals.push(m); played++;
+        const a = st[m.home], b = st[m.away], ga = s.homeScore, gb = s.awayScore;
+        a.P++; b.P++; a.GF += ga; b.GF += gb; a.GA += gb; b.GA += ga;
+        if (ga > gb) { a.W++; b.L++; a.Pts += 3; }
+        else if (gb > ga) { b.W++; a.L++; b.Pts += 3; }
+        else { a.D++; b.D++; a.Pts++; b.Pts++; }
+      } else if (now > new Date(m.utc).getTime() + 2.75 * 3600e3) {
+        dirty = true; // kicked off long ago but no final ingested
+      }
+    });
+    teams.forEach(t => { st[t].GD = st[t].GF - st[t].GA; });
+    const h2h = block => {
+      const set = new Set(block.map(x => x.team)), sub = {};
+      block.forEach(x => sub[x.team] = { pts: 0, gd: 0, gf: 0 });
+      finals.forEach(m => {
+        if (!set.has(m.home) || !set.has(m.away)) return;
+        const s = scores[m.matchNumber], ga = s.homeScore, gb = s.awayScore;
+        sub[m.home].gf += ga; sub[m.away].gf += gb; sub[m.home].gd += ga - gb; sub[m.away].gd += gb - ga;
+        if (ga > gb) sub[m.home].pts += 3; else if (gb > ga) sub[m.away].pts += 3; else { sub[m.home].pts++; sub[m.away].pts++; }
+      });
+      return block.slice().sort((x, y) => sub[y.team].pts - sub[x.team].pts || sub[y.team].gd - sub[x.team].gd || sub[y.team].gf - sub[x.team].gf);
+    };
+    const ranked = teams.map(t => st[t]).sort((a, b) => b.Pts - a.Pts || b.GD - a.GD || b.GF - a.GF);
+    const out = [];
+    for (let i = 0; i < ranked.length;) {
+      let j = i + 1;
+      while (j < ranked.length && ranked[j].Pts === ranked[i].Pts && ranked[j].GD === ranked[i].GD && ranked[j].GF === ranked[i].GF) j++;
+      const block = ranked.slice(i, j);
+      (block.length > 1 && finals.length ? h2h(block) : block).forEach(r => out.push(r));
+      i = j;
+    }
+    return { rows: out, dirty, played, total };
+  }
+
+  const expandedGroups = new Set(); // groups whose full table is open (compact mode)
+  const GROUPS_DETAIL_KEY = "wc2026.groupsDetailed";
+  let groupsDetailed = localStorage.getItem(GROUPS_DETAIL_KEY) === "1";
+  function renderGroups() {
+    const el = document.getElementById("groups");
+    if (!el) return;
+    ensureGroupOdds();
+    el.classList.toggle("detailed", groupsDetailed);
+    const pct = p => p == null ? "—" : p >= 0.995 ? "✓" : p < 0.005 ? "·" : Math.round(p * 100) + "%";
+    const advCell = p => {
+      if (p == null) return "—";
+      return `<span class="adv-wrap"><span class="adv-bar"><span class="adv-fill" style="width:${Math.round(p * 100)}%"></span></span><b>${pct(p)}</b></span>`;
+    };
+    el.innerHTML = GROUP_LETTERS.map(L => {
+      const { rows, dirty, played, total } = groupStanding(L);
+      const open = groupsDetailed || expandedGroups.has(L);
+      const body = rows.map((r, i) => {
+        const t = WC.teamByName[r.team], od = groupOdds[r.team] || {};
+        const zone = i < 2 ? "g-top" : i === 2 ? "g-third" : "";
+        return `<tr class="${zone}${favorites.has(r.team) ? " g-fav" : ""}" data-team="${r.team}">
+          <td class="g-pos">${i + 1}</td>
+          <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${r.team}</span></td>
+          <td>${r.P}</td><td class="g-detail">${r.W}</td><td class="g-detail">${r.D}</td><td class="g-detail">${r.L}</td>
+          <td class="g-detail">${r.GF}</td><td class="g-detail">${r.GA}</td><td>${r.GD > 0 ? "+" + r.GD : r.GD}</td><td class="g-pts">${r.Pts}</td>
+          <td class="g-odd g-odd2">${pct(od.win)}</td><td class="g-odd g-odd2">${pct(od.runnerUp)}</td><td class="g-odd g-adv">${advCell(od.advance)}</td>
+        </tr>`;
+      }).join("");
+      const dirtyBadge = dirty ? `<span class="g-dirty" title="A match has finished but its result isn't in yet — standings & odds update on the next sync.">⚠ results pending</span>` : "";
+      const chevron = groupsDetailed ? "" : `<span class="g-toggle">${open ? "▾" : "▸"}</span>`;
+      return `<section class="g-card${open ? " expanded" : ""}" data-group="${L}">
+        <div class="g-head" role="button" tabindex="0" aria-expanded="${open}"><h3>Group ${L}</h3><span class="g-prog">${played}/${total} played</span>${dirtyBadge}${chevron}</div>
+        <div class="g-scroll"><table class="g-table">
+          <thead><tr><th></th><th class="g-team">Team</th><th title="Played">P</th><th class="g-detail">W</th><th class="g-detail">D</th><th class="g-detail">L</th><th class="g-detail">GF</th><th class="g-detail">GA</th><th title="Goal difference">GD</th><th title="Points">Pts</th><th class="g-odd g-odd2" title="Chance to win the group">1st</th><th class="g-odd g-odd2" title="Chance to finish runner-up">2nd</th><th class="g-odd g-adv" title="Chance to reach the knockouts">Adv</th></tr></thead>
+          <tbody>${body}</tbody>
+        </table></div></section>`;
+    }).join("");
+  }
+  function toggleGroup(card) {
+    if (groupsDetailed) return; // global switch is driving; per-group tap is a no-op
+    const L = card && card.dataset.group; if (!L) return;
+    expandedGroups.has(L) ? expandedGroups.delete(L) : expandedGroups.add(L);
+    renderGroups();
+  }
+  document.getElementById("groups").addEventListener("click", e => {
+    if (e.target.closest(".g-head")) toggleGroup(e.target.closest(".g-card"));
+  });
+  document.getElementById("groups").addEventListener("keydown", e => {
+    if ((e.key === "Enter" || e.key === " ") && e.target.closest(".g-head")) { e.preventDefault(); toggleGroup(e.target.closest(".g-card")); }
+  });
+  (function () {
+    const t = document.getElementById("toggle-groups-detail");
+    if (!t) return;
+    t.checked = groupsDetailed;
+    t.addEventListener("change", e => {
+      groupsDetailed = e.target.checked;
+      localStorage.setItem(GROUPS_DETAIL_KEY, groupsDetailed ? "1" : "0");
+      document.querySelector(".groups-hint").style.visibility = groupsDetailed ? "hidden" : "visible";
+      renderGroups();
+    });
+    if (groupsDetailed) document.querySelector(".groups-hint").style.visibility = "hidden";
+  })();
+
   // ---- helpers ----
   function loadFavorites() {
     try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || "[]")); }
@@ -242,7 +374,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "groups", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
@@ -315,7 +447,7 @@
     setPickerCollapsed(false); document.getElementById("team-search").focus();
   });
 
-  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderMyMatches(); renderPlanner(); }
+  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderGroups(); renderMyMatches(); renderPlanner(); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
@@ -777,6 +909,7 @@
   renderUpcomingBangers();
   renderMyMatches();
   renderPlanner();
+  renderGroups();
   renderProjections();
   setupScrollSpy();
   setActiveNav("calendar");
