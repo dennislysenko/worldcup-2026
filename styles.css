@@ -461,7 +461,11 @@ footer {
   -webkit-backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--line);
   padding: 0 max(20px, calc((100% - 1180px) / 2));
+  overflow-x: auto;            /* scroll when items overflow */
+  scrollbar-width: none;       /* Firefox */
+  -webkit-overflow-scrolling: touch;
 }
+.main-nav::-webkit-scrollbar { display: none; } /* WebKit */
 .nav-link {
   background: none;
   border: none;
@@ -472,6 +476,9 @@ footer {
   padding: 14px 16px 12px;
   cursor: pointer;
   font-family: inherit;
+  flex-shrink: 0;          /* don't squish — let the bar scroll */
+  white-space: nowrap;
+  text-decoration: none;   /* the anchor nav item */
 }
 .nav-link:hover { color: var(--text); }
 .nav-link.active { color: var(--accent-2); border-bottom-color: var(--accent-2); }
@@ -683,7 +690,7 @@ footer {
 
 @media (max-width: 640px) {
   .main-nav { padding: 0 4px; }
-  .nav-link { flex: 1; padding: 13px 4px 11px; font-size: 13px; }
+  .nav-link { padding: 13px 11px 11px; font-size: 13px; }
   /* planner: segmented June|July pager over a one-month-per-page swipe track */
   .pseg {
     display: flex;
