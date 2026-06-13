@@ -42,6 +42,7 @@
     .spt-chip.c-free_kick b { color: var(--accent-2); }
     .spt-chip.c-throw_in b { color: var(--ko); }
     .spt-chip.c-penalty b { color: var(--fav); }
+    .spt-chip.c-own b { color: var(--banger); }
 
     .spt-toggle { margin-top: 14px; font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
     .spt-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
@@ -53,6 +54,12 @@
     .arteta-bubble { font-family: var(--script-font); font-size: 19px; line-height: 1.2; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; margin-bottom: 12px; position: relative; }
     .arteta-bubble::after { content: ""; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: inherit; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .arteta-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+    /* mad mode: below the 2018/2022 average */
+    .arteta-card.mad img { filter: saturate(1.15) contrast(1.15) sepia(.3) hue-rotate(-28deg); border-color: var(--banger); animation: arteta-seethe 2.8s ease-in-out infinite; }
+    .arteta-card.mad .arteta-bubble { border-color: var(--banger); }
+    .arteta-card.mad .arteta-bubble::after { border-right-color: var(--banger); border-bottom-color: var(--banger); }
+    .arteta-card.mad .arteta-label b { color: var(--banger); }
+    @keyframes arteta-seethe { 0%, 88% { transform: none; } 90% { transform: translateX(-2px) rotate(-1deg); } 93% { transform: translateX(2px) rotate(1deg); } 96% { transform: translateX(-1px); } 100% { transform: none; } }
     .arteta-credit { font-size: 10px; color: var(--muted); opacity: .75; margin-top: 5px; }
     .arteta-credit a { color: inherit; }
 
@@ -119,6 +126,7 @@
         <div class="spt-of" id="spt-of">of 2026 goals have come from corners &amp; free kicks</div>
         <div class="spt-chips" id="spt-chips"></div>
         <label class="spt-toggle"><input type="checkbox" id="spt-pens" /> count penalties as set pieces <span title="FIFA's 2018 headline (43%) counted penalties; most analysts don't. Toggle and watch the argument change.">ⓘ</span></label>
+        <label class="spt-toggle"><input type="checkbox" id="spt-ogs" /> own goals are Mikel-approved <span title="An own goal under dead-ball pressure already counts as a set piece (7 of 2018's record 12 own goals came from them). This toggle credits the remaining open-play own goals to the chaos too. Not a real analytics convention. Mikel doesn't care.">ⓘ</span></label>
       </div>
 
       <div class="spt-panel arteta-card">
@@ -152,19 +160,29 @@
     import { ESPN_BASE, goalsFromSummary, matchFromScoreboardEvent, aggregate, applyOverrides } from './setpiece-espn.mjs';
 
     const $ = (id) => document.getElementById(id);
-    const state = { matches: [], baselines: null, overrides: null, pens: false };
+    const state = { matches: [], baselines: null, overrides: null, pens: false, ogs: false };
 
     const CAT_LABEL = { corner: 'CORNER', free_kick: 'FREE KICK', throw_in: 'LONG THROW', penalty: 'PENALTY', open_play: 'OPEN PLAY' };
+    const SP_CATS = ['corner', 'free_kick', 'throw_in'];
 
+    /* open-play own goals — the ones not already credited to a set piece */
+    function openPlayOgs2026(matches) {
+      return matches.flatMap((m) => m.goals || []).filter((g) => g.ownGoal && !SP_CATS.includes(g.category) && g.category !== 'penalty').length;
+    }
     function pct(matches) {
       const a = aggregate(matches);
-      return state.pens ? a.pctInclPens : a.pctExclPens;
+      const sp = a.setPieceExclPens + (state.pens ? a.counts.penalty : 0) + (state.ogs ? openPlayOgs2026(matches) : 0);
+      return a.total ? (100 * sp) / a.total : 0;
     }
     function basePct(year) {
       const t = state.baselines.tournaments[year];
-      const c = t.windows.direct_15s.counts;
-      const sp = c.corner + c.free_kick + c.throw_in + (state.pens ? c.penalty : 0);
-      return (100 * sp) / t.total_goals;
+      let sp = 0, pen = 0, og = 0;
+      for (const g of t.goals) {
+        if (SP_CATS.includes(g.category) && g.elapsed_s != null && g.elapsed_s <= 15) sp += 1;
+        else if (g.category === 'penalty') pen += 1;
+        else if (g.own_goal) og += 1;
+      }
+      return (100 * (sp + (state.pens ? pen : 0) + (state.ogs ? og : 0))) / t.total_goals;
     }
 
     /* Mister Arteta, in full All or Nothing mode */
@@ -190,11 +208,25 @@
         ['PHE-NO-ME-NAL. Can you smell it, guys? That energy? That is set pieces.', 'smelling the energy'],
         ['This is what we talked about. Bring the storm into the six-yard box.', 'bringing the storm'],
       ],
+      mad: [
+        ['LOOK ME IN THE EYES. BELOW THE AVERAGE. I cannot accept it. I will NOT accept it.', 'fuming'],
+        ['Guys. GUYS. The box is RIGHT THERE. Why are we below the average?!', 'losing it'],
+        ['I am very calm. I am VERY calm. (He is not calm.)', 'very calm (not calm)'],
+      ],
     };
-    function quip(a, p2022, p2018) {
-      const p = state.pens ? a.pctInclPens : a.pctExclPens;
-      const sp = a.setPieceExclPens + (state.pens ? a.counts.penalty : 0);
-      const band = a.total === 0 ? 'nogoals' : sp === 0 ? 'zero' : p >= p2018 ? 'high' : p >= p2022 ? 'mid' : 'low';
+    /* mad when 2026 drops below the 2018/2022 average (under current toggles) */
+    function isMad(matches, p2022, p2018) {
+      const a = aggregate(matches);
+      return a.total > 0 && pct(matches) < (p2018 + p2022) / 2;
+    }
+    function quip(matches, p2022, p2018) {
+      const a = aggregate(matches);
+      const og = openPlayOgs2026(matches);
+      const mad = isMad(matches, p2022, p2018);
+      if (!mad && state.ogs && og > 0) return ['An own goal is just a set piece the defender finished for us. We take it. We move.', 'crediting the chaos'];
+      const p = pct(matches);
+      const sp = a.setPieceExclPens + (state.pens ? a.counts.penalty : 0) + (state.ogs ? og : 0);
+      const band = a.total === 0 ? 'nogoals' : sp === 0 ? 'zero' : mad ? 'mad' : p >= p2018 ? 'high' : p >= p2022 ? 'mid' : 'low';
       const list = QUIPS[band];
       return list[a.total % list.length];
     }
@@ -206,14 +238,16 @@
       const anyLive = matches.some((m) => m.state === 'in');
 
       $('spt-pct').textContent = a.total ? pct(matches).toFixed(1) : '0';
-      $('spt-of').textContent = state.pens
-        ? `of ${a.total} goals (incl. penalties) from corners, free kicks, long throws & pens — across ${played} matches`
-        : `of ${a.total} goals so far have come from corners, free kicks & long throws — across ${played} matches`;
+      const sources = ['corners', 'free kicks', 'long throws'];
+      if (state.pens) sources.push('penalties');
+      if (state.ogs) sources.push('own goals');
+      $('spt-of').textContent = `of ${a.total} goals so far have come from ${sources.join(', ')} — across ${played} matches`;
       $('spt-live').hidden = !anyLive;
       const chipLabel = { corner: ['corner', 'corners'], free_kick: ['free kick', 'free kicks'], throw_in: ['long throw', 'long throws'], penalty: ['penalty', 'penalties'], open_play: ['open play', 'open play'] };
+      const ogAll = matches.flatMap((m) => m.goals || []).filter((g) => g.ownGoal).length;
       $('spt-chips').innerHTML = ['corner', 'free_kick', 'throw_in', 'penalty', 'open_play']
         .map((c) => `<span class="spt-chip c-${c}"><b>${a.counts[c]}</b>${chipLabel[c][a.counts[c] === 1 ? 0 : 1]}</span>`)
-        .join('');
+        .join('') + `<span class="spt-chip c-own"><b>${ogAll}</b>own goal${ogAll === 1 ? '' : 's'}</span>`;
 
       // bars
       const rows = [
@@ -226,12 +260,14 @@
         `<div class="spt-bar-row"><div class="spt-bar-label"><b>${y}</b>${sub}</div>
          <div class="spt-bar-track"><div class="spt-bar-fill ${cls}" style="width:${(100 * v / max).toFixed(1)}%"></div></div>
          <div class="spt-bar-val">${v.toFixed(1)}%</div></div>`).join('');
-      $('spt-basenote').innerHTML = `2018/2022 computed from StatsBomb event data with the definition above${state.pens ? ', penalties included' : ', penalties excluded'}. 2026 sample is tiny early on — one goal swings it a lot. Sources &amp; sensitivity below.`;
+      $('spt-basenote').innerHTML = `2018/2022 computed from StatsBomb event data with the definition above${state.pens ? ', penalties included' : ', penalties excluded'}${state.ogs ? ', open-play own goals credited to the chaos (2018 had 12 own goals; 7 already count as set-piece-derived)' : ''}. 2026 sample is tiny early on — one goal swings it a lot. Sources &amp; sensitivity below.`;
 
       // Arteta
-      const [line, mood] = quip(a, basePct('2022'), basePct('2018'));
+      const p22 = basePct('2022'), p18 = basePct('2018');
+      const [line, mood] = quip(matches, p22, p18);
       $('arteta-quip').textContent = '“' + line + '”';
       $('arteta-mood').textContent = mood;
+      document.querySelector('.arteta-card').classList.toggle('mad', isMad(matches, p22, p18));
 
       // ledger
       $('spt-ledger').innerHTML = matches.slice().reverse().map((m) => {
@@ -314,6 +350,7 @@
       renderSensitivity();
       render();
       $('spt-pens').addEventListener('change', (e) => { state.pens = e.target.checked; render(); });
+      $('spt-ogs').addEventListener('change', (e) => { state.ogs = e.target.checked; render(); });
       await topUp();
       // every minute while a match is live, every 5 minutes otherwise
       let lastSlow = 0;

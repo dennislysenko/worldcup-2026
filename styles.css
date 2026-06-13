@@ -848,3 +848,87 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .pd.in-range { background: var(--fav-dim); border-color: transparent; color: var(--text); }
 .pd.sel-end { background: var(--fav-dim); border: 2px solid var(--fav); color: var(--text); }
 .pd.sel-end .pd-dot { background: var(--accent); }
+
+/* ---------- Arteta corner-creep (links to /set-piece-tracker) ---------- */
+.arteta-peek {
+  position: fixed;
+  right: -46px;
+  bottom: -58px;
+  z-index: 40; /* under .popover (50) */
+  display: block;
+  text-decoration: none;
+  animation: arteta-creep 1.4s cubic-bezier(.18,.9,.32,1.08) 1.1s both;
+}
+@keyframes arteta-creep {
+  from { transform: translate(90px, 160px); }
+  to { transform: translate(0, 0); }
+}
+.arteta-peek img {
+  display: block;
+  width: 170px;
+  clip-path: ellipse(26% 21% at 50% 27%); /* head cutout */
+  transform: rotate(-24deg);
+  transform-origin: 60% 80%;
+  filter: saturate(.85) contrast(1.08) drop-shadow(-4px 2px 6px rgba(0,0,0,.45));
+  transition: transform .25s ease;
+}
+.arteta-peek:hover img { transform: rotate(-16deg) translate(-8px, -10px) scale(1.06); }
+.arteta-peek-tip {
+  position: absolute;
+  right: 130px;
+  bottom: 120px;
+  z-index: 2;
+  width: max-content;
+  max-width: 160px;
+  white-space: normal;
+  font-family: var(--script-font);
+  font-size: 18px;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--text);
+  background: var(--panel-2);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 7px 12px;
+  transform: rotate(-3deg);
+  opacity: 0;
+  animation: arteta-tip-in .5s ease 2.4s forwards; /* after he's crept in */
+}
+.arteta-peek-tip b { color: var(--accent); }
+@keyframes arteta-tip-in { to { opacity: 1; } }
+.arteta-peek-tip::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  bottom: 9px;
+  width: 9px;
+  height: 9px;
+  transform: rotate(45deg);
+  background: inherit;
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.arteta-peek:hover .arteta-peek-tip { border-color: var(--accent); }
+@media (max-width: 760px) {
+  .arteta-peek { right: -34px; bottom: -44px; }
+  .arteta-peek img { width: 126px; }
+  .arteta-peek-tip { right: 96px; bottom: 92px; font-size: 15px; padding: 5px 9px; max-width: 130px; }
+}
+
+/* mad mode: 2026 below the 2018/2022 set-piece average */
+.arteta-peek.mad img {
+  filter: saturate(1.15) contrast(1.18) sepia(.3) hue-rotate(-28deg) drop-shadow(-4px 2px 8px rgba(255, 80, 80, .4));
+  animation: arteta-fume 3s ease-in-out 2.8s infinite;
+}
+@keyframes arteta-fume {
+  0%, 86% { transform: rotate(-24deg); }
+  89% { transform: rotate(-26deg) translateX(-3px); }
+  92% { transform: rotate(-21deg) translateX(3px); }
+  95% { transform: rotate(-25deg) translateX(-2px); }
+  100% { transform: rotate(-24deg); }
+}
+.arteta-peek.mad .arteta-peek-tip { border-color: var(--banger); }
+.arteta-peek.mad .arteta-peek-tip b { color: var(--banger); }
+.arteta-peek.mad .arteta-peek-tip::after { border-top-color: var(--banger); border-right-color: var(--banger); }

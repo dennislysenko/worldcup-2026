@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-12T21:12:51.736Z",
+  "generated": "2026-06-13T01:56:57.088Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 7,
+  "total": 10,
   "counts": {
    "corner": 1,
    "free_kick": 0,
    "throw_in": 1,
    "penalty": 0,
-   "open_play": 5
+   "open_play": 8
   },
   "setPieceExclPens": 2,
-  "pctExclPens": 28.571428571428573,
-  "pctInclPens": 28.571428571428573
+  "pctExclPens": 20,
+  "pctInclPens": 20
  },
  "matches": [
   {
@@ -129,8 +129,8 @@
      "header": true,
      "category": "corner",
      "scoreAfter": "0–1",
-     "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac following a corner.",
-     "wallclock": "2026-06-12T19:22:45Z"
+     "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac with a headed pass following a corner.",
+     "wallclock": "2026-06-12T19:22:46Z"
     },
     {
      "espnPlayId": "49487265",
@@ -143,6 +143,55 @@
      "scoreAfter": "1–1",
      "evidence": "Goal! Canada 1, Bosnia and Herzegovina 1. Cyle Larin (Canada) right footed shot from the centre of the box to the bottom right corner. Assisted by Promise David.",
      "wallclock": "2026-06-12T20:39:34Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760417",
+   "name": "Paraguay at United States",
+   "kickoff": "2026-06-13T01:00Z",
+   "state": "in",
+   "statusText": "Halftime",
+   "home": "United States",
+   "away": "Paraguay",
+   "homeScore": 3,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49489736",
+     "minute": "7'",
+     "team": "United States",
+     "scorer": "Damián Bobadilla",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Own Goal by Damián Bobadilla, Paraguay. USA 1, Paraguay 0.",
+     "wallclock": "2026-06-13T01:09:03Z"
+    },
+    {
+     "espnPlayId": "49490437",
+     "minute": "31'",
+     "team": "United States",
+     "scorer": "Folarin Balogun",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! USA 2, Paraguay 0. Folarin Balogun (USA) right footed shot from the centre of the box to the bottom right corner. Assisted by Christian Pulisic.",
+     "wallclock": "2026-06-13T01:32:34Z"
+    },
+    {
+     "espnPlayId": "49491046",
+     "minute": "45'+5'",
+     "team": "United States",
+     "scorer": "Folarin Balogun",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! USA 3, Paraguay 0. Folarin Balogun (USA) left footed shot from the centre of the box to the top left corner. Assisted by Malik Tillman.",
+     "wallclock": "2026-06-13T01:51:16Z"
     }
    ]
   }

@@ -143,6 +143,55 @@
 
   <div id="popover" class="popover hidden"></div>
 
+  <a class="arteta-peek" href="set-piece-tracker.html" aria-label="Set-Piece Tracker">
+    <span class="arteta-peek-tip" id="arteta-peek-tip">Set pieces. Non-negotiable.</span>
+    <img src="arteta.png" alt="Mikel Arteta, watching" />
+  </a>
+  <script>
+    // Mikel's bubble: live set-piece share + an All-or-Nothing-ism.
+    // He gets mad when 2026 drops below the 2018/2022 average.
+    (function () {
+      var happy = [
+        "Non-negotiable.",
+        "Can you smell it, guys?",
+        "We have to suffer.",
+        "Win your duels.",
+        "Big cojones.",
+        "I am not asking.",
+        "Nicolas has the laptop.",
+      ];
+      var mad = [
+        "BELOW the average. Unacceptable.",
+        "LOOK ME IN THE EYES.",
+        "The box is RIGHT THERE.",
+        "I am very calm. (No.)",
+      ];
+      var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
+      Promise.all([
+        fetch("set-piece-goals.json").then(function (r) { return r.json(); }),
+        fetch("set-piece-baselines.json").then(function (r) { return r.json(); }),
+      ]).then(function (res) {
+        var sp = 0, total = 0;
+        res[0].matches.forEach(function (m) { (m.goals || []).forEach(function (g) {
+          total++;
+          if (g.category === "corner" || g.category === "free_kick" || g.category === "throw_in") sp++;
+        }); });
+        if (!total) return;
+        var pct = 100 * sp / total;
+        var avg = 0, years = 0;
+        Object.values(res[1].tournaments).forEach(function (t) {
+          var c = t.windows.direct_15s.counts;
+          avg += 100 * (c.corner + c.free_kick + c.throw_in) / t.total_goals; years++;
+        });
+        avg /= years;
+        var isMad = pct < avg;
+        if (isMad) document.querySelector(".arteta-peek").classList.add("mad");
+        document.getElementById("arteta-peek-tip").innerHTML =
+          "<b>" + pct.toFixed(0) + "%</b> set pieces.<br>" + pick(isMad ? mad : happy);
+      }).catch(function () {});
+    })();
+  </script>
+
   <footer>
     Schedule from the Dec 5 2025 final draw, spot-checked vs FIFA / Wikipedia / ESPN.
     Flags via flagcdn.com · Elo via eloratings.net. Knockout fixtures show bracket slots until groups resolve.
