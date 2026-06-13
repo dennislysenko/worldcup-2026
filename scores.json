@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-13T13:17:18.310Z",
+  "generated": "2026-06-13T20:25:10.706Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -51,6 +51,18 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+9'",
+   "period": 2
+  },
+  "5": {
+   "espnId": "760420",
+   "utc": "2026-06-13T19:00Z",
+   "home": "Qatar",
+   "away": "Switzerland",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "in",
+   "statusText": "58'",
+   "minute": "58'",
    "period": 2
   }
  }

@@ -185,17 +185,23 @@
         fetch("set-piece-goals.json").then(function (r) { return r.json(); }),
         fetch("set-piece-baselines.json").then(function (r) { return r.json(); }),
       ]).then(function (res) {
+        // full total: corners + free kicks + long throws + penalties + own goals
+        var SP = { corner: 1, free_kick: 1, throw_in: 1, penalty: 1 };
         var sp = 0, total = 0;
         res[0].matches.forEach(function (m) { (m.goals || []).forEach(function (g) {
           total++;
-          if (g.category === "corner" || g.category === "free_kick" || g.category === "throw_in") sp++;
+          if (SP[g.category] || g.ownGoal) sp++;
         }); });
         if (!total) return;
         var pct = 100 * sp / total;
         var avg = 0, years = 0;
         Object.values(res[1].tournaments).forEach(function (t) {
-          var c = t.windows.direct_15s.counts;
-          avg += 100 * (c.corner + c.free_kick + c.throw_in) / t.total_goals; years++;
+          var s = 0;
+          t.goals.forEach(function (g) {
+            if ((g.category === "corner" || g.category === "free_kick" || g.category === "throw_in") && g.elapsed_s != null && g.elapsed_s <= 15) s++;
+            else if (g.category === "penalty" || g.own_goal) s++;
+          });
+          avg += 100 * s / t.total_goals; years++;
         });
         avg /= years;
         var isMad = pct < avg;

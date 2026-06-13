@@ -123,10 +123,10 @@
     <div class="spt-hero">
       <div class="spt-panel">
         <div class="spt-bignum"><span id="spt-pct">…</span><small>%</small><span class="spt-live" id="spt-live" hidden><span class="dot"></span>LIVE</span></div>
-        <div class="spt-of" id="spt-of">of 2026 goals have come from corners &amp; free kicks</div>
+        <div class="spt-of" id="spt-of">of 2026 goals have come from corners, free kicks, long throws, penalties &amp; own goals</div>
         <div class="spt-chips" id="spt-chips"></div>
-        <label class="spt-toggle"><input type="checkbox" id="spt-pens" /> count penalties as set pieces <span title="FIFA's 2018 headline (43%) counted penalties; most analysts don't. Toggle and watch the argument change.">ⓘ</span></label>
-        <label class="spt-toggle"><input type="checkbox" id="spt-ogs" /> own goals are Mikel-approved <span title="An own goal under dead-ball pressure already counts as a set piece (7 of 2018's record 12 own goals came from them). This toggle credits the remaining open-play own goals to the chaos too. Not a real analytics convention. Mikel doesn't care.">ⓘ</span></label>
+        <label class="spt-toggle"><input type="checkbox" id="spt-pens" checked /> count penalties as set pieces <span title="FIFA's 2018 headline (43%) counted penalties; most analysts don't. On by default here. Untoggle and watch the argument change.">ⓘ</span></label>
+        <label class="spt-toggle"><input type="checkbox" id="spt-ogs" checked /> own goals are Mikel-approved <span title="An own goal under dead-ball pressure already counts as a set piece (7 of 2018's record 12 own goals came from them). On by default, this credits the remaining open-play own goals to the chaos too. Not a real analytics convention. Mikel doesn't care.">ⓘ</span></label>
       </div>
 
       <div class="spt-panel arteta-card">
@@ -137,7 +137,7 @@
       </div>
     </div>
 
-    <h2 class="section-title">vs previous World Cups<span class="st-sub">Same definition for every tournament: goal within 15 seconds of a corner, free-kick or throw-in delivery (direct free kicks count). Penalties only when toggled.</span></h2>
+    <h2 class="section-title">vs previous World Cups<span class="st-sub">Same definition for every tournament: goal within 15 seconds of a corner, free-kick or throw-in delivery (direct free kicks count), plus penalties and own goals by default. Untoggle above for the purist's number.</span></h2>
     <div class="spt-panel">
       <div class="spt-bars" id="spt-bars"></div>
       <div class="spt-note" id="spt-basenote"></div>
@@ -160,7 +160,7 @@
     import { ESPN_BASE, goalsFromSummary, matchFromScoreboardEvent, aggregate, applyOverrides } from './setpiece-espn.mjs';
 
     const $ = (id) => document.getElementById(id);
-    const state = { matches: [], baselines: null, overrides: null, pens: false, ogs: false };
+    const state = { matches: [], baselines: null, overrides: null, pens: true, ogs: true };
 
     const CAT_LABEL = { corner: 'CORNER', free_kick: 'FREE KICK', throw_in: 'LONG THROW', penalty: 'PENALTY', open_play: 'OPEN PLAY' };
     const SP_CATS = ['corner', 'free_kick', 'throw_in'];
@@ -223,7 +223,7 @@
       const a = aggregate(matches);
       const og = openPlayOgs2026(matches);
       const mad = isMad(matches, p2022, p2018);
-      if (!mad && state.ogs && og > 0) return ['An own goal is just a set piece the defender finished for us. We take it. We move.', 'crediting the chaos'];
+      if (!mad && state.ogs && og > 0 && a.total % 3 === 0) return ['An own goal is just a set piece the defender finished for us. We take it. We move.', 'crediting the chaos'];
       const p = pct(matches);
       const sp = a.setPieceExclPens + (state.pens ? a.counts.penalty : 0) + (state.ogs ? og : 0);
       const band = a.total === 0 ? 'nogoals' : sp === 0 ? 'zero' : mad ? 'mad' : p >= p2018 ? 'high' : p >= p2022 ? 'mid' : 'low';

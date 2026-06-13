@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-13T09:42:08.554Z",
+  "generated": "2026-06-13T20:25:10.470Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 12,
+  "total": 13,
   "counts": {
    "corner": 1,
    "free_kick": 1,
    "throw_in": 1,
-   "penalty": 0,
+   "penalty": 1,
    "open_play": 9
   },
   "setPieceExclPens": 3,
-  "pctExclPens": 25,
-  "pctInclPens": 25
+  "pctExclPens": 23.076923076923077,
+  "pctInclPens": 30.76923076923077
  },
  "matches": [
   {
@@ -93,7 +93,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Goal! Korea Republic 1, Czechia 1. Hwang In-Beom (Korea Republic) right footed shot from the centre of the box to the bottom right corner. Assisted by Lee Kang-In.",
-     "wallclock": "2026-06-12T03:25:41Z"
+     "wallclock": "2026-06-12T03:25:42Z"
     },
     {
      "espnPlayId": "49485808",
@@ -105,7 +105,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Korea Republic 2, Czechia 1. Oh Hyeon-Gyu (Korea Republic) left footed shot from very close range to the bottom left corner. Assisted by Hwang In-Beom.",
-     "wallclock": "2026-06-12T03:38:20Z"
+     "wallclock": "2026-06-12T03:38:21Z"
     }
    ]
   },
@@ -130,7 +130,7 @@
      "category": "corner",
      "scoreAfter": "0–1",
      "evidence": "Goal! Canada 0, Bosnia and Herzegovina 1. Jovo Lukic (Bosnia and Herzegovina) header from very close range to the centre of the goal. Assisted by Sead Kolasinac with a headed pass following a corner.",
-     "wallclock": "2026-06-12T19:22:45Z"
+     "wallclock": "2026-06-12T19:22:46Z"
     },
     {
      "espnPlayId": "49487265",
@@ -179,7 +179,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! USA 2, Paraguay 0. Folarin Balogun (USA) right footed shot from the centre of the box to the bottom right corner. Assisted by Christian Pulisic.",
-     "wallclock": "2026-06-13T01:32:33Z"
+     "wallclock": "2026-06-13T01:32:34Z"
     },
     {
      "espnPlayId": "49491046",
@@ -215,7 +215,32 @@
      "category": "open_play",
      "scoreAfter": "4–1",
      "evidence": "Goal! USA 4, Paraguay 1. Giovanni Reyna (USA) right footed shot from the centre of the box to the bottom left corner. Assisted by Alex Freeman.",
-     "wallclock": "2026-06-13T03:01:26Z"
+     "wallclock": "2026-06-13T03:01:27Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760420",
+   "name": "Switzerland at Qatar",
+   "kickoff": "2026-06-13T19:00Z",
+   "state": "in",
+   "statusText": "Second Half",
+   "home": "Qatar",
+   "away": "Switzerland",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49493954",
+     "minute": "17'",
+     "team": "Switzerland",
+     "scorer": "Breel Embolo",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Qatar 0, Switzerland 1. Breel Embolo (Switzerland) converts the penalty with a right footed shot to the bottom left corner.",
+     "wallclock": "2026-06-13T19:21:20Z"
     }
    ]
   }
