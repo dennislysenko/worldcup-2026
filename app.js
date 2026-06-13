@@ -37,6 +37,90 @@
   let plannerSel = { start: null, end: null };
   const ui = { showElo: false, onlyFav: false, showBangers: true, search: "" };
 
+  // ======================================================================
+  // LIVE SCORES — baked scores.json + ESPN live poll (CORS-open public API).
+  // Match logic mirrors scores-espn.mjs (the Node baker); keep them in sync.
+  // ======================================================================
+  const SCORE_ESPN = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world";
+  const scores = {};            // matchNumber -> { homeScore, awayScore, state, statusText, minute }
+  const liveLoading = new Set(); // matchNumbers believed live but not yet fetched
+  const SCORE_ALIASES = { "ivory coast": "cote ivoire ivory coast", "cote d’ivoire": "cote ivoire ivory coast" };
+  function scoreTokens(name) {
+    const n = (name || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+    return new Set((SCORE_ALIASES[n] || n).split(/[^a-z]+/).filter(t => t.length >= 4));
+  }
+  function scoreOverlap(a, b) { const ta = scoreTokens(a), tb = scoreTokens(b); let n = 0; for (const t of ta) if (tb.has(t)) n++; return n; }
+  function espnEventToScore(e) {
+    const c = (e.competitions || [])[0] || {}, comp = c.competitors || [];
+    const h = comp.find(x => x.homeAway === "home") || {}, a = comp.find(x => x.homeAway === "away") || {};
+    const st = e.status || c.status || {};
+    return {
+      utc: e.date,
+      home: (h.team || {}).displayName || "", away: (a.team || {}).displayName || "",
+      homeScore: h.score != null && h.score !== "" ? Number(h.score) : null,
+      awayScore: a.score != null && a.score !== "" ? Number(a.score) : null,
+      state: (st.type || {}).state || "pre",
+      statusText: (st.type || {}).shortDetail || (st.type || {}).description || "",
+      minute: st.displayClock || "",
+    };
+  }
+  function indexEspnScores(events) {
+    const byInstant = new Map();
+    WC.matches.forEach(m => { const t = new Date(m.utc).getTime(); if (!byInstant.has(t)) byInstant.set(t, []); byInstant.get(t).push(m); });
+    const out = {};
+    for (const e of events) {
+      const sc = espnEventToScore(e);
+      if (sc.state === "pre") continue;
+      const cands = byInstant.get(new Date(e.date).getTime()) || [];
+      let best = null, bestScore = -1;
+      for (const m of cands) { const s = scoreOverlap(m.home, sc.home) + scoreOverlap(m.away, sc.away); if (s > bestScore) { bestScore = s; best = m; } }
+      if (best) out[best.matchNumber] = sc;
+    }
+    return out;
+  }
+  // markup: live score (pulsing) / final score / loading shimmer / null
+  function scoreHTML(m) {
+    const s = scores[m.matchNumber];
+    if (s && s.homeScore != null && (s.state === "in" || s.state === "post")) {
+      const live = s.state === "in";
+      const tail = live
+        ? `<span class="sc-dot"></span>${s.minute ? `<span class="sc-min">${s.minute}</span>` : ""}`
+        : `<span class="sc-ft">FT</span>`;
+      return `<span class="mscore${live ? " live" : ""}">${s.homeScore}<span class="sc-dash">–</span>${s.awayScore}${tail}</span>`;
+    }
+    if (liveLoading.has(m.matchNumber)) return `<span class="mscore loading"><span class="sc-dot"></span><span class="sc-load">···</span></span>`;
+    return null;
+  }
+  const nyDate = d => new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(d).replace(/-/g, "");
+  let liveTimer = null;
+  async function pollScores() {
+    const days = [...new Set([nyDate(new Date(Date.now() - 864e5)), nyDate(new Date())])];
+    for (const d of days) {
+      try {
+        const sb = await (await fetch(`${SCORE_ESPN}/scoreboard?dates=${d}`)).json();
+        const idx = indexEspnScores(sb.events || []);
+        for (const mn in idx) { scores[mn] = idx[mn]; liveLoading.delete(+mn); }
+      } catch (e) { /* offline / rate-limited: keep what we have */ }
+    }
+    // drop loading flags for matches that are well past with no data
+    const now = Date.now();
+    WC.matches.forEach(m => { if (liveLoading.has(m.matchNumber) && now > new Date(m.utc).getTime() + 3.5 * 3600e3 && !scores[m.matchNumber]) liveLoading.delete(m.matchNumber); });
+    rerenderAll();
+    const anyLive = Object.values(scores).some(s => s.state === "in") || liveLoading.size > 0;
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(pollScores, anyLive ? 60000 : 300000);
+  }
+  async function initScores() {
+    try { const j = await (await fetch("scores.json")).json(); Object.assign(scores, j.scores || {}); } catch (e) { /* no bake yet */ }
+    const now = Date.now();
+    WC.matches.forEach(m => {
+      const k = new Date(m.utc).getTime(), s = scores[m.matchNumber];
+      if (now >= k && now <= k + 2.75 * 3600e3 && (!s || s.state !== "post")) liveLoading.add(m.matchNumber);
+    });
+    rerenderAll();
+    pollScores();
+  }
+
   // ---- helpers ----
   function loadFavorites() {
     try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || "[]")); }
@@ -272,8 +356,9 @@
       : (projIconHTML(projDist(m.matchNumber, which), 2) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
     const cls = ["match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
-    const time = m.time ? `<span class="mtime">${m.time}</span>` : "";
-    return `<div class="${cls}" data-match="${m.matchNumber}">${side(m.home, "home")}<span class="vs">v</span>${side(m.away, "away")}${time}${flame}</div>`;
+    const sc = scoreHTML(m);
+    const meta = sc || (m.time ? `<span class="mtime">${m.time}</span>` : "");
+    return `<div class="${cls}" data-match="${m.matchNumber}">${side(m.home, "home")}<span class="vs">v</span>${side(m.away, "away")}${meta}${flame}</div>`;
   }
 
   function renderMonth(year, month) {
@@ -309,9 +394,11 @@
     };
     const cls = ["agenda-match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
+    const sc = scoreHTML(m);
+    const metaLead = sc ? `${sc} · ` : (m.time ? m.time + " · " : "");
     return `<div class="${cls}" data-match="${m.matchNumber}">
       <div class="ar-teams">${side(m.home, "home")}<span class="vs">v</span>${side(m.away, "away")}${flame}</div>
-      <div class="ar-meta">${m.time ? m.time + " · " : ""}${stageStr} · ${m.venue}, ${m.city}</div></div>`;
+      <div class="ar-meta">${metaLead}${stageStr} · ${m.venue}, ${m.city}</div></div>`;
   }
 
   function renderAgenda() {
@@ -398,9 +485,10 @@
         const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
         const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
         const flame = (ui.showBangers && isBanger(m)) ? ` <span class="mm-flame" title="Banger">🔥</span>` : "";
+        const sc = scoreHTML(m);
         return `<div class="mm-row"><span class="mm-date">${dateStr}</span>
           <span class="mm-opp">vs ${oppHtml}${flame}</span>
-          <span class="mm-meta">${m.time || ""} · ${stageStr} · ${m.city}</span></div>`;
+          <span class="mm-meta">${sc ? sc + " · " : (m.time ? m.time + " · " : "")}${stageStr} · ${m.city}</span></div>`;
       }).join("");
       return `<div class="mm-group">
         <div class="mm-team-head">${flag(t.iso2, "")} ${team}
@@ -692,6 +780,7 @@
   renderProjections();
   setupScrollSpy();
   setActiveNav("calendar");
+  initScores();
   const initial = (location.hash || "").replace("#", "");
   if (["my-teams", "planner", "projections"].includes(initial)) {
     // jump to the deep-linked section once layout settles

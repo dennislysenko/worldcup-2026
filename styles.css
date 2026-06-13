@@ -932,3 +932,31 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .arteta-peek.mad .arteta-peek-tip { border-color: var(--banger); }
 .arteta-peek.mad .arteta-peek-tip b { color: var(--banger); }
 .arteta-peek.mad .arteta-peek-tip::after { border-top-color: var(--banger); border-right-color: var(--banger); }
+
+/* ---------- Live & final scores on match cells ---------- */
+.mscore {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.mscore .sc-dash { color: var(--muted); font-weight: 400; }
+.mscore .sc-ft { color: var(--muted); font-weight: 700; font-size: 8.5px; letter-spacing: .5px; margin-left: 3px; }
+.mscore.live { color: var(--banger); }
+.mscore.live .sc-dash { color: var(--banger); opacity: .7; }
+.mscore .sc-min { color: var(--banger); font-size: 9px; font-weight: 700; margin-left: 2px; }
+.mscore .sc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--banger); animation: sc-pulse 1.3s infinite; flex-shrink: 0; }
+@keyframes sc-pulse { 50% { opacity: .2; } }
+.mscore.loading { color: var(--muted); }
+.mscore.loading .sc-load { letter-spacing: 1px; animation: sc-blink 1.1s steps(4) infinite; }
+@keyframes sc-blink { 50% { opacity: .35; } }
+
+/* agenda + my-matches reuse .mscore; nudge sizes up a touch for readability */
+.ar-meta .mscore, .mm-meta .mscore { font-size: 12px; margin-left: 0; }
+.ar-meta .mscore .sc-ft, .mm-meta .mscore .sc-ft { font-size: 10px; }
+.ar-meta .mscore .sc-min, .mm-meta .mscore .sc-min { font-size: 10px; }
