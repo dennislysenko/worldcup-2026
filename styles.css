@@ -875,8 +875,8 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .arteta-peek:hover img { transform: rotate(-16deg) translate(-8px, -10px) scale(1.06); }
 .arteta-peek-tip {
   position: absolute;
-  right: 130px;
-  bottom: 120px;
+  right: 170px;
+  bottom: 128px;
   z-index: 2;
   width: max-content;
   max-width: 160px;
@@ -914,7 +914,7 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 @media (max-width: 760px) {
   .arteta-peek { right: -34px; bottom: -44px; }
   .arteta-peek img { width: 126px; }
-  .arteta-peek-tip { right: 96px; bottom: 92px; font-size: 15px; padding: 5px 9px; max-width: 130px; }
+  .arteta-peek-tip { right: 128px; bottom: 98px; font-size: 15px; padding: 5px 9px; max-width: 130px; }
 }
 
 /* mad mode: 2026 below the 2018/2022 set-piece average */
