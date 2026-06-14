@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-13T20:25:10.470Z",
+  "generated": "2026-06-14T10:02:08.870Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 13,
+  "total": 19,
   "counts": {
    "corner": 1,
    "free_kick": 1,
    "throw_in": 1,
    "penalty": 1,
-   "open_play": 9
+   "open_play": 15
   },
   "setPieceExclPens": 3,
-  "pctExclPens": 23.076923076923077,
-  "pctInclPens": 30.76923076923077
+  "pctExclPens": 15.789473684210526,
+  "pctInclPens": 21.05263157894737
  },
  "matches": [
   {
@@ -223,11 +223,11 @@
    "espnId": "760420",
    "name": "Switzerland at Qatar",
    "kickoff": "2026-06-13T19:00Z",
-   "state": "in",
-   "statusText": "Second Half",
+   "state": "post",
+   "statusText": "Full Time",
    "home": "Qatar",
    "away": "Switzerland",
-   "homeScore": 0,
+   "homeScore": 1,
    "awayScore": 1,
    "goals": [
     {
@@ -241,6 +241,117 @@
      "scoreAfter": "0–1",
      "evidence": "Goal! Qatar 0, Switzerland 1. Breel Embolo (Switzerland) converts the penalty with a right footed shot to the bottom left corner.",
      "wallclock": "2026-06-13T19:21:20Z"
+    },
+    {
+     "espnPlayId": "49496324",
+     "minute": "90'+4'",
+     "team": "Qatar",
+     "scorer": "Miro Muheim",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Own Goal by Miro Muheim, Switzerland. Qatar 1, Switzerland 1.",
+     "wallclock": "2026-06-13T21:01:08Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760419",
+   "name": "Morocco at Brazil",
+   "kickoff": "2026-06-13T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Brazil",
+   "away": "Morocco",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49497769",
+     "minute": "21'",
+     "team": "Morocco",
+     "scorer": "Ismael Saibari",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Brazil 0, Morocco 1. Ismael Saibari (Morocco) right footed shot from outside the box to the centre of the goal. Assisted by Brahim Díaz with a through ball following a fast break.",
+     "wallclock": "2026-06-13T22:24:38Z"
+    },
+    {
+     "espnPlayId": "49497900",
+     "minute": "32'",
+     "team": "Brazil",
+     "scorer": "Vinícius Júnior",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Brazil 1, Morocco 1. Vinícius Júnior (Brazil) right footed shot from the left side of the box to the top right corner. Assisted by Bruno Guimarães.",
+     "wallclock": "2026-06-13T22:35:45Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760418",
+   "name": "Scotland at Haiti",
+   "kickoff": "2026-06-14T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Haiti",
+   "away": "Scotland",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49501598",
+     "minute": "28'",
+     "team": "Scotland",
+     "scorer": "John McGinn",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Haiti 0, Scotland 1. John McGinn (Scotland) left footed shot from the centre of the box to the high centre of the goal.",
+     "wallclock": "2026-06-14T01:30:31Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760421",
+   "name": "Türkiye at Australia",
+   "kickoff": "2026-06-14T04:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Australia",
+   "away": "Türkiye",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49503574",
+     "minute": "27'",
+     "team": "Australia",
+     "scorer": "Nestory Irankunda",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Australia 1, Türkiye 0. Nestory Irankunda (Australia) right footed shot from the centre of the box to the bottom left corner. Assisted by Paul Okon-Engstler.",
+     "wallclock": "2026-06-14T04:26:53Z"
+    },
+    {
+     "espnPlayId": "49504497",
+     "minute": "75'",
+     "team": "Australia",
+     "scorer": "Connor Metcalfe",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Australia 2, Türkiye 0. Connor Metcalfe (Australia) left footed shot from outside the box to the bottom right corner.",
+     "wallclock": "2026-06-14T05:34:31Z"
     }
    ]
   }
