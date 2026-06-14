@@ -294,12 +294,12 @@
     const m = WC.matches.find(x => x.stage === "Group" && (x.home === team || x.away === team));
     return m ? m.group : null;
   }
-  // Single flag ONLY for a genuine favourite (#1 ≥ 60%). Otherwise show the leaders
+  // Single flag ONLY for a near-lock favourite (#1 ≥ 80%). Otherwise show the leaders
   // that cover the bulk of outcomes (cumulative ≥ 60%), and keep extending while the
   // next contender stays within 70% of the one above (a tight pack). Clamped 2–4.
   function pickIcon(dist) {
     const p = i => (dist[i] ? dist[i].p : 0);
-    if (p(0) >= 0.60) return { n: 1, style: "single", teams: dist.slice(0, 1) };
+    if (p(0) >= 0.80) return { n: 1, style: "single", teams: dist.slice(0, 1) };
     let n = 2;
     while (n < 4 && p(n) > 0) {
       let cum = 0; for (let i = 0; i < n; i++) cum += p(i);
@@ -791,7 +791,7 @@
     const meta = WC.projMeta || {};
     document.getElementById("proj-intro").innerHTML = `
       <p style="margin-top:0">Group fixtures are set; the knockout bracket isn't. We simulate the whole tournament ${meta.sims ? meta.sims.toLocaleString() : ""} times from current Elo ratings — group games as Poisson-goal matches, knockout ties as single games — and tally how often each nation reaches each slot.</p>
-      <p class="proj-rule"><b>Reading the icons:</b> a single flag means a genuine favourite (≥<code>60%</code>). Otherwise the icon shows the leaders that cover the likely outcomes, expanding to 3–4 flags when the field is tightly packed — so an open slot looks open.
+      <p class="proj-rule"><b>Reading the icons:</b> a single flag means a near-lock favourite (≥<code>80%</code>). Otherwise the icon shows the leaders that cover the likely outcomes, expanding to 3–4 flags when the field is tightly packed — so an open slot looks open.
       <span style="color:var(--muted)">Winner/runner-up slots are exact; the eight best third-placed teams' allocation is approximated (FIFA uses a fixed table).</span></p>`;
     const ko = WC.matches.filter(m => m.stage !== "Group").sort((a, b) => a.matchNumber - b.matchNumber);
     const stages = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Third-place", "Final"];
