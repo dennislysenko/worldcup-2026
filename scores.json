@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-14T10:02:09.048Z",
+  "generated": "2026-06-15T12:48:08.502Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -96,6 +96,54 @@
    "away": "Türkiye",
    "homeScore": 2,
    "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "9": {
+   "espnId": "760422",
+   "utc": "2026-06-14T17:00Z",
+   "home": "Germany",
+   "away": "Curaçao",
+   "homeScore": 7,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "10": {
+   "espnId": "760425",
+   "utc": "2026-06-14T20:00Z",
+   "home": "Netherlands",
+   "away": "Japan",
+   "homeScore": 2,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "11": {
+   "espnId": "760423",
+   "utc": "2026-06-14T23:00Z",
+   "home": "Ivory Coast",
+   "away": "Ecuador",
+   "homeScore": 1,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "12": {
+   "espnId": "760424",
+   "utc": "2026-06-15T02:00Z",
+   "home": "Sweden",
+   "away": "Tunisia",
+   "homeScore": 5,
+   "awayScore": 1,
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
