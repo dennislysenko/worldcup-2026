@@ -497,7 +497,7 @@
     const first = new Date(year, month, 1);
     const startPad = first.getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const todayStr = "2026-06-06";
+    const todayStr = TODAY;
     let cells = "";
     for (let i = 0; i < startPad; i++) cells += `<div class="day empty"></div>`;
     for (let d = 1; d <= daysInMonth; d++) {
@@ -566,7 +566,8 @@
   // ======================================================================
   // UPCOMING BANGERS (compact strip on the Calendar view)
   // ======================================================================
-  const TODAY = "2026-06-06";
+  // current date (YYYY-MM-DD) in tournament time, so "upcoming" / "today" track reality
+  const TODAY = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
   function renderUpcomingBangers() {
     const el = document.getElementById("upcoming-bangers");
     const row = document.getElementById("upcoming-row");
