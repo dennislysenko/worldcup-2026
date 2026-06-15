@@ -108,7 +108,7 @@
     rerenderAll();
     const anyLive = Object.values(scores).some(s => s.state === "in") || liveLoading.size > 0;
     clearTimeout(liveTimer);
-    liveTimer = setTimeout(pollScores, anyLive ? 60000 : 300000);
+    liveTimer = setTimeout(pollScores, anyLive ? 30000 : 300000); // 30s while live, 5m idle
   }
   async function initScores() {
     try { const j = await (await fetch("scores.json")).json(); Object.assign(scores, j.scores || {}); } catch (e) { /* no bake yet */ }

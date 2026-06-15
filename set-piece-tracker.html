@@ -352,12 +352,12 @@
       $('spt-pens').addEventListener('change', (e) => { state.pens = e.target.checked; render(); });
       $('spt-ogs').addEventListener('change', (e) => { state.ogs = e.target.checked; render(); });
       await topUp();
-      // every minute while a match is live, every 5 minutes otherwise
+      // every 30s while a match is live, every 5 minutes otherwise
       let lastSlow = 0;
       setInterval(() => {
         const live = state.matches.some((m) => m.state === 'in');
         if (live || Date.now() - lastSlow > 300_000) { lastSlow = Date.now(); topUp(); }
-      }, 60_000);
+      }, 30_000);
     })();
   </script>
 </body>
