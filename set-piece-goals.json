@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-15T12:48:08.333Z",
+  "generated": "2026-06-16T11:40:34.972Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 38,
+  "total": 46,
   "counts": {
-   "corner": 3,
+   "corner": 4,
    "free_kick": 3,
    "throw_in": 1,
    "penalty": 2,
-   "open_play": 29
+   "open_play": 36
   },
-  "setPieceExclPens": 7,
-  "pctExclPens": 18.42105263157895,
-  "pctInclPens": 23.68421052631579
+  "setPieceExclPens": 8,
+  "pctExclPens": 17.391304347826086,
+  "pctInclPens": 21.73913043478261
  },
  "matches": [
   {
@@ -632,6 +632,153 @@
      "scoreAfter": "5–1",
      "evidence": "Goal! Sweden 5, Tunisia 1. Yasin Ayari (Sweden) right footed shot from outside the box to the bottom left corner. Assisted by Lucas Bergvall.",
      "wallclock": "2026-06-15T03:55:46Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760428",
+   "name": "Cape Verde at Spain",
+   "kickoff": "2026-06-15T16:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Spain",
+   "away": "Cape Verde",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
+  },
+  {
+   "espnId": "760426",
+   "name": "Egypt at Belgium",
+   "kickoff": "2026-06-15T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Belgium",
+   "away": "Egypt",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49524019",
+     "minute": "20'",
+     "team": "Egypt",
+     "scorer": "Emam Ashour",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Belgium 0, Egypt 1. Emam Ashour (Egypt) right footed shot from outside the box to the bottom left corner. Assisted by Mohamed Salah.",
+     "wallclock": "2026-06-15T19:19:36Z"
+    },
+    {
+     "espnPlayId": "49524800",
+     "minute": "66'",
+     "team": "Belgium",
+     "scorer": "Mohamed Hany",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Own Goal by Mohamed Hany, Egypt. Belgium 1, Egypt 1.",
+     "wallclock": "2026-06-15T20:28:17Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760429",
+   "name": "Uruguay at Saudi Arabia",
+   "kickoff": "2026-06-15T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Saudi Arabia",
+   "away": "Uruguay",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49525862",
+     "minute": "41'",
+     "team": "Saudi Arabia",
+     "scorer": "Abdulelah Al-Amri",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Saudi Arabia 1, Uruguay 0. Abdulelah Al Amri (Saudi Arabia) right footed shot from very close range to the centre of the goal following a corner.",
+     "wallclock": "2026-06-15T22:44:06Z"
+    },
+    {
+     "espnPlayId": "49526471",
+     "minute": "80'",
+     "team": "Uruguay",
+     "scorer": "Maxi Araújo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Saudi Arabia 1, Uruguay 1. Maxi Araújo (Uruguay) left footed shot from the left side of the six yard box to the bottom left corner.",
+     "wallclock": "2026-06-15T23:45:26Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760427",
+   "name": "New Zealand at Iran",
+   "kickoff": "2026-06-16T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Iran",
+   "away": "New Zealand",
+   "homeScore": 2,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49528195",
+     "minute": "7'",
+     "team": "New Zealand",
+     "scorer": "Elijah Just",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! IR Iran 0, New Zealand 1. Elijah Just (New Zealand) right footed shot from the centre of the box to the high centre of the goal. Assisted by Chris Wood.",
+     "wallclock": "2026-06-16T01:10:35Z"
+    },
+    {
+     "espnPlayId": "49529312",
+     "minute": "32'",
+     "team": "Iran",
+     "scorer": "Ramin Rezaeian",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! IR Iran 1, New Zealand 1. Ramin Rezaeian (IR Iran) right footed shot from the centre of the box to the bottom left corner.",
+     "wallclock": "2026-06-16T01:35:40Z"
+    },
+    {
+     "espnPlayId": "49530353",
+     "minute": "54'",
+     "team": "New Zealand",
+     "scorer": "Elijah Just",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! IR Iran 1, New Zealand 2. Elijah Just (New Zealand) right footed shot from the right side of the box to the centre of the goal. Assisted by Chris Wood following a fast break.",
+     "wallclock": "2026-06-16T02:21:36Z"
+    },
+    {
+     "espnPlayId": "49530497",
+     "minute": "64'",
+     "team": "Iran",
+     "scorer": "Mohammad Mohebbi",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! IR Iran 2, New Zealand 2. Mohammad Mohebbi (IR Iran) header from the centre of the box to the bottom left corner. Assisted by Ramin Rezaeian with a cross.",
+     "wallclock": "2026-06-16T02:30:40Z"
     }
    ]
   }

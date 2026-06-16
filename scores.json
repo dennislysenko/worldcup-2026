@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-15T12:48:08.502Z",
+  "generated": "2026-06-16T11:40:35.263Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -147,6 +147,54 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
+   "period": 2
+  },
+  "13": {
+   "espnId": "760428",
+   "utc": "2026-06-15T16:00Z",
+   "home": "Spain",
+   "away": "Cape Verde",
+   "homeScore": 0,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
+   "period": 2
+  },
+  "14": {
+   "espnId": "760426",
+   "utc": "2026-06-15T19:00Z",
+   "home": "Belgium",
+   "away": "Egypt",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
+   "period": 2
+  },
+  "15": {
+   "espnId": "760429",
+   "utc": "2026-06-15T22:00Z",
+   "home": "Saudi Arabia",
+   "away": "Uruguay",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "16": {
+   "espnId": "760427",
+   "utc": "2026-06-16T01:00Z",
+   "home": "Iran",
+   "away": "New Zealand",
+   "homeScore": 2,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
    "period": 2
   }
  }
