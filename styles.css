@@ -1084,3 +1084,29 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .bp-unknown { font-size: 12.5px; color: var(--muted); font-style: italic; }
 .bp-note { font-size: 12.5px; color: var(--muted); font-style: italic; margin: 2px 0 6px; line-height: 1.5; }
 .bp-empty { color: var(--muted); font-size: 14px; padding: 8px 2px; }
+
+/* ---------- Movers ---------- */
+.mv-ctl { display: flex; align-items: center; gap: 16px; margin: -6px 2px 14px; flex-wrap: wrap; }
+.mv-metrics { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.mv-metrics button { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 13px; padding: 7px 13px; cursor: pointer; }
+.mv-metrics button + button { border-left: 1px solid var(--line); }
+.mv-metrics button.active { background: var(--panel-2); color: var(--text); font-weight: 700; }
+.mv-base-lbl { font-size: 13px; color: var(--muted); }
+.mv-base-lbl select { background: var(--bg-2); border: 1px solid var(--line); color: var(--text); border-radius: 8px; padding: 6px 9px; font-family: inherit; font-size: 13px; }
+.mv-sub { font-size: 13px; color: var(--muted); margin: 0 2px 14px; }
+.mv-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 620px) { .mv-cols { grid-template-columns: 1fr; } }
+.mv-col { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px 14px; }
+.mv-head { font-size: 13px; font-weight: 700; letter-spacing: .3px; padding: 4px 2px 10px; }
+.mv-head.mv-up { color: var(--accent); }
+.mv-head.mv-down { color: var(--banger); }
+.mv-row { display: flex; align-items: center; gap: 9px; padding: 8px 4px; font-size: 14px; border-top: 1px dashed rgba(242,245,238,.1); }
+.mv-arrow { font-size: 11px; width: 12px; flex-shrink: 0; }
+.mv-row.up .mv-arrow, .mv-row.up .mv-delta { color: var(--accent); }
+.mv-row.down .mv-arrow, .mv-row.down .mv-delta { color: var(--banger); }
+.mv-flag { width: 22px; height: 15px; border-radius: 2px; object-fit: cover; flex-shrink: 0; }
+.mv-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mv-delta { font-weight: 800; font-variant-numeric: tabular-nums; width: 46px; text-align: right; }
+.mv-track { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; width: 92px; text-align: right; }
+.mv-track b { color: var(--text); }
+.mv-none { color: var(--muted); font-size: 13px; padding: 8px 2px; }

@@ -133,18 +133,20 @@
     (groupGames[m.group] = groupGames[m.group] || []).push(m);
   });
 
-  let groupOdds = {}, oddsSig = null; // team -> {win,runnerUp,advance}; recomputed when finals change
+  let groupOdds = {}, oddsSig = null, projSig = ""; // projSig "" = sim.js already ran the empty-results baseline
   function finalResultsMap() {
     const r = {};
     for (const mn in scores) { const s = scores[mn]; if (s.state === "post" && s.homeScore != null) r[mn] = s; }
     return r;
   }
-  function ensureGroupOdds() {
+  // Recompute everything results-driven when the set of finals changes:
+  // the heavy projections (WC.proj → bracket/path/calendar) AND the group odds.
+  // Gated by a signature so the 12k-sim only runs when a new result lands.
+  function ensureSims() {
     const finals = finalResultsMap();
     const sig = Object.keys(finals).sort().map(mn => `${mn}:${finals[mn].homeScore}-${finals[mn].awayScore}`).join("|");
-    if (sig === oddsSig && Object.keys(groupOdds).length) return;
-    oddsSig = sig;
-    groupOdds = WC.runGroupOdds ? WC.runGroupOdds(finals) : {};
+    if (sig !== projSig) { if (WC.runProjections) WC.runProjections(finals); projSig = sig; } // refresh bracket/path/calendar
+    if (sig !== oddsSig || !Object.keys(groupOdds).length) { groupOdds = WC.runGroupOdds ? WC.runGroupOdds(finals) : {}; oddsSig = sig; }
   }
 
   // standings for one group from FINAL results, with FIFA-ish tiebreakers
@@ -197,7 +199,7 @@
   function renderGroups() {
     const el = document.getElementById("groups");
     if (!el) return;
-    ensureGroupOdds();
+    ensureSims();
     el.classList.toggle("detailed", groupsDetailed);
     // never show a flat 100%/✓ — nothing's mathematically certain pre-final-game
     const pct = p => {
@@ -444,7 +446,7 @@
   function renderPath(team) {
     const el = document.getElementById("path-panel"); if (!el) return;
     if (!team) { el.innerHTML = `<p class="bp-empty">Pick a team above to see their road to the final.</p>`; return; }
-    ensureGroupOdds();
+    ensureSims();
     const L = teamGroup(team), od = groupOdds[team] || {};
     const t = WC.teamByName[team];
     const third = Math.max(0, (od.advance || 0) - (od.win || 0) - (od.runnerUp || 0));
@@ -470,6 +472,59 @@
     sel.addEventListener("change", e => { localStorage.setItem(PATH_TEAM_KEY, e.target.value); renderPath(e.target.value); });
     renderPath(sel.value); // restored team, or empty-state prompt
   })();
+
+  // ======================================================================
+  // MOVERS — biggest swings between a baseline snapshot and the live projection
+  // ======================================================================
+  let projHistory = null, moversMetric = "champ", moversBaseKey = null;
+  const MOVER_LIVE = { champ: "champion", gw: "groupWin", adv: "r32" };
+  const MOVER_LABEL = { champ: "win the World Cup", gw: "win their group", adv: "reach the knockouts" };
+  fetch("proj-history.json").then(r => r.json()).then(h => { projHistory = h; initMoversControls(); renderMovers(); }).catch(() => {});
+  function initMoversControls() {
+    const base = document.getElementById("mv-base");
+    if (base && projHistory) {
+      base.innerHTML = projHistory.snapshots.map(s => `<option value="${s.key}">${s.label}</option>`).join("");
+      moversBaseKey = projHistory.snapshots[0].key; // default: since the tournament start
+      base.value = moversBaseKey;
+      base.addEventListener("change", e => { moversBaseKey = e.target.value; renderMovers(); });
+    }
+    const mt = document.getElementById("mv-metrics");
+    if (mt) mt.addEventListener("click", e => {
+      const b = e.target.closest("button[data-metric]"); if (!b) return;
+      moversMetric = b.dataset.metric;
+      mt.querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b));
+      renderMovers();
+    });
+  }
+  function renderMovers() {
+    const el = document.getElementById("movers");
+    if (!el || !projHistory || !WC.teamPath) return;
+    const base = projHistory.snapshots.find(s => s.key === moversBaseKey) || projHistory.snapshots[0];
+    const liveKey = MOVER_LIVE[moversMetric];
+    const rows = WC.teams.map(t => {
+      const now = (WC.teamPath[t.name] || {})[liveKey] || 0;
+      const was = ((base[moversMetric] || {})[t.name]) || 0;
+      return { team: t.name, now, was, d: now - was };
+    });
+    const card = r => {
+      const t = WC.teamByName[r.team];
+      const arrow = r.d >= 0 ? "▲" : "▼";
+      return `<div class="mv-row ${r.d >= 0 ? "up" : "down"}" data-team="${r.team}">
+        <span class="mv-arrow">${arrow}</span>${t ? flag(t.iso2, "mv-flag") : ""}
+        <span class="mv-name">${r.team}</span>
+        <span class="mv-delta">${r.d >= 0 ? "+" : ""}${Math.round(r.d * 100)}%</span>
+        <span class="mv-track">${Math.round(r.was * 100)}% → <b>${Math.round(r.now * 100)}%</b></span>
+      </div>`;
+    };
+    const up = rows.filter(r => r.d > 0.005).sort((a, b) => b.d - a.d).slice(0, 8);
+    const dn = rows.filter(r => r.d < -0.005).sort((a, b) => a.d - b.d).slice(0, 8);
+    const none = `<p class="mv-none">No notable moves yet.</p>`;
+    el.innerHTML = `<p class="mv-sub">Chance to <b>${MOVER_LABEL[moversMetric]}</b>, change since <b>${base.label.toLowerCase()}</b>.</p>
+      <div class="mv-cols">
+        <div class="mv-col"><div class="mv-head mv-up">📈 Risers</div>${up.map(card).join("") || none}</div>
+        <div class="mv-col"><div class="mv-head mv-down">📉 Fallers</div>${dn.map(card).join("") || none}</div>
+      </div>`;
+  }
 
   // ---- helpers ----
   function loadFavorites() {
@@ -592,7 +647,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "groups", "bracket", "path", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "groups", "bracket", "path", "movers", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
@@ -665,7 +720,7 @@
     setPickerCollapsed(false); document.getElementById("team-search").focus();
   });
 
-  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderGroups(); renderBracket(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
+  function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderBracket(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);

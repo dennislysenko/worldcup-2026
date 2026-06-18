@@ -48,6 +48,7 @@
     <button class="nav-link" data-view="groups">Groups</button>
     <button class="nav-link" data-view="bracket">Bracket</button>
     <button class="nav-link" data-view="path">Road to Final</button>
+    <button class="nav-link" data-view="movers">Movers</button>
     <button class="nav-link" data-view="my-teams">My Teams</button>
     <button class="nav-link" data-view="planner">Plan Watch Party</button>
     <a class="nav-link nav-page" href="set-piece-tracker.html">Set Pieces 🎯</a>
@@ -144,6 +145,20 @@
       </div>
       <p class="bp-explainer">Each block is one way they could finish their group — most likely first. Below it, the knockout route that finish would put them on: the round, the date, and the likely opponent each step (assuming they keep winning). <b>Hover any round</b> for the full opponent odds.</p>
       <div id="path-panel"></div>
+    </div>
+
+    <!-- ===================== MOVERS VIEW ===================== -->
+    <div class="view" id="view-movers">
+      <h2 class="section-title">Movers<span class="st-sub">Biggest swings in the projections as results come in</span></h2>
+      <div class="mv-ctl">
+        <div class="mv-metrics" id="mv-metrics">
+          <button type="button" data-metric="champ" class="active">Champion</button>
+          <button type="button" data-metric="gw">Win group</button>
+          <button type="button" data-metric="adv">Reach KO</button>
+        </div>
+        <label class="mv-base-lbl">since <select id="mv-base"></select></label>
+      </div>
+      <div id="movers"></div>
     </div>
 
     <!-- ===================== MY TEAMS VIEW ===================== -->
