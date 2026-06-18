@@ -199,7 +199,14 @@
     if (!el) return;
     ensureGroupOdds();
     el.classList.toggle("detailed", groupsDetailed);
-    const pct = p => p == null ? "—" : p >= 0.995 ? "✓" : p < 0.005 ? "·" : Math.round(p * 100) + "%";
+    // never show a flat 100%/✓ — nothing's mathematically certain pre-final-game
+    const pct = p => {
+      if (p == null) return "—";
+      if (p >= 0.999) return "99.9%";
+      if (p < 0.005) return "·";
+      const v = Math.round(p * 100);
+      return (v >= 100 ? 99 : v) + "%";
+    };
     const advCell = p => {
       if (p == null) return "—";
       return `<span class="adv-wrap"><span class="adv-bar"><span class="adv-fill" style="width:${Math.round(p * 100)}%"></span></span><b>${pct(p)}</b></span>`;
@@ -251,6 +258,217 @@
       renderGroups();
     });
     if (groupsDetailed) document.querySelector(".groups-hint").style.visibility = "hidden";
+  })();
+
+  // ======================================================================
+  // BRACKET — classic two-sided knockout tree, derived from the schedule.
+  // Slots resolve to real teams once decided (group done / feeder match final);
+  // otherwise show the Monte Carlo projection flags. SVG connectors.
+  // ======================================================================
+  const koByNum = {};
+  WC.matches.forEach(m => { if (m.stage !== "Group") koByNum[m.matchNumber] = m; });
+  const feederMatch = slot => { const m = /^(?:Winner|Loser) Match (\d+)$/.exec(slot || ""); return m ? +m[1] : null; };
+  // in-order walk from a root match → { stage: [matchNumbers top-to-bottom] }
+  function collectHalf(rootNum) {
+    const buckets = {};
+    (function walk(num) {
+      const m = koByNum[num]; if (!m) return;
+      const hf = feederMatch(m.home), af = feederMatch(m.away);
+      if (hf) walk(hf);
+      (buckets[m.stage] = buckets[m.stage] || []).push(num);
+      if (af) walk(af);
+    })(rootNum);
+    return buckets;
+  }
+  const HALF_STAGES = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final"];
+  const bracketLeft = collectHalf(feederMatch(koByNum[104].home));   // SF 101 subtree
+  const bracketRight = collectHalf(feederMatch(koByNum[104].away));  // SF 102 subtree
+
+  function groupFinal(letter) { const s = groupStanding(letter); return s.played === s.total ? s.rows : null; }
+  function resolveSide(num, side) {
+    const slot = koByNum[num][side] || "";
+    let mm = /^Winner Group (.+)$/.exec(slot);
+    if (mm) { const r = groupFinal(mm[1]); return r ? r[0].team : null; }
+    mm = /^Runner-up Group (.+)$/.exec(slot);
+    if (mm) { const r = groupFinal(mm[1]); return r ? r[1].team : null; }
+    const fm = feederMatch(slot);
+    if (fm) return matchWinner(fm);
+    return null; // Third-place qualifier (FIFA table TBD) → projection
+  }
+  function matchWinner(num) {
+    const sc = scores[num];
+    if (!sc || sc.state !== "post" || sc.homeScore == null || sc.homeScore === sc.awayScore) return null;
+    return resolveSide(num, sc.homeScore > sc.awayScore ? "home" : "away");
+  }
+  function bkSide(num, side) {
+    const team = resolveSide(num, side);
+    if (team) {
+      const w = matchWinner(num), won = w && team === w, lost = w && team !== w;
+      return `<div class="bk-side${won ? " won" : ""}${lost ? " lost" : ""}">${teamFlag(team, "bk-flag")}<span class="bk-name">${team}</span></div>`;
+    }
+    const slot = koByNum[num][side] || "";
+    const dist = projDist(num, side);
+    // overlapping flag strip of the 2–4 contenders, flags above the slot name (no % — it's noise here)
+    const strip = (dist && dist.length)
+      ? `<span class="bk-strip">${dist.slice(0, 4).map((t, i) => `<img loading="lazy" style="z-index:${9 - i}" src="https://flagcdn.com/w40/${iso(t.team)}.png" alt="">`).join("")}</span>`
+      : `<span class="bk-slotdot"></span>`;
+    const label = feederMatch(slot)
+      ? slot.replace(/^Winner Match /, "Winner M").replace(/^Loser Match /, "Loser M")
+      : slot.replace("Third-place qualifier", "Third-place team");
+    return `<div class="bk-side proj">${strip}<span class="bk-name bk-slot">${label}</span></div>`;
+  }
+  function bkScore(num) {
+    const sc = scores[num];
+    if (sc && sc.homeScore != null && (sc.state === "in" || sc.state === "post")) {
+      return `<span class="bk-sc${sc.state === "in" ? " live" : ""}">${sc.homeScore}–${sc.awayScore}</span>`;
+    }
+    return "";
+  }
+  function bkMatch(num) {
+    const m = koByNum[num];
+    const sc = bkScore(num);
+    return `<div class="bk-match" data-bk="${num}" data-match="${num}">
+      <span class="bk-when">${shortDate(m.date)}</span>
+      ${bkSide(num, "home")}
+      ${sc ? `<div class="bk-mid">${sc}</div>` : `<div class="bk-divider"></div>`}
+      ${bkSide(num, "away")}
+    </div>`;
+  }
+  function shortDate(ds) { const dt = parseDate(ds); return `${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`; }
+  function bkCol(nums, stage, side) {
+    return `<div class="bk-col bk-${side}" data-stage="${stage}">
+      <div class="bk-col-head">${STAGE_ABBR[stage] || stage}</div>
+      <div class="bk-col-body">${nums.map(bkMatch).join("")}</div></div>`;
+  }
+  function renderBracket() {
+    const el = document.getElementById("bracket");
+    if (!el) return;
+    const leftCols = HALF_STAGES.map(s => bkCol(bracketLeft[s] || [], s, "left")).join("");
+    const finalCol = `<div class="bk-col bk-final" data-stage="Final">
+      <div class="bk-col-head">Final</div>
+      <div class="bk-col-body">${bkMatch(104)}
+        <div class="bk-third"><div class="bk-third-label">3rd place</div>${bkMatch(103)}</div></div></div>`;
+    const rightCols = HALF_STAGES.slice().reverse().map(s => bkCol(bracketRight[s] || [], s, "right")).join("");
+    el.innerHTML = `<div class="bk-grid">${leftCols}${finalCol}${rightCols}<svg class="bk-lines" aria-hidden="true"></svg></div>`;
+    requestAnimationFrame(drawConnectors);
+  }
+  function drawConnectors() {
+    const grid = document.querySelector(".bk-grid"); if (!grid) return;
+    const svg = grid.querySelector(".bk-lines"); if (!svg) return;
+    const W = grid.scrollWidth, H = grid.scrollHeight;
+    svg.setAttribute("width", W); svg.setAttribute("height", H);
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const gr = grid.getBoundingClientRect();
+    const center = (num) => { const e = grid.querySelector(`[data-bk="${num}"]`); if (!e) return null; const r = e.getBoundingClientRect(); return { x: r.left - gr.left + grid.scrollLeft, y: r.top - gr.top + grid.scrollTop, w: r.width, h: r.height }; };
+    let paths = "";
+    const link = (childNum, parentNum, dir) => {
+      const c = center(childNum), p = center(parentNum); if (!c || !p) return;
+      const cx = dir === "right" ? c.x + c.w : c.x;       // child inner edge
+      const px = dir === "right" ? p.x : p.x + p.w;       // parent inner edge
+      const cy = c.y + c.h / 2, py = p.y + p.h / 2;
+      const mx = (cx + px) / 2;
+      paths += `<path d="M${cx},${cy} H${mx} V${py} H${px}" />`;
+    };
+    [["left", bracketLeft, "right"], ["right", bracketRight, "left"]].forEach(([, half, dir]) => {
+      HALF_STAGES.slice(1).concat("Final").forEach(stage => {
+        const parents = stage === "Final" ? (half === bracketLeft ? [] : []) : (half[stage] || []);
+        parents.forEach(pn => {
+          const pm = koByNum[pn];
+          [feederMatch(pm.home), feederMatch(pm.away)].forEach(cn => { if (cn) link(cn, pn, dir); });
+        });
+      });
+    });
+    // semis → final
+    [feederMatch(koByNum[104].home), feederMatch(koByNum[104].away)].forEach((sf, i) => {
+      if (sf) link(sf, 104, i === 0 ? "right" : "left");
+    });
+    svg.innerHTML = paths;
+  }
+
+  // ---- Path to the Final: trace a team's route under each group outcome ----
+  const childToParent = {}; // matchNumber -> { parent, winnerSide } (where its winner goes)
+  Object.values(koByNum).forEach(m => {
+    [["home", m.home], ["away", m.away]].forEach(([side, slot]) => {
+      const w = /^Winner Match (\d+)$/.exec(slot || "");
+      if (w) childToParent[+w[1]] = { parent: m.matchNumber, winnerSide: side };
+    });
+  });
+  function teamGroup(team) { for (const L of GROUP_LETTERS) if ((groupTeams[L] || []).includes(team)) return L; return null; }
+  function findSlot(slotStr) {
+    for (const m of Object.values(koByNum)) {
+      if (m.home === slotStr) return { match: m.matchNumber, side: "home" };
+      if (m.away === slotStr) return { match: m.matchNumber, side: "away" };
+    }
+    return null;
+  }
+  function tracePath(entryNum, entrySide) {
+    const steps = []; let cur = entryNum, mySide = entrySide;
+    while (cur) {
+      const m = koByNum[cur];
+      steps.push({ match: cur, stage: m.stage, oppSide: mySide === "home" ? "away" : "home" });
+      const up = childToParent[cur]; if (!up) break;
+      cur = up.parent; mySide = up.winnerSide;
+    }
+    return steps;
+  }
+  // The opponent we care about = the STRONGEST realistic teams in that slot (by Elo),
+  // not whoever's merely most probable. Returns {resolved} | {unknown} | {cand:[...]}.
+  function strongestOpps(matchNum, side) {
+    const team = resolveSide(matchNum, side);
+    if (team) return { resolved: team };
+    if (/Third-place qualifier/.test(koByNum[matchNum][side] || "")) return { unknown: true };
+    const dist = projDist(matchNum, side) || [];
+    let cand = dist.filter(d => d.p >= 0.04);          // realistic chance to be there
+    if (cand.length < 2) cand = dist.slice(0, 3);       // fallback for very open slots
+    cand = cand.slice().sort((a, b) => b.p - a.p).slice(0, 3); // most likely first
+    return { cand };
+  }
+  function oppList(matchNum, side) {
+    const r = strongestOpps(matchNum, side);
+    if (r.resolved) return `<span class="bp-opp1">${teamFlag(r.resolved, "bk-flag")}<span class="bp-opp-name">${r.resolved}</span></span>`;
+    if (r.unknown) return `<span class="bp-unknown">Unknown — any third-placed team (set after the group stage)</span>`;
+    return r.cand.map(d => `<span class="bp-opp1">${teamFlag(d.team, "bk-flag")}<span class="bp-opp-name">${d.team}</span><span class="bp-odds">${Math.round(d.p * 100)}%</span></span>`).join("");
+  }
+  function routeHTML(entrySlotStr) {
+    const e = findSlot(entrySlotStr); if (!e) return "<p class='bp-note'>No route found.</p>";
+    // data-match wires each row into the existing hover popover (full distribution)
+    return tracePath(e.match, e.side).map(s => {
+      const m = koByNum[s.match], r = strongestOpps(s.match, s.oppSide);
+      const cap = r.resolved ? "Opponent" : r.unknown ? "" : "Likely opponents";
+      return `<div class="bp-step" data-match="${s.match}">
+        <div class="bp-step-top"><span class="bp-round">${s.stage}</span>${cap ? `<span class="bp-cap">${cap}</span>` : ""}<span class="bp-when">${shortDate(m.date)}</span></div>
+        <div class="bp-opps">${oppList(s.match, s.oppSide)}</div>
+      </div>`;
+    }).join("");
+  }
+  function renderPath(team) {
+    const el = document.getElementById("path-panel"); if (!el) return;
+    if (!team) { el.innerHTML = `<p class="bp-empty">Pick a team above to see their road to the final.</p>`; return; }
+    ensureGroupOdds();
+    const L = teamGroup(team), od = groupOdds[team] || {};
+    const t = WC.teamByName[team];
+    const third = Math.max(0, (od.advance || 0) - (od.win || 0) - (od.runnerUp || 0));
+    const pc = p => { if (p >= 0.999) return "99.9%"; const v = Math.round((p || 0) * 100); return (v >= 100 ? 99 : v) + "%"; };
+    const sections = [];
+    sections.push({ p: od.win || 0, head: `If they <b>win Group ${L}</b>`, body: routeHTML(`Winner Group ${L}`) });
+    sections.push({ p: od.runnerUp || 0, head: `If they <b>finish runner-up</b>`, body: routeHTML(`Runner-up Group ${L}`) });
+    sections.push({ p: third, head: `If they <b>finish 3rd &amp; advance</b>`, body: `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>` });
+    sections.sort((a, b) => b.p - a.p);
+    el.innerHTML = `<div class="bp-card">
+      <div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${team}</b><span class="bp-grp">Group ${L}</span></div>
+      ${sections.filter(s => s.p > 0.005 || s.head.includes("3rd")).map(s => `
+        <div class="bp-section"><div class="bp-otitle">${s.head} <span class="bp-pct">${pc(s.p)}</span></div>${s.body}</div>`).join("")}
+    </div>`;
+  }
+  const PATH_TEAM_KEY = "wc2026.pathTeam";
+  (function () {
+    const sel = document.getElementById("path-team"); if (!sel) return;
+    [...WC.teams].map(t => t.name).sort((a, b) => a.localeCompare(b))
+      .forEach(n => { const o = document.createElement("option"); o.value = n; o.textContent = n; sel.appendChild(o); });
+    const saved = localStorage.getItem(PATH_TEAM_KEY) || "";
+    if (saved && WC.teamByName[saved]) sel.value = saved;
+    sel.addEventListener("change", e => { localStorage.setItem(PATH_TEAM_KEY, e.target.value); renderPath(e.target.value); });
+    renderPath(sel.value); // restored team, or empty-state prompt
   })();
 
   // ---- helpers ----
@@ -374,7 +592,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "groups", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "groups", "bracket", "path", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
@@ -447,7 +665,7 @@
     setPickerCollapsed(false); document.getElementById("team-search").focus();
   });
 
-  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderGroups(); renderMyMatches(); renderPlanner(); }
+  function rerenderAll() { renderCalendar(); renderUpcomingBangers(); renderGroups(); renderBracket(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
@@ -911,8 +1129,11 @@
   renderMyMatches();
   renderPlanner();
   renderGroups();
+  renderBracket();
   renderProjections();
   setupScrollSpy();
+  let bkResizeT;
+  window.addEventListener("resize", () => { clearTimeout(bkResizeT); bkResizeT = setTimeout(drawConnectors, 150); });
   setActiveNav("calendar");
   initScores();
   const initial = (location.hash || "").replace("#", "");

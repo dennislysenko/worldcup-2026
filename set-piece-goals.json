@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-17T11:21:09.322Z",
+  "generated": "2026-06-18T02:02:31.250Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 62,
+  "total": 71,
   "counts": {
-   "corner": 5,
+   "corner": 7,
    "free_kick": 3,
    "throw_in": 1,
-   "penalty": 3,
-   "open_play": 50
+   "penalty": 4,
+   "open_play": 56
   },
-  "setPieceExclPens": 9,
-  "pctExclPens": 14.516129032258064,
-  "pctInclPens": 19.35483870967742
+  "setPieceExclPens": 11,
+  "pctExclPens": 15.492957746478874,
+  "pctInclPens": 21.12676056338028
  },
  "matches": [
   {
@@ -888,7 +888,7 @@
      "category": "open_play",
      "scoreAfter": "1–2",
      "evidence": "Goal! Iraq 1, Norway 2. Erling Haaland (Norway) right footed shot from very close range to the centre of the goal.",
-     "wallclock": "2026-06-16T22:43:25Z"
+     "wallclock": "2026-06-16T22:43:26Z"
     },
     {
      "espnPlayId": "49534369",
@@ -949,7 +949,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! Argentina 2, Algeria 0. Lionel Messi (Argentina) right footed shot from the centre of the box to the bottom right corner.",
-     "wallclock": "2026-06-17T02:23:09Z"
+     "wallclock": "2026-06-17T02:23:08Z"
     },
     {
      "espnPlayId": "49536917",
@@ -986,7 +986,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Austria 1, Jordan 0. Romano Schmid (Austria) right footed shot from outside the box to the top right corner. Assisted by Xaver Schlager.",
-     "wallclock": "2026-06-17T04:22:59Z"
+     "wallclock": "2026-06-17T04:23:00Z"
     },
     {
      "espnPlayId": "49538122",
@@ -1010,7 +1010,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Own Goal by Yazan Al Arab, Jordan. Austria 2, Jordan 1.",
-     "wallclock": "2026-06-17T05:41:03Z"
+     "wallclock": "2026-06-17T05:41:04Z"
     },
     {
      "espnPlayId": "49538832",
@@ -1025,6 +1025,165 @@
      "wallclock": "2026-06-17T06:06:58Z"
     }
    ]
+  },
+  {
+   "espnId": "760435",
+   "name": "Congo DR at Portugal",
+   "kickoff": "2026-06-17T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Portugal",
+   "away": "Congo DR",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49538978",
+     "minute": "6'",
+     "team": "Portugal",
+     "scorer": "João Neves",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Portugal 1, Congo DR 0. João Neves (Portugal) header from the centre of the box to the bottom right corner. Assisted by Pedro Neto with a cross.",
+     "wallclock": "2026-06-17T17:06:53Z"
+    },
+    {
+     "espnPlayId": "49539666",
+     "minute": "45'+5'",
+     "team": "Congo DR",
+     "scorer": "Yoane Wissa",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Portugal 1, Congo DR 1. Yoane Wissa (Congo DR) header from very close range to the top left corner. Assisted by Arthur Masuaku with a cross following a corner.",
+     "wallclock": "2026-06-17T17:50:59Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760437",
+   "name": "Croatia at England",
+   "kickoff": "2026-06-17T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "England",
+   "away": "Croatia",
+   "homeScore": 4,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49540529",
+     "minute": "12'",
+     "team": "England",
+     "scorer": "Harry Kane",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! England 1, Croatia 0. Harry Kane (England) converts the penalty with a right footed shot to the bottom right corner.",
+     "wallclock": "2026-06-17T20:11:27Z"
+    },
+    {
+     "espnPlayId": "49540900",
+     "minute": "36'",
+     "team": "Croatia",
+     "scorer": "Martin Baturina",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! England 1, Croatia 1. Martin Baturina (Croatia) right footed shot from outside the box to the top left corner. Assisted by Petar Sucic.",
+     "wallclock": "2026-06-17T20:35:43Z"
+    },
+    {
+     "espnPlayId": "49540988",
+     "minute": "42'",
+     "team": "England",
+     "scorer": "Harry Kane",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! England 2, Croatia 1. Harry Kane (England) header from the centre of the box to the bottom left corner. Assisted by Declan Rice with a cross following a corner.",
+     "wallclock": "2026-06-17T20:41:26Z"
+    },
+    {
+     "espnPlayId": "49541091",
+     "minute": "45'+5'",
+     "team": "Croatia",
+     "scorer": "Petar Musa",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! England 2, Croatia 2. Petar Musa (Croatia) right footed shot from the centre of the box to the centre of the goal. Assisted by Ivan Perisic with a headed pass.",
+     "wallclock": "2026-06-17T20:50:04Z"
+    },
+    {
+     "espnPlayId": "49541128",
+     "minute": "47'",
+     "team": "England",
+     "scorer": "Jude Bellingham",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! England 3, Croatia 2. Jude Bellingham (England) right footed shot from the right side of the box to the bottom left corner. Assisted by Elliot Anderson.",
+     "wallclock": "2026-06-17T21:10:44Z"
+    },
+    {
+     "espnPlayId": "49541683",
+     "minute": "85'",
+     "team": "England",
+     "scorer": "Marcus Rashford",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–2",
+     "evidence": "Goal! England 4, Croatia 2. Marcus Rashford (England) right footed shot from the centre of the box to the bottom right corner. Assisted by Bukayo Saka.",
+     "wallclock": "2026-06-17T21:49:06Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760434",
+   "name": "Panama at Ghana",
+   "kickoff": "2026-06-17T23:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Ghana",
+   "away": "Panama",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49543397",
+     "minute": "90'+5'",
+     "team": "Ghana",
+     "scorer": "Caleb Yirenkyi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Ghana 1, Panama 0. Caleb Yirenkyi (Ghana) right footed shot from very close range to the top right corner following a fast break.",
+     "wallclock": "2026-06-18T00:55:48Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760436",
+   "name": "Colombia at Uzbekistan",
+   "kickoff": "2026-06-18T02:00Z",
+   "state": "in",
+   "statusText": "First Half",
+   "home": "Uzbekistan",
+   "away": "Colombia",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
   }
  ]
 }
