@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-18T02:02:31.250Z",
+  "generated": "2026-06-18T10:53:15.905Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 71,
+  "total": 75,
   "counts": {
    "corner": 7,
    "free_kick": 3,
    "throw_in": 1,
    "penalty": 4,
-   "open_play": 56
+   "open_play": 60
   },
   "setPieceExclPens": 11,
-  "pctExclPens": 15.492957746478874,
-  "pctInclPens": 21.12676056338028
+  "pctExclPens": 14.666666666666666,
+  "pctInclPens": 20
  },
  "matches": [
   {
@@ -1047,7 +1047,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Portugal 1, Congo DR 0. João Neves (Portugal) header from the centre of the box to the bottom right corner. Assisted by Pedro Neto with a cross.",
-     "wallclock": "2026-06-17T17:06:53Z"
+     "wallclock": "2026-06-17T17:06:54Z"
     },
     {
      "espnPlayId": "49539666",
@@ -1177,13 +1177,62 @@
    "espnId": "760436",
    "name": "Colombia at Uzbekistan",
    "kickoff": "2026-06-18T02:00Z",
-   "state": "in",
-   "statusText": "First Half",
+   "state": "post",
+   "statusText": "Full Time",
    "home": "Uzbekistan",
    "away": "Colombia",
-   "homeScore": 0,
-   "awayScore": 0,
-   "goals": []
+   "homeScore": 1,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49544004",
+     "minute": "40'",
+     "team": "Colombia",
+     "scorer": "Daniel Muñoz",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Uzbekistan 0, Colombia 1. Daniel Muñoz (Colombia) right footed shot from the centre of the box to the high centre of the goal. Assisted by Luis Díaz with a through ball.",
+     "wallclock": "2026-06-18T02:40:08Z"
+    },
+    {
+     "espnPlayId": "49544426",
+     "minute": "60'",
+     "team": "Uzbekistan",
+     "scorer": "Abbosbek Fayzullaev",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Uzbekistan 1, Colombia 1. Abbosbek Fayzullaev (Uzbekistan) header from very close range to the top left corner.",
+     "wallclock": "2026-06-18T03:20:45Z"
+    },
+    {
+     "espnPlayId": "49544478",
+     "minute": "65'",
+     "team": "Colombia",
+     "scorer": "Luis Díaz",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Uzbekistan 1, Colombia 2. Luis Díaz (Colombia) right footed shot from the centre of the box to the bottom right corner. Assisted by Gustavo Puerta.",
+     "wallclock": "2026-06-18T03:25:55Z"
+    },
+    {
+     "espnPlayId": "49544854",
+     "minute": "90'+9'",
+     "team": "Colombia",
+     "scorer": "Jáminton Campaz",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–3",
+     "evidence": "Goal! Uzbekistan 1, Colombia 3. Jaminton Campaz (Colombia) header from the centre of the box to the bottom left corner. Assisted by Cucho Hernández with a cross.",
+     "wallclock": "2026-06-18T03:59:11Z"
+    }
+   ]
   }
  ]
 }

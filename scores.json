@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-18T02:02:29.419Z",
+  "generated": "2026-06-18T10:53:16.301Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -286,12 +286,12 @@
    "utc": "2026-06-18T02:00Z",
    "home": "Uzbekistan",
    "away": "Colombia",
-   "homeScore": 0,
-   "awayScore": 0,
-   "state": "in",
-   "statusText": "2'",
-   "minute": "2'",
-   "period": 1
+   "homeScore": 1,
+   "awayScore": 3,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+11'",
+   "period": 2
   }
  }
 }
