@@ -57,21 +57,39 @@
   // simulate a group, locking any played game to its real score
   function simGroup(letter, results) {
     const teams = groups[letter];
-    const st = {};
-    teams.forEach(t => { st[t] = { pts: 0, gd: 0, gf: 0, r: Math.random() }; });
+    const st = {}, played = [];
+    teams.forEach(t => { st[t] = { team: t, pts: 0, gd: 0, gf: 0, r: Math.random() }; });
     groupMatches[letter].forEach(m => {
       const res = results[m.matchNumber];
       let ga, gb;
       if (res && res.state === "post" && res.homeScore != null) { ga = res.homeScore; gb = res.awayScore; }
       else { [ga, gb] = goals(m.home, m.away); }
+      played.push({ home: m.home, away: m.away, ga, gb });
       st[m.home].gf += ga; st[m.away].gf += gb;
       st[m.home].gd += ga - gb; st[m.away].gd += gb - ga;
       if (ga > gb) st[m.home].pts += 3;
       else if (gb > ga) st[m.away].pts += 3;
       else { st[m.home].pts++; st[m.away].pts++; }
     });
-    const ranked = teams.slice().sort((x, y) =>
-      st[y].pts - st[x].pts || st[y].gd - st[x].gd || st[y].gf - st[x].gf || st[x].r - st[y].r);
+    // 2026 tiebreak order: level on points → head-to-head (pts, GD, GF) before overall GD/GF
+    const arr = teams.map(t => st[t]).sort((a, b) => b.pts - a.pts);
+    const ranked = [];
+    for (let i = 0; i < arr.length;) {
+      let j = i + 1; while (j < arr.length && arr[j].pts === arr[i].pts) j++;
+      let block = arr.slice(i, j);
+      if (block.length > 1) {
+        const set = new Set(block.map(b => b.team)), sub = {};
+        block.forEach(b => sub[b.team] = { pts: 0, gd: 0, gf: 0 });
+        for (const g of played) {
+          if (!set.has(g.home) || !set.has(g.away)) continue;
+          const a = sub[g.home], b = sub[g.away];
+          a.gf += g.ga; b.gf += g.gb; a.gd += g.ga - g.gb; b.gd += g.gb - g.ga;
+          if (g.ga > g.gb) a.pts += 3; else if (g.gb > g.ga) b.pts += 3; else { a.pts++; b.pts++; }
+        }
+        block = block.sort((x, y) => sub[y.team].pts - sub[x.team].pts || sub[y.team].gd - sub[x.team].gd || sub[y.team].gf - sub[x.team].gf || y.gd - x.gd || y.gf - x.gf || x.r - y.r);
+      }
+      block.forEach(b => ranked.push(b.team)); i = j;
+    }
     return { ranked, st };
   }
 

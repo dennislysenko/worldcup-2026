@@ -33,14 +33,28 @@ const poisson = l => { const L = Math.exp(-l); let k = 0, p = 1; do { k++; p *= 
 const goals = (a, b) => { const d = (elo[a] - elo[b]) / 400; return [poisson(BASE * Math.exp(KG * d)), poisson(BASE * Math.exp(-KG * d))]; };
 const koWin = (a, b) => (Math.random() < 1 / (1 + Math.pow(10, (elo[b] - elo[a]) / 400))) ? a : b;
 function simGroup(L, useResults) {
-  const st = {}; groups[L].forEach(t => st[t] = { pts: 0, gd: 0, gf: 0, r: Math.random() });
+  const st = {}, played = []; groups[L].forEach(t => st[t] = { t, pts: 0, gd: 0, gf: 0, r: Math.random() });
   for (const m of groupMatches[L]) {
     let ga, gb; const s = useResults && finalOf(m.matchNumber);
     if (s) { ga = s.homeScore; gb = s.awayScore; } else { [ga, gb] = goals(m.home, m.away); }
+    played.push({ home: m.home, away: m.away, ga, gb });
     st[m.home].gf += ga; st[m.away].gf += gb; st[m.home].gd += ga - gb; st[m.away].gd += gb - ga;
     if (ga > gb) st[m.home].pts += 3; else if (gb > ga) st[m.away].pts += 3; else { st[m.home].pts++; st[m.away].pts++; }
   }
-  return groups[L].slice().sort((x, y) => st[y].pts - st[x].pts || st[y].gd - st[x].gd || st[y].gf - st[x].gf || st[x].r - st[y].r).map(t => ({ t, st: st[t] }));
+  // 2026: head-to-head before overall GD/GF
+  const arr = groups[L].map(t => st[t]).sort((a, b) => b.pts - a.pts);
+  const out = [];
+  for (let i = 0; i < arr.length;) {
+    let j = i + 1; while (j < arr.length && arr[j].pts === arr[i].pts) j++;
+    let block = arr.slice(i, j);
+    if (block.length > 1) {
+      const set = new Set(block.map(b => b.t)), sub = {}; block.forEach(b => sub[b.t] = { pts: 0, gd: 0, gf: 0 });
+      for (const g of played) { if (!set.has(g.home) || !set.has(g.away)) continue; const a = sub[g.home], b = sub[g.away]; a.gf += g.ga; b.gf += g.gb; a.gd += g.ga - g.gb; b.gd += g.gb - g.ga; if (g.ga > g.gb) a.pts += 3; else if (g.gb > g.ga) b.pts += 3; else { a.pts++; b.pts++; } }
+      block = block.sort((x, y) => sub[y.t].pts - sub[x.t].pts || sub[y.t].gd - sub[x.t].gd || sub[y.t].gf - sub[x.t].gf || y.gd - x.gd || y.gf - x.gf || x.r - y.r);
+    }
+    block.forEach(b => out.push(b)); i = j;
+  }
+  return out.map(o => ({ t: o.t, st: o }));
 }
 function snapshot(eloSet, useResults) {
   elo = eloSet;

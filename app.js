@@ -170,7 +170,9 @@
       }
     });
     teams.forEach(t => { st[t].GD = st[t].GF - st[t].GA; });
-    const h2h = block => {
+    // 2026 order: within teams level on points, head-to-head (pts, GD, GF) is
+    // applied BEFORE overall GD/GF (FIFA WC26 Regulations, Art. 13).
+    const orderBlock = block => {
       const set = new Set(block.map(x => x.team)), sub = {};
       block.forEach(x => sub[x.team] = { pts: 0, gd: 0, gf: 0 });
       finals.forEach(m => {
@@ -179,15 +181,17 @@
         sub[m.home].gf += ga; sub[m.away].gf += gb; sub[m.home].gd += ga - gb; sub[m.away].gd += gb - ga;
         if (ga > gb) sub[m.home].pts += 3; else if (gb > ga) sub[m.away].pts += 3; else { sub[m.home].pts++; sub[m.away].pts++; }
       });
-      return block.slice().sort((x, y) => sub[y.team].pts - sub[x.team].pts || sub[y.team].gd - sub[x.team].gd || sub[y.team].gf - sub[x.team].gf);
+      return block.slice().sort((x, y) =>
+        sub[y.team].pts - sub[x.team].pts || sub[y.team].gd - sub[x.team].gd || sub[y.team].gf - sub[x.team].gf
+        || y.GD - x.GD || y.GF - x.GF || x.team.localeCompare(y.team));
     };
-    const ranked = teams.map(t => st[t]).sort((a, b) => b.Pts - a.Pts || b.GD - a.GD || b.GF - a.GF);
+    const ranked = teams.map(t => st[t]).sort((a, b) => b.Pts - a.Pts);
     const out = [];
     for (let i = 0; i < ranked.length;) {
       let j = i + 1;
-      while (j < ranked.length && ranked[j].Pts === ranked[i].Pts && ranked[j].GD === ranked[i].GD && ranked[j].GF === ranked[i].GF) j++;
+      while (j < ranked.length && ranked[j].Pts === ranked[i].Pts) j++;
       const block = ranked.slice(i, j);
-      (block.length > 1 && finals.length ? h2h(block) : block).forEach(r => out.push(r));
+      (block.length > 1 && finals.length ? orderBlock(block) : block).forEach(r => out.push(r));
       i = j;
     }
     return { rows: out, dirty, played, total };
@@ -229,12 +233,13 @@
       }).join("");
       const dirtyBadge = dirty ? `<span class="g-dirty" title="A match has finished but its result isn't in yet — standings & odds update on the next sync.">⚠ results pending</span>` : "";
       const chevron = groupsDetailed ? "" : `<span class="g-toggle">${open ? "▾" : "▸"}</span>`;
+      const combos = groupRemaining(L).length === 2 ? `<button type="button" class="g-combos" data-combos="${L}">🎲 Final-day combos</button>` : "";
       return `<section class="g-card${open ? " expanded" : ""}" data-group="${L}">
         <div class="g-head" role="button" tabindex="0" aria-expanded="${open}"><h3>Group ${L}</h3><span class="g-prog">${played}/${total} played</span>${dirtyBadge}${chevron}</div>
         <div class="g-scroll"><table class="g-table">
           <thead><tr><th></th><th class="g-team">Team</th><th title="Played">P</th><th class="g-detail">W</th><th class="g-detail">D</th><th class="g-detail">L</th><th class="g-detail">GF</th><th class="g-detail">GA</th><th title="Goal difference">GD</th><th title="Points">Pts</th><th class="g-odd g-odd2" title="Chance to win the group">1st</th><th class="g-odd g-odd2" title="Chance to finish runner-up">2nd</th><th class="g-odd g-adv" title="Chance to reach the knockouts">Adv</th></tr></thead>
           <tbody>${body}</tbody>
-        </table></div></section>`;
+        </table></div>${combos}</section>`;
     }).join("");
   }
   function toggleGroup(card) {
@@ -244,6 +249,8 @@
     renderGroups();
   }
   document.getElementById("groups").addEventListener("click", e => {
+    const cb = e.target.closest(".g-combos");
+    if (cb) { e.stopPropagation(); openCombos(cb.dataset.combos); return; }
     if (e.target.closest(".g-head")) toggleGroup(e.target.closest(".g-card"));
   });
   document.getElementById("groups").addEventListener("keydown", e => {
@@ -524,6 +531,151 @@
         <div class="mv-col"><div class="mv-head mv-up">📈 Risers</div>${up.map(card).join("") || none}</div>
         <div class="mv-col"><div class="mv-head mv-down">📉 Fallers</div>${dn.map(card).join("") || none}</div>
       </div>`;
+  }
+
+  // ======================================================================
+  // FINAL-DAY COMBOS — qualification permutation grid for a final-round group.
+  // One remaining match's scoreline per axis; each cell = resulting finish order.
+  // Renders to a canvas (shareable PNG, watermarked).
+  // ======================================================================
+  const COMBO_SC = []; for (let h = 0; h <= 4; h++) for (let a = 0; a <= 4; a++) COMBO_SC.push([h, a]);
+  function comboCmp(p, q) {
+    const grp = ([h, a]) => { const s = Math.sign(h - a); return s > 0 ? 0 : s === 0 ? 1 : 2; };
+    const gp = grp(p), gq = grp(q); if (gp !== gq) return gp - gq;
+    const [h1, a1] = p, [h2, a2] = q;
+    if (gp === 0) return (h2 - a2) - (h1 - a1) || h2 - h1;   // home win: GD desc, goals desc
+    if (gp === 1) return (h1 + a1) - (h2 + a2);              // draw: total asc
+    return (h2 - a2) - (h1 - a1) || a1 - a2;                 // away win: GD desc(→0 first), away goals asc
+  }
+  const COMBO_ORDER = COMBO_SC.slice().sort(comboCmp);
+  const COMBO_REGIONS = [COMBO_ORDER.filter(s => s[0] > s[1]).length, COMBO_ORDER.filter(s => s[0] === s[1]).length];
+  function groupRemaining(letter) { return (groupGames[letter] || []).filter(m => { const s = scores[m.matchNumber]; return !(s && s.state === "post" && s.homeScore != null); }); }
+  function groupPlayedResults(letter) {
+    const out = [];
+    for (const m of groupGames[letter] || []) { const s = scores[m.matchNumber]; if (s && s.state === "post" && s.homeScore != null) out.push({ home: m.home, away: m.away, hs: s.homeScore, as: s.awayScore }); }
+    return out;
+  }
+  function rankWithResults(teams, results) {
+    const st = {}; teams.forEach(t => st[t] = { team: t, pts: 0, gd: 0, gf: 0 });
+    const apply = (sub, r) => { const a = sub[r.home], b = sub[r.away]; if (!a || !b) return; a.gf += r.hs; b.gf += r.as; a.gd += r.hs - r.as; b.gd += r.as - r.hs; if (r.hs > r.as) a.pts += 3; else if (r.as > r.hs) b.pts += 3; else { a.pts++; b.pts++; } };
+    results.forEach(r => apply(st, r));
+    // 2026 order: level on points → head-to-head (pts, GD, GF) BEFORE overall GD/GF
+    const ranked = teams.map(t => st[t]).sort((x, y) => y.pts - x.pts);
+    const out = [];
+    for (let i = 0; i < ranked.length;) {
+      let j = i + 1;
+      while (j < ranked.length && ranked[j].pts === ranked[i].pts) j++;
+      let block = ranked.slice(i, j);
+      if (block.length > 1) {
+        const set = new Set(block.map(b => b.team)), sub = {}; block.forEach(b => sub[b.team] = { pts: 0, gd: 0, gf: 0 });
+        results.forEach(r => { if (set.has(r.home) && set.has(r.away)) apply(sub, r); });
+        block = block.slice().sort((x, y) =>
+          sub[y.team].pts - sub[x.team].pts || sub[y.team].gd - sub[x.team].gd || sub[y.team].gf - sub[x.team].gf
+          || y.gd - x.gd || y.gf - x.gf || x.team.localeCompare(y.team));
+      }
+      block.forEach(b => out.push(b.team)); i = j;
+    }
+    return out;
+  }
+  const COMBO_COLORS = ["#2e9e4f", "#e3c50a", "#2f5fd0", "#d23b3b", "#8e44ad", "#e67e22", "#1abc9c", "#c0392b"];
+  function computeCombos(letter) {
+    const teams = groupTeams[letter], rem = groupRemaining(letter);
+    if (rem.length !== 2) return null;
+    const [mX, mY] = rem, base = groupPlayedResults(letter);
+    const colorByKey = {}, legend = [];
+    const grid = COMBO_ORDER.map(rs => COMBO_ORDER.map(cs => {
+      const results = base.concat([{ home: mX.home, away: mX.away, hs: cs[0], as: cs[1] }, { home: mY.home, away: mY.away, hs: rs[0], as: rs[1] }]);
+      const top3 = rankWithResults(teams, results).slice(0, 3);
+      const key = top3.join(" / ");
+      if (!(key in colorByKey)) { colorByKey[key] = COMBO_COLORS[legend.length % COMBO_COLORS.length]; legend.push({ key, top3, color: colorByKey[key] }); }
+      return key;
+    }));
+    return { letter, teams, mX, mY, grid, colorByKey, legend };
+  }
+  function loadImg(src) { return new Promise(res => { const im = new Image(); im.crossOrigin = "anonymous"; im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
+  async function loadGroupFlags(letter) {
+    const out = {};
+    await Promise.all((groupTeams[letter] || []).map(async t => { const iso = (WC.teamByName[t] || {}).iso2; if (iso) out[t] = await loadImg(`https://flagcdn.com/w40/${iso}.png`); }));
+    return out;
+  }
+  function drawCombos(letter, flags) {
+    flags = flags || {};
+    const c = computeCombos(letter); if (!c) return null;
+    const cell = 20, n = COMBO_ORDER.length, dpr = Math.min(2, window.devicePixelRatio || 1);
+    const labL = 116, scoreL = 26, labT = 44, scoreT = 24, titleH = 38;
+    const gx = labL + scoreL, gy = titleH + labT + scoreT, gw = n * cell, gh = n * cell;
+    const panelX = gx + gw + 34, panelW = 360;
+    const W = panelX + panelW, H = Math.max(gy + gh + 30, 660);
+    const cv = document.createElement("canvas");
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.maxWidth = "100%"; cv.style.height = "auto";
+    const x = cv.getContext("2d"); x.scale(dpr, dpr);
+    x.fillStyle = "#15332a"; x.fillRect(0, 0, W, H);
+    x.textBaseline = "middle"; x.font = "700 22px 'Patrick Hand', sans-serif"; x.fillStyle = "#f2f5ee"; x.textAlign = "left";
+    x.fillText(`Group ${letter} — final-day combinations`, 12, 22);
+
+    const [winN, drawN] = COMBO_REGIONS; const reg = i => i < winN ? 0 : i < winN + drawN ? 1 : 2;
+    // cells
+    for (let r = 0; r < n; r++) for (let col = 0; col < n; col++) { x.fillStyle = c.colorByKey[c.grid[r][col]]; x.fillRect(gx + col * cell, gy + r * cell, cell, cell); }
+    // grid lines
+    x.strokeStyle = "rgba(0,0,0,.18)"; x.lineWidth = 1;
+    for (let i = 0; i <= n; i++) { x.beginPath(); x.moveTo(gx + i * cell, gy); x.lineTo(gx + i * cell, gy + gh); x.stroke(); x.beginPath(); x.moveTo(gx, gy + i * cell); x.lineTo(gx + gw, gy + i * cell); x.stroke(); }
+    // region separators (thick)
+    x.strokeStyle = "#15332a"; x.lineWidth = 3;
+    [winN, winN + drawN].forEach(i => { x.beginPath(); x.moveTo(gx + i * cell, gy); x.lineTo(gx + i * cell, gy + gh); x.stroke(); x.beginPath(); x.moveTo(gx, gy + i * cell); x.lineTo(gx + gw, gy + i * cell); x.stroke(); });
+    x.strokeStyle = "#f2f5ee"; x.lineWidth = 1.5; x.strokeRect(gx, gy, gw, gh);
+
+    // column scoreline labels (rotated) + team-region headers (top)
+    x.fillStyle = "#f2f5ee"; x.font = "10px 'Patrick Hand', sans-serif";
+    for (let col = 0; col < n; col++) { const s = COMBO_ORDER[col]; x.save(); x.translate(gx + col * cell + cell / 2, gy - 4); x.rotate(-Math.PI / 2); x.textAlign = "left"; x.fillText(`${s[0]}-${s[1]}`, 0, 0); x.restore(); }
+    const colHead = (txt, from, to, fill) => { const cx = gx + (from + to) / 2 * cell; x.font = "700 15px 'Patrick Hand', sans-serif"; x.fillStyle = fill; x.textAlign = "center"; x.fillText(txt, cx, titleH + labT / 2); };
+    colHead(c.mX.home, 0, winN, "#f2f5ee"); colHead("Draw", winN, winN + drawN, "#a9c2b4"); colHead(c.mX.away, winN + drawN, n, "#f2f5ee");
+    // row scoreline labels (left) + team-region labels (rotated)
+    x.font = "10px 'Patrick Hand', sans-serif"; x.fillStyle = "#f2f5ee"; x.textAlign = "right";
+    for (let r = 0; r < n; r++) { const s = COMBO_ORDER[r]; x.fillText(`${s[0]}-${s[1]}`, gx - 5, gy + r * cell + cell / 2); }
+    const rowHead = (txt, from, to, fill) => { const cy = gy + (from + to) / 2 * cell; x.save(); x.translate(14, cy); x.rotate(-Math.PI / 2); x.textAlign = "center"; x.font = "700 15px 'Patrick Hand', sans-serif"; x.fillStyle = fill; x.fillText(txt, 0, 0); x.restore(); };
+    rowHead(c.mY.home, 0, winN, "#f2f5ee"); rowHead("Draw", winN, winN + drawN, "#a9c2b4"); rowHead(c.mY.away, winN + drawN, n, "#f2f5ee");
+
+    // legend — color swatch, the two qualifiers' flags together, then the order
+    const fw = 22, fh = 15;
+    const drawFlag = (team, fx, fy) => { const im = flags[team]; if (im) { x.drawImage(im, fx, fy, fw, fh); x.strokeStyle = "rgba(255,255,255,.3)"; x.lineWidth = 1; x.strokeRect(fx, fy, fw, fh); } };
+    let ly = gy + 4;
+    x.textAlign = "left"; x.font = "700 13px 'Patrick Hand', sans-serif"; x.fillStyle = "#f2f5ee"; x.fillText("How the group finishes", panelX, ly); ly += 24;
+    c.legend.forEach(L => {
+      x.fillStyle = L.color; x.fillRect(panelX, ly - 11, 8, 34); // color bar
+      drawFlag(L.top3[0], panelX + 16, ly - 9); drawFlag(L.top3[1], panelX + 16 + fw + 3, ly - 9); // 1st + 2nd flags together
+      const tx = panelX + 16 + (fw + 3) * 2 + 6;
+      x.fillStyle = "#f2f5ee"; x.font = "13px 'Patrick Hand', sans-serif";
+      x.fillText(`1st ${L.top3[0]} · 2nd ${L.top3[1]}`, tx, ly - 2);
+      x.fillStyle = "#a9c2b4"; x.font = "11px 'Patrick Hand', sans-serif";
+      x.fillText(`3rd ${L.top3[2]}`, tx, ly + 12);
+      ly += 38;
+    });
+    // current standings
+    ly += 10; x.fillStyle = "#f2f5ee"; x.font = "700 13px 'Patrick Hand', sans-serif"; x.fillText("Standings now", panelX, ly); ly += 20;
+    const st = groupStanding(letter);
+    x.font = "11px 'Patrick Hand', sans-serif"; x.fillStyle = "#a9c2b4"; x.fillText("Team", panelX + 16, ly); x.textAlign = "right"; x.fillText("Pld", panelX + 232, ly); x.fillText("GD", panelX + 270, ly); x.fillText("Pts", panelX + 305, ly); x.textAlign = "left"; ly += 18;
+    st.rows.forEach((r, i) => {
+      x.fillStyle = i < 2 ? "#9be6a6" : "#f2f5ee"; x.font = "12px 'Patrick Hand', sans-serif"; x.textAlign = "left";
+      x.fillText(`${i + 1}`, panelX, ly); x.fillText(r.team.length > 20 ? r.team.slice(0, 19) + "…" : r.team, panelX + 16, ly);
+      x.fillStyle = "#cdddd3"; x.textAlign = "right"; x.fillText(`${r.P}`, panelX + 232, ly); x.fillText(`${r.GD > 0 ? "+" + r.GD : r.GD}`, panelX + 270, ly); x.fillStyle = "#f2f5ee"; x.font = "700 12px 'Patrick Hand', sans-serif"; x.fillText(`${r.Pts}`, panelX + 305, ly);
+      ly += 19;
+    });
+    // watermark
+    x.textAlign = "right"; x.font = "700 13px 'Patrick Hand', sans-serif"; x.fillStyle = "rgba(242,245,238,.5)"; x.fillText("bangerwatch.fun", W - 12, H - 14);
+    return cv;
+  }
+  async function openCombos(letter) {
+    const flags = await loadGroupFlags(letter);
+    const cv = drawCombos(letter, flags); if (!cv) return;
+    let ov = document.getElementById("combo-ov");
+    if (!ov) { ov = document.createElement("div"); ov.id = "combo-ov"; ov.className = "combo-ov"; document.body.appendChild(ov); ov.addEventListener("click", e => { if (e.target === ov) ov.remove(); }); }
+    ov.innerHTML = "";
+    const box = document.createElement("div"); box.className = "combo-box";
+    const bar = document.createElement("div"); bar.className = "combo-bar";
+    const dl = document.createElement("button"); dl.className = "combo-dl"; dl.textContent = "⬇ Download image";
+    dl.onclick = () => cv.toBlob(b => { const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = `group-${letter}-final-combos.png`; a.click(); URL.revokeObjectURL(u); });
+    const cl = document.createElement("button"); cl.className = "combo-close"; cl.textContent = "✕"; cl.onclick = () => ov.remove();
+    bar.append(dl, cl); box.append(bar, cv); ov.append(box);
   }
 
   // ---- helpers ----

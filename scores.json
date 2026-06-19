@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-18T12:17:41.824Z",
+  "generated": "2026-06-19T01:04:58.322Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -292,6 +292,54 @@
    "statusText": "FT",
    "minute": "90'+11'",
    "period": 2
+  },
+  "25": {
+   "espnId": "760438",
+   "utc": "2026-06-18T16:00Z",
+   "home": "Czechia",
+   "away": "South Africa",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
+   "period": 2
+  },
+  "26": {
+   "espnId": "760439",
+   "utc": "2026-06-18T19:00Z",
+   "home": "Switzerland",
+   "away": "Bosnia-Herzegovina",
+   "homeScore": 4,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "27": {
+   "espnId": "760440",
+   "utc": "2026-06-18T22:00Z",
+   "home": "Canada",
+   "away": "Qatar",
+   "homeScore": 6,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+10'",
+   "period": 2
+  },
+  "28": {
+   "espnId": "760441",
+   "utc": "2026-06-19T01:00Z",
+   "home": "Mexico",
+   "away": "South Korea",
+   "homeScore": 0,
+   "awayScore": 0,
+   "state": "in",
+   "statusText": "4'",
+   "minute": "4'",
+   "period": 1
   }
  }
 }
