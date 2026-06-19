@@ -197,6 +197,32 @@
     return { rows: out, dirty, played, total };
   }
 
+  // Mathematically clinched 1st / top-2 (so we can show ✓ instead of a capped 99.9%).
+  // Final round: exact, via the combos grid (catches head-to-head ties). Earlier:
+  // safe points-only check (never declares a clinch that a tiebreak could undo).
+  function groupClinch(L, rows) {
+    const first = new Set(), top2 = new Set(), rem = groupRemaining(L);
+    if (rem.length === 2) {
+      const c = computeCombos(L);
+      if (c) {
+        const f = new Set(c.teams), t = new Set(c.teams);
+        for (const row of c.grid) for (const key of row) {
+          const k = key.split(" / ");
+          c.teams.forEach(tm => { if (tm !== k[0]) f.delete(tm); if (tm !== k[0] && tm !== k[1]) t.delete(tm); });
+        }
+        f.forEach(x => first.add(x)); t.forEach(x => top2.add(x));
+      }
+    } else if (rem.length) {
+      const maxp = {}; rows.forEach(r => { maxp[r.team] = r.Pts + 3 * rem.filter(m => m.home === r.team || m.away === r.team).length; });
+      rows.forEach(r => {
+        const rivalsMax = rows.filter(o => o.team !== r.team).map(o => maxp[o.team]);
+        if (rivalsMax.every(m => r.Pts > m)) first.add(r.team);          // strictly clear of everyone
+        if (rivalsMax.filter(m => m >= r.Pts).length <= 1) top2.add(r.team); // ≤1 rival can even reach you
+      });
+    }
+    return { first, top2 };
+  }
+
   const expandedGroups = new Set(); // groups whose full table is open (compact mode)
   const GROUPS_DETAIL_KEY = "wc2026.groupsDetailed";
   let groupsDetailed = localStorage.getItem(GROUPS_DETAIL_KEY) === "1";
@@ -213,22 +239,25 @@
       const v = Math.round(p * 100);
       return (v >= 100 ? 99 : v) + "%";
     };
-    const advCell = p => {
+    const advCell = (p, clinched) => {
+      if (clinched) return `<span class="adv-wrap"><span class="adv-bar"><span class="adv-fill" style="width:100%"></span></span><b class="g-clinch">✓</b></span>`;
       if (p == null) return "—";
       return `<span class="adv-wrap"><span class="adv-bar"><span class="adv-fill" style="width:${Math.round(p * 100)}%"></span></span><b>${pct(p)}</b></span>`;
     };
     el.innerHTML = GROUP_LETTERS.map(L => {
       const { rows, dirty, played, total } = groupStanding(L);
+      const clinch = groupClinch(L, rows);
       const open = groupsDetailed || expandedGroups.has(L);
       const body = rows.map((r, i) => {
         const t = WC.teamByName[r.team], od = groupOdds[r.team] || {};
         const zone = i < 2 ? "g-top" : i === 2 ? "g-third" : "";
+        const winCell = clinch.first.has(r.team) ? `<span class="g-clinch" title="Clinched 1st">✓</span>` : pct(od.win);
         return `<tr class="${zone}${favorites.has(r.team) ? " g-fav" : ""}" data-team="${r.team}">
           <td class="g-pos">${i + 1}</td>
           <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${r.team}</span></td>
           <td>${r.P}</td><td class="g-detail">${r.W}</td><td class="g-detail">${r.D}</td><td class="g-detail">${r.L}</td>
           <td class="g-detail">${r.GF}</td><td class="g-detail">${r.GA}</td><td>${r.GD > 0 ? "+" + r.GD : r.GD}</td><td class="g-pts">${r.Pts}</td>
-          <td class="g-odd g-odd2">${pct(od.win)}</td><td class="g-odd g-odd2">${pct(od.runnerUp)}</td><td class="g-odd g-adv">${advCell(od.advance)}</td>
+          <td class="g-odd g-odd2">${winCell}</td><td class="g-odd g-odd2">${pct(od.runnerUp)}</td><td class="g-odd g-adv">${advCell(od.advance, clinch.top2.has(r.team))}</td>
         </tr>`;
       }).join("");
       const dirtyBadge = dirty ? `<span class="g-dirty" title="A match has finished but its result isn't in yet — standings & odds update on the next sync.">⚠ results pending</span>` : "";

@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-19T01:04:58.322Z",
+  "generated": "2026-06-19T03:07:10.376Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -334,12 +334,12 @@
    "utc": "2026-06-19T01:00Z",
    "home": "Mexico",
    "away": "South Korea",
-   "homeScore": 0,
+   "homeScore": 1,
    "awayScore": 0,
-   "state": "in",
-   "statusText": "4'",
-   "minute": "4'",
-   "period": 1
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
   }
  }
 }
