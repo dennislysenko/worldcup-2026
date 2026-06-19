@@ -1,14 +1,14 @@
 // World Football Elo ratings — auto-refreshed from eloratings.net (current, reflects results).
 // Regenerate: node scripts/update-elo.mjs   ·   pre-tournament snapshot archived in elo-pretournament.js
 WC.elo = {
-  "Mexico": 1881,
-  "South Africa": 1511,
-  "South Korea": 1786,
-  "Czechia": 1712,
-  "Canada": 1767,
-  "Bosnia and Herzegovina": 1616,
-  "Qatar": 1447,
-  "Switzerland": 1865,
+  "Mexico": 1896,
+  "South Africa": 1527,
+  "South Korea": 1771,
+  "Czechia": 1696,
+  "Canada": 1777,
+  "Bosnia and Herzegovina": 1596,
+  "Qatar": 1437,
+  "Switzerland": 1885,
   "Brazil": 1978,
   "Morocco": 1840,
   "Haiti": 1536,

@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-18T12:17:43.713Z",
+  "generated": "2026-06-19T11:02:47.869Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 75,
+  "total": 89,
   "counts": {
-   "corner": 7,
-   "free_kick": 3,
+   "corner": 9,
+   "free_kick": 4,
    "throw_in": 1,
-   "penalty": 4,
-   "open_play": 60
+   "penalty": 6,
+   "open_play": 69
   },
-  "setPieceExclPens": 11,
-  "pctExclPens": 14.666666666666666,
-  "pctInclPens": 20
+  "setPieceExclPens": 14,
+  "pctExclPens": 15.730337078651685,
+  "pctInclPens": 22.471910112359552
  },
  "matches": [
   {
@@ -39,7 +39,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Mexico 1, South Africa 0. Julián Quiñones (Mexico) right footed shot from the centre of the box to the centre of the goal. Assisted by Érik Lira.",
-     "wallclock": "2026-06-11T19:14:30Z"
+     "wallclock": "2026-06-11T19:14:29Z"
     },
     {
      "espnPlayId": "49484266",
@@ -179,7 +179,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! USA 2, Paraguay 0. Folarin Balogun (USA) right footed shot from the centre of the box to the bottom right corner. Assisted by Christian Pulisic.",
-     "wallclock": "2026-06-13T01:32:34Z"
+     "wallclock": "2026-06-13T01:32:33Z"
     },
     {
      "espnPlayId": "49491046",
@@ -215,7 +215,7 @@
      "category": "open_play",
      "scoreAfter": "4–1",
      "evidence": "Goal! USA 4, Paraguay 1. Giovanni Reyna (USA) right footed shot from the centre of the box to the bottom left corner. Assisted by Alex Freeman.",
-     "wallclock": "2026-06-13T03:01:27Z"
+     "wallclock": "2026-06-13T03:01:26Z"
     }
    ]
   },
@@ -252,7 +252,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Own Goal by Miro Muheim, Switzerland. Qatar 1, Switzerland 1.",
-     "wallclock": "2026-06-13T21:01:09Z"
+     "wallclock": "2026-06-13T21:01:08Z"
     }
    ]
   },
@@ -876,7 +876,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Goal! Iraq 1, Norway 1. Aymen Hussein (Iraq) header from the centre of the box to the bottom right corner. Assisted by Amir Al Ammari with a cross.",
-     "wallclock": "2026-06-16T22:39:24Z"
+     "wallclock": "2026-06-16T22:39:23Z"
     },
     {
      "espnPlayId": "49533256",
@@ -888,7 +888,7 @@
      "category": "open_play",
      "scoreAfter": "1–2",
      "evidence": "Goal! Iraq 1, Norway 2. Erling Haaland (Norway) right footed shot from very close range to the centre of the goal.",
-     "wallclock": "2026-06-16T22:43:26Z"
+     "wallclock": "2026-06-16T22:43:25Z"
     },
     {
      "espnPlayId": "49534369",
@@ -900,7 +900,7 @@
      "category": "corner",
      "scoreAfter": "1–3",
      "evidence": "Goal! Iraq 1, Norway 3. Leo Østigård (Norway) header from very close range to the high centre of the goal. Assisted by Martin Ødegaard with a cross following a corner.",
-     "wallclock": "2026-06-16T23:39:04Z"
+     "wallclock": "2026-06-16T23:39:03Z"
     },
     {
      "espnPlayId": "49534845",
@@ -986,7 +986,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Austria 1, Jordan 0. Romano Schmid (Austria) right footed shot from outside the box to the top right corner. Assisted by Xaver Schlager.",
-     "wallclock": "2026-06-17T04:23:00Z"
+     "wallclock": "2026-06-17T04:22:59Z"
     },
     {
      "espnPlayId": "49538122",
@@ -1047,7 +1047,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Portugal 1, Congo DR 0. João Neves (Portugal) header from the centre of the box to the bottom right corner. Assisted by Pedro Neto with a cross.",
-     "wallclock": "2026-06-17T17:06:54Z"
+     "wallclock": "2026-06-17T17:06:53Z"
     },
     {
      "espnPlayId": "49539666",
@@ -1084,7 +1084,7 @@
      "category": "penalty",
      "scoreAfter": "1–0",
      "evidence": "Goal! England 1, Croatia 0. Harry Kane (England) converts the penalty with a right footed shot to the bottom right corner.",
-     "wallclock": "2026-06-17T20:11:27Z"
+     "wallclock": "2026-06-17T20:11:28Z"
     },
     {
      "espnPlayId": "49540900",
@@ -1120,7 +1120,7 @@
      "category": "open_play",
      "scoreAfter": "2–2",
      "evidence": "Goal! England 2, Croatia 2. Petar Musa (Croatia) right footed shot from the centre of the box to the centre of the goal. Assisted by Ivan Perisic with a headed pass.",
-     "wallclock": "2026-06-17T20:50:04Z"
+     "wallclock": "2026-06-17T20:50:05Z"
     },
     {
      "espnPlayId": "49541128",
@@ -1132,7 +1132,7 @@
      "category": "open_play",
      "scoreAfter": "3–2",
      "evidence": "Goal! England 3, Croatia 2. Jude Bellingham (England) right footed shot from the right side of the box to the bottom left corner. Assisted by Elliot Anderson.",
-     "wallclock": "2026-06-17T21:10:44Z"
+     "wallclock": "2026-06-17T21:10:45Z"
     },
     {
      "espnPlayId": "49541683",
@@ -1144,7 +1144,7 @@
      "category": "open_play",
      "scoreAfter": "4–2",
      "evidence": "Goal! England 4, Croatia 2. Marcus Rashford (England) right footed shot from the centre of the box to the bottom right corner. Assisted by Bukayo Saka.",
-     "wallclock": "2026-06-17T21:49:06Z"
+     "wallclock": "2026-06-17T21:49:07Z"
     }
    ]
   },
@@ -1168,7 +1168,7 @@
      "header": false,
      "category": "open_play",
      "scoreAfter": "1–0",
-     "evidence": "Goal! Ghana 1, Panama 0. Caleb Yirenkyi (Ghana) right footed shot from very close range to the top right corner following a fast break.",
+     "evidence": "Goal! Ghana 1, Panama 0. Caleb Yirenkyi (Ghana) right footed shot from very close range to the top right corner. Assisted by Brandon Thomas-Asante following a fast break.",
      "wallclock": "2026-06-18T00:55:48Z"
     }
    ]
@@ -1231,6 +1231,226 @@
      "scoreAfter": "1–3",
      "evidence": "Goal! Uzbekistan 1, Colombia 3. Jaminton Campaz (Colombia) header from the centre of the box to the bottom left corner. Assisted by Cucho Hernández with a cross.",
      "wallclock": "2026-06-18T03:59:11Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760438",
+   "name": "South Africa at Czechia",
+   "kickoff": "2026-06-18T16:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Czechia",
+   "away": "South Africa",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49544975",
+     "minute": "6'",
+     "team": "Czechia",
+     "scorer": "Michal Sadílek",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Czechia 1, South Africa 0. Michal Sadílek (Czechia) left footed shot from the centre of the box to the centre of the goal. Assisted by Alexandr Sojka.",
+     "wallclock": "2026-06-18T16:05:21Z"
+    },
+    {
+     "espnPlayId": "49546146",
+     "minute": "83'",
+     "team": "South Africa",
+     "scorer": "Teboho Mokoena",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Czechia 1, South Africa 1. Teboho Mokoena (South Africa) converts the penalty with a right footed shot to the bottom left corner.",
+     "wallclock": "2026-06-18T17:44:11Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760439",
+   "name": "Bosnia-Herzegovina at Switzerland",
+   "kickoff": "2026-06-18T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Switzerland",
+   "away": "Bosnia-Herzegovina",
+   "homeScore": 4,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49547581",
+     "minute": "74'",
+     "team": "Switzerland",
+     "scorer": "Johan Manzambi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Switzerland 1, Bosnia and Herzegovina 0. Johan Manzambi (Switzerland) right footed shot from the centre of the box to the top right corner.",
+     "wallclock": "2026-06-18T20:33:01Z"
+    },
+    {
+     "espnPlayId": "49547748",
+     "minute": "84'",
+     "team": "Switzerland",
+     "scorer": "Rubén Vargas",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Switzerland 2, Bosnia and Herzegovina 0. Rubén Vargas (Switzerland) right footed shot from the centre of the box to the bottom right corner. Assisted by Breel Embolo.",
+     "wallclock": "2026-06-18T20:43:04Z"
+    },
+    {
+     "espnPlayId": "49547805",
+     "minute": "90'",
+     "team": "Switzerland",
+     "scorer": "Johan Manzambi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Switzerland 3, Bosnia and Herzegovina 0. Johan Manzambi (Switzerland) right footed shot from the centre of the box to the centre of the goal. Assisted by Rubén Vargas.",
+     "wallclock": "2026-06-18T20:48:41Z"
+    },
+    {
+     "espnPlayId": "49547831",
+     "minute": "90'+3'",
+     "team": "Bosnia-Herzegovina",
+     "scorer": "Ermin Mahmic",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "3–1",
+     "evidence": "Goal! Switzerland 3, Bosnia and Herzegovina 1. Ermin Mahmic (Bosnia and Herzegovina) right footed shot from the centre of the box to the high centre of the goal following a corner.",
+     "wallclock": "2026-06-18T20:51:49Z"
+    },
+    {
+     "espnPlayId": "49547869",
+     "minute": "90'+7'",
+     "team": "Switzerland",
+     "scorer": "Granit Xhaka",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "4–1",
+     "evidence": "Goal! Switzerland 4, Bosnia and Herzegovina 1. Granit Xhaka (Switzerland) converts the penalty with a left footed shot to the bottom right corner.",
+     "wallclock": "2026-06-18T20:56:12Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760440",
+   "name": "Qatar at Canada",
+   "kickoff": "2026-06-18T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Canada",
+   "away": "Qatar",
+   "homeScore": 6,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49548127",
+     "minute": "16'",
+     "team": "Canada",
+     "scorer": "Cyle Larin",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Canada 1, Qatar 0. Cyle Larin (Canada) left footed shot from very close range to the bottom right corner following a corner.",
+     "wallclock": "2026-06-18T22:16:43Z"
+    },
+    {
+     "espnPlayId": "49548240",
+     "minute": "29'",
+     "team": "Canada",
+     "scorer": "Jonathan David",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Canada 2, Qatar 0. Jonathan David (Canada) right footed shot from the right side of the box to the bottom right corner.",
+     "wallclock": "2026-06-18T22:29:14Z"
+    },
+    {
+     "espnPlayId": "49548478",
+     "minute": "45'+3'",
+     "team": "Canada",
+     "scorer": "Jonathan David",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Canada 3, Qatar 0. Jonathan David (Canada) right footed shot from very close range to the centre of the goal.",
+     "wallclock": "2026-06-18T22:48:10Z"
+    },
+    {
+     "espnPlayId": "49548735",
+     "minute": "64'",
+     "team": "Canada",
+     "scorer": "Nathan Saliba",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "4–0",
+     "evidence": "Goal! Canada 4, Qatar 0. Nathan Saliba (Canada) from a free kick with a right footed shot to the bottom right corner.",
+     "wallclock": "2026-06-18T23:24:59Z"
+    },
+    {
+     "espnPlayId": "49548839",
+     "minute": "75'",
+     "team": "Canada",
+     "scorer": "Mohamed Manai",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "5–0",
+     "evidence": "Own Goal by Mohammad Al Manai, Qatar. Canada 5, Qatar 0.",
+     "wallclock": "2026-06-18T23:36:20Z"
+    },
+    {
+     "espnPlayId": "49549074",
+     "minute": "90'+2'",
+     "team": "Canada",
+     "scorer": "Jonathan David",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "6–0",
+     "evidence": "Goal! Canada 6, Qatar 0. Jonathan David (Canada) left footed shot from the centre of the box to the top left corner. Assisted by Nathan Saliba.",
+     "wallclock": "2026-06-18T23:53:02Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760441",
+   "name": "South Korea at Mexico",
+   "kickoff": "2026-06-19T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Mexico",
+   "away": "South Korea",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49552774",
+     "minute": "50'",
+     "team": "Mexico",
+     "scorer": "Luis Romo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Mexico 1, Korea Republic 0. Luis Romo (Mexico) right footed shot from the centre of the box to the centre of the goal.",
+     "wallclock": "2026-06-19T02:09:46Z"
     }
    ]
   }
