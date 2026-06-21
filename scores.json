@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-19T11:02:46.557Z",
+  "generated": "2026-06-21T10:09:13.642Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -339,6 +339,102 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
+   "period": 2
+  },
+  "29": {
+   "espnId": "760442",
+   "utc": "2026-06-19T19:00Z",
+   "home": "United States",
+   "away": "Australia",
+   "homeScore": 2,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "30": {
+   "espnId": "760445",
+   "utc": "2026-06-19T22:00Z",
+   "home": "Scotland",
+   "away": "Morocco",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
+   "period": 2
+  },
+  "31": {
+   "espnId": "760444",
+   "utc": "2026-06-20T00:30Z",
+   "home": "Brazil",
+   "away": "Haiti",
+   "homeScore": 3,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
+   "period": 2
+  },
+  "32": {
+   "espnId": "760443",
+   "utc": "2026-06-20T03:00Z",
+   "home": "Türkiye",
+   "away": "Paraguay",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+9'",
+   "period": 2
+  },
+  "33": {
+   "espnId": "760447",
+   "utc": "2026-06-20T17:00Z",
+   "home": "Netherlands",
+   "away": "Sweden",
+   "homeScore": 5,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
+   "period": 2
+  },
+  "34": {
+   "espnId": "760448",
+   "utc": "2026-06-20T20:00Z",
+   "home": "Germany",
+   "away": "Ivory Coast",
+   "homeScore": 2,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
+   "period": 2
+  },
+  "35": {
+   "espnId": "760446",
+   "utc": "2026-06-21T00:00Z",
+   "home": "Ecuador",
+   "away": "Curaçao",
+   "homeScore": 0,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "36": {
+   "espnId": "760449",
+   "utc": "2026-06-21T04:00Z",
+   "home": "Tunisia",
+   "away": "Japan",
+   "homeScore": 0,
+   "awayScore": 4,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
    "period": 2
   }
  }

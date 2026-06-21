@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-19T11:02:47.869Z",
+  "generated": "2026-06-21T10:09:15.518Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 89,
+  "total": 109,
   "counts": {
    "corner": 9,
-   "free_kick": 4,
+   "free_kick": 5,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 69
+   "open_play": 88
   },
-  "setPieceExclPens": 14,
-  "pctExclPens": 15.730337078651685,
-  "pctInclPens": 22.471910112359552
+  "setPieceExclPens": 15,
+  "pctExclPens": 13.761467889908257,
+  "pctInclPens": 19.26605504587156
  },
  "matches": [
   {
@@ -1255,7 +1255,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Czechia 1, South Africa 0. Michal Sadílek (Czechia) left footed shot from the centre of the box to the centre of the goal. Assisted by Alexandr Sojka.",
-     "wallclock": "2026-06-18T16:05:21Z"
+     "wallclock": "2026-06-18T16:05:22Z"
     },
     {
      "espnPlayId": "49546146",
@@ -1304,7 +1304,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! Switzerland 2, Bosnia and Herzegovina 0. Rubén Vargas (Switzerland) right footed shot from the centre of the box to the bottom right corner. Assisted by Breel Embolo.",
-     "wallclock": "2026-06-18T20:43:04Z"
+     "wallclock": "2026-06-18T20:43:05Z"
     },
     {
      "espnPlayId": "49547805",
@@ -1328,7 +1328,7 @@
      "category": "corner",
      "scoreAfter": "3–1",
      "evidence": "Goal! Switzerland 3, Bosnia and Herzegovina 1. Ermin Mahmic (Bosnia and Herzegovina) right footed shot from the centre of the box to the high centre of the goal following a corner.",
-     "wallclock": "2026-06-18T20:51:49Z"
+     "wallclock": "2026-06-18T20:51:50Z"
     },
     {
      "espnPlayId": "49547869",
@@ -1365,7 +1365,7 @@
      "category": "corner",
      "scoreAfter": "1–0",
      "evidence": "Goal! Canada 1, Qatar 0. Cyle Larin (Canada) left footed shot from very close range to the bottom right corner following a corner.",
-     "wallclock": "2026-06-18T22:16:43Z"
+     "wallclock": "2026-06-18T22:16:44Z"
     },
     {
      "espnPlayId": "49548240",
@@ -1377,7 +1377,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! Canada 2, Qatar 0. Jonathan David (Canada) right footed shot from the right side of the box to the bottom right corner.",
-     "wallclock": "2026-06-18T22:29:14Z"
+     "wallclock": "2026-06-18T22:29:15Z"
     },
     {
      "espnPlayId": "49548478",
@@ -1401,7 +1401,7 @@
      "category": "free_kick",
      "scoreAfter": "4–0",
      "evidence": "Goal! Canada 4, Qatar 0. Nathan Saliba (Canada) from a free kick with a right footed shot to the bottom right corner.",
-     "wallclock": "2026-06-18T23:24:59Z"
+     "wallclock": "2026-06-18T23:25:00Z"
     },
     {
      "espnPlayId": "49548839",
@@ -1413,7 +1413,7 @@
      "category": "open_play",
      "scoreAfter": "5–0",
      "evidence": "Own Goal by Mohammad Al Manai, Qatar. Canada 5, Qatar 0.",
-     "wallclock": "2026-06-18T23:36:20Z"
+     "wallclock": "2026-06-18T23:36:21Z"
     },
     {
      "espnPlayId": "49549074",
@@ -1450,7 +1450,350 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Mexico 1, Korea Republic 0. Luis Romo (Mexico) right footed shot from the centre of the box to the centre of the goal.",
-     "wallclock": "2026-06-19T02:09:46Z"
+     "wallclock": "2026-06-19T02:09:47Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760442",
+   "name": "Australia at United States",
+   "kickoff": "2026-06-19T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "United States",
+   "away": "Australia",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49553647",
+     "minute": "11'",
+     "team": "United States",
+     "scorer": "Cameron Burgess",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Own Goal by Cameron Burgess, Australia. USA 1, Australia 0.",
+     "wallclock": "2026-06-19T19:10:44Z"
+    },
+    {
+     "espnPlayId": "49554086",
+     "minute": "43'",
+     "team": "United States",
+     "scorer": "Alex Freeman",
+     "ownGoal": false,
+     "header": true,
+     "category": "free_kick",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! USA 2, Australia 0. Alex Freeman (USA) header from very close range to the bottom right corner following a set piece situation.Goal awarded following VAR Review.",
+     "wallclock": "2026-06-19T19:43:28Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760445",
+   "name": "Morocco at Scotland",
+   "kickoff": "2026-06-19T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Scotland",
+   "away": "Morocco",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49555063",
+     "minute": "2'",
+     "team": "Morocco",
+     "scorer": "Ismael Saibari",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Scotland 0, Morocco 1. Ismael Saibari (Morocco) right footed shot from the right side of the box to the high centre of the goal. Assisted by Brahim Díaz with a through ball.",
+     "wallclock": "2026-06-19T22:01:23Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760444",
+   "name": "Haiti at Brazil",
+   "kickoff": "2026-06-20T00:30Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Brazil",
+   "away": "Haiti",
+   "homeScore": 3,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49557057",
+     "minute": "23'",
+     "team": "Brazil",
+     "scorer": "Matheus Cunha",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Brazil 1, Haiti 0. Matheus Cunha (Brazil) left footed shot from the centre of the box to the bottom left corner following a fast break.",
+     "wallclock": "2026-06-20T00:55:26Z"
+    },
+    {
+     "espnPlayId": "49557207",
+     "minute": "36'",
+     "team": "Brazil",
+     "scorer": "Matheus Cunha",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Brazil 2, Haiti 0. Matheus Cunha (Brazil) left footed shot from the left side of the box to the top left corner. Assisted by Vinícius Júnior with a through ball following a fast break.",
+     "wallclock": "2026-06-20T01:08:15Z"
+    },
+    {
+     "espnPlayId": "49557372",
+     "minute": "45'+3'",
+     "team": "Brazil",
+     "scorer": "Vinícius Júnior",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Brazil 3, Haiti 0. Vinícius Júnior (Brazil) right footed shot from the left side of the box to the centre of the goal. Assisted by Lucas Paquetá with a through ball.",
+     "wallclock": "2026-06-20T01:19:44Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760443",
+   "name": "Paraguay at Türkiye",
+   "kickoff": "2026-06-20T03:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Türkiye",
+   "away": "Paraguay",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49558211",
+     "minute": "2'",
+     "team": "Paraguay",
+     "scorer": "Matías Galarza",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Türkiye 0, Paraguay 1. Matías Galarza (Paraguay) left footed shot from outside the box to the bottom right corner. Assisted by Julio Enciso.",
+     "wallclock": "2026-06-20T03:01:12Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760447",
+   "name": "Sweden at Netherlands",
+   "kickoff": "2026-06-20T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Netherlands",
+   "away": "Sweden",
+   "homeScore": 5,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49561135",
+     "minute": "5'",
+     "team": "Netherlands",
+     "scorer": "Brian Brobbey",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Netherlands 1, Sweden 0. Brian Brobbey (Netherlands) right footed shot from very close range to the centre of the goal. Assisted by Cody Gakpo with a cross.",
+     "wallclock": "2026-06-20T17:05:08Z"
+    },
+    {
+     "espnPlayId": "49561282",
+     "minute": "17'",
+     "team": "Netherlands",
+     "scorer": "Brian Brobbey",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Netherlands 2, Sweden 0. Brian Brobbey (Netherlands) right footed shot from very close range to the bottom left corner. Assisted by Denzel Dumfries with a cross.",
+     "wallclock": "2026-06-20T17:16:23Z"
+    },
+    {
+     "espnPlayId": "49561801",
+     "minute": "47'",
+     "team": "Netherlands",
+     "scorer": "Cody Gakpo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Netherlands 3, Sweden 0. Cody Gakpo (Netherlands) left footed shot from very close range to the centre of the goal. Assisted by Denzel Dumfries with a cross.",
+     "wallclock": "2026-06-20T18:08:14Z"
+    },
+    {
+     "espnPlayId": "49561910",
+     "minute": "54'",
+     "team": "Netherlands",
+     "scorer": "Cody Gakpo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–0",
+     "evidence": "Goal! Netherlands 4, Sweden 0. Cody Gakpo (Netherlands) right footed shot from the left side of the box to the bottom left corner. Assisted by Crysencio Summerville following a fast break.",
+     "wallclock": "2026-06-20T18:15:04Z"
+    },
+    {
+     "espnPlayId": "49561972",
+     "minute": "59'",
+     "team": "Sweden",
+     "scorer": "Anthony Elanga",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–1",
+     "evidence": "Goal! Netherlands 4, Sweden 1. Anthony Elanga (Sweden) left footed shot from the centre of the box to the bottom left corner. Assisted by Alexander Isak with a through ball following a fast break.",
+     "wallclock": "2026-06-20T18:19:28Z"
+    },
+    {
+     "espnPlayId": "49562414",
+     "minute": "89'",
+     "team": "Netherlands",
+     "scorer": "Crysencio Summerville",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "5–1",
+     "evidence": "Goal! Netherlands 5, Sweden 1. Crysencio Summerville (Netherlands) right footed shot from outside the box to the bottom left corner. Assisted by Memphis Depay.",
+     "wallclock": "2026-06-20T18:49:52Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760448",
+   "name": "Ivory Coast at Germany",
+   "kickoff": "2026-06-20T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Germany",
+   "away": "Ivory Coast",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49563073",
+     "minute": "30'",
+     "team": "Ivory Coast",
+     "scorer": "Franck Kessié",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Germany 0, Côte d'Ivoire 1. Franck Kessie (Côte d'Ivoire) right footed shot from the centre of the box to the bottom left corner.",
+     "wallclock": "2026-06-20T20:29:07Z"
+    },
+    {
+     "espnPlayId": "49563990",
+     "minute": "68'",
+     "team": "Germany",
+     "scorer": "Deniz Undav",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Germany 1, Côte d'Ivoire 1. Deniz Undav (Germany) left footed shot from very close range to the high centre of the goal. Assisted by Nadiem Amiri with a cross.",
+     "wallclock": "2026-06-20T21:30:28Z"
+    },
+    {
+     "espnPlayId": "49564386",
+     "minute": "90'+4'",
+     "team": "Germany",
+     "scorer": "Deniz Undav",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Germany 2, Côte d'Ivoire 1. Deniz Undav (Germany) left footed shot from the centre of the box to the bottom left corner. Assisted by Felix Nmecha with a through ball.",
+     "wallclock": "2026-06-20T21:56:22Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760446",
+   "name": "Curaçao at Ecuador",
+   "kickoff": "2026-06-21T00:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Ecuador",
+   "away": "Curaçao",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
+  },
+  {
+   "espnId": "760449",
+   "name": "Japan at Tunisia",
+   "kickoff": "2026-06-21T04:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Tunisia",
+   "away": "Japan",
+   "homeScore": 0,
+   "awayScore": 4,
+   "goals": [
+    {
+     "espnPlayId": "49569138",
+     "minute": "4'",
+     "team": "Japan",
+     "scorer": "Daichi Kamada",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Tunisia 0, Japan 1. Daichi Kamada (Japan) left footed shot from very close range to the centre of the goal. Assisted by Keito Nakamura.",
+     "wallclock": "2026-06-21T04:03:33Z"
+    },
+    {
+     "espnPlayId": "49569538",
+     "minute": "31'",
+     "team": "Japan",
+     "scorer": "Ayase Ueda",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Tunisia 0, Japan 2. Ayase Ueda (Japan) right footed shot from the right side of the box to the bottom left corner. Assisted by Ko Itakura following a fast break.",
+     "wallclock": "2026-06-21T04:30:11Z"
+    },
+    {
+     "espnPlayId": "49570288",
+     "minute": "69'",
+     "team": "Japan",
+     "scorer": "Junya Ito",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–3",
+     "evidence": "Goal! Tunisia 0, Japan 3. Junya Ito (Japan) right footed shot from the centre of the box to the bottom right corner. Assisted by Ayase Ueda with a through ball.",
+     "wallclock": "2026-06-21T05:28:11Z"
+    },
+    {
+     "espnPlayId": "49570440",
+     "minute": "83'",
+     "team": "Japan",
+     "scorer": "Ayase Ueda",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "0–4",
+     "evidence": "Goal! Tunisia 0, Japan 4. Ayase Ueda (Japan) header from the centre of the box to the bottom right corner. Assisted by Kaishu Sano with a cross.",
+     "wallclock": "2026-06-21T05:43:00Z"
     }
    ]
   }
