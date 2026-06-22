@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-21T10:09:15.518Z",
+  "generated": "2026-06-22T12:31:36.240Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 109,
+  "total": 121,
   "counts": {
-   "corner": 9,
-   "free_kick": 5,
+   "corner": 12,
+   "free_kick": 6,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 88
+   "open_play": 96
   },
-  "setPieceExclPens": 15,
-  "pctExclPens": 13.761467889908257,
-  "pctInclPens": 19.26605504587156
+  "setPieceExclPens": 19,
+  "pctExclPens": 15.702479338842975,
+  "pctInclPens": 20.66115702479339
  },
  "matches": [
   {
@@ -1611,7 +1611,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Netherlands 1, Sweden 0. Brian Brobbey (Netherlands) right footed shot from very close range to the centre of the goal. Assisted by Cody Gakpo with a cross.",
-     "wallclock": "2026-06-20T17:05:08Z"
+     "wallclock": "2026-06-20T17:05:09Z"
     },
     {
      "espnPlayId": "49561282",
@@ -1696,7 +1696,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Germany 0, Côte d'Ivoire 1. Franck Kessie (Côte d'Ivoire) right footed shot from the centre of the box to the bottom left corner.",
-     "wallclock": "2026-06-20T20:29:07Z"
+     "wallclock": "2026-06-20T20:29:08Z"
     },
     {
      "espnPlayId": "49563990",
@@ -1794,6 +1794,201 @@
      "scoreAfter": "0–4",
      "evidence": "Goal! Tunisia 0, Japan 4. Ayase Ueda (Japan) header from the centre of the box to the bottom right corner. Assisted by Kaishu Sano with a cross.",
      "wallclock": "2026-06-21T05:43:00Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760453",
+   "name": "Saudi Arabia at Spain",
+   "kickoff": "2026-06-21T16:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Spain",
+   "away": "Saudi Arabia",
+   "homeScore": 4,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49572197",
+     "minute": "10'",
+     "team": "Spain",
+     "scorer": "Lamine Yamal",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Spain 1, Saudi Arabia 0. Lamine Yamal (Spain) right footed shot from the right side of the six yard box to the bottom right corner. Assisted by Mikel Oyarzabal with a cross.",
+     "wallclock": "2026-06-21T16:10:50Z"
+    },
+    {
+     "espnPlayId": "49572355",
+     "minute": "21'",
+     "team": "Spain",
+     "scorer": "Mikel Oyarzabal",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Spain 2, Saudi Arabia 0. Mikel Oyarzabal (Spain) left footed shot from the left side of the six yard box to the bottom right corner. Assisted by Aymeric Laporte with a headed pass following a corner.",
+     "wallclock": "2026-06-21T16:21:27Z"
+    },
+    {
+     "espnPlayId": "49572378",
+     "minute": "24'",
+     "team": "Spain",
+     "scorer": "Mikel Oyarzabal",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Spain 3, Saudi Arabia 0. Mikel Oyarzabal (Spain) left footed shot from very close range to the top right corner. Assisted by Dani Olmo with a headed pass.",
+     "wallclock": "2026-06-21T16:23:54Z"
+    },
+    {
+     "espnPlayId": "49572906",
+     "minute": "49'",
+     "team": "Spain",
+     "scorer": "Hassan Al-Tambakti",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–0",
+     "evidence": "Own Goal by Hassan Al Tambakti, Saudi Arabia. Spain 4, Saudi Arabia 0.",
+     "wallclock": "2026-06-21T17:11:15Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760451",
+   "name": "Iran at Belgium",
+   "kickoff": "2026-06-21T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Belgium",
+   "away": "Iran",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
+  },
+  {
+   "espnId": "760450",
+   "name": "Cape Verde at Uruguay",
+   "kickoff": "2026-06-21T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Uruguay",
+   "away": "Cape Verde",
+   "homeScore": 2,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49579201",
+     "minute": "21'",
+     "team": "Cape Verde",
+     "scorer": "Kevin Pina",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Uruguay 0, Cabo Verde 1. Kevin Pina (Cabo Verde) from a free kick with a right footed shot to the bottom right corner.",
+     "wallclock": "2026-06-21T22:21:03Z"
+    },
+    {
+     "espnPlayId": "49579665",
+     "minute": "44'",
+     "team": "Uruguay",
+     "scorer": "Maxi Araújo",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Uruguay 1, Cabo Verde 1. Maxi Araújo (Uruguay) header from very close range to the centre of the goal.",
+     "wallclock": "2026-06-21T22:43:42Z"
+    },
+    {
+     "espnPlayId": "49579817",
+     "minute": "45'+6'",
+     "team": "Uruguay",
+     "scorer": "Agustín Canobbio",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Uruguay 2, Cabo Verde 1. Agustín Canobbio (Uruguay) right footed shot from the centre of the box to the centre of the goal. Assisted by Maxi Araújo with a headed pass.",
+     "wallclock": "2026-06-21T22:50:42Z"
+    },
+    {
+     "espnPlayId": "49580615",
+     "minute": "61'",
+     "team": "Cape Verde",
+     "scorer": "Hélio Varela",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Uruguay 2, Cabo Verde 2. Hélio Varela (Cabo Verde) right footed shot from outside the box to the centre of the goal.",
+     "wallclock": "2026-06-21T23:25:57Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760452",
+   "name": "Egypt at New Zealand",
+   "kickoff": "2026-06-22T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "New Zealand",
+   "away": "Egypt",
+   "homeScore": 1,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49581424",
+     "minute": "15'",
+     "team": "New Zealand",
+     "scorer": "Finn Surman",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! New Zealand 1, Egypt 0. Finn Surman (New Zealand) header from the centre of the box to the top left corner. Assisted by Tim Payne with a cross following a corner.",
+     "wallclock": "2026-06-22T01:14:45Z"
+    },
+    {
+     "espnPlayId": "49582192",
+     "minute": "58'",
+     "team": "Egypt",
+     "scorer": "Mostafa Zico",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! New Zealand 1, Egypt 1. Mostafa Zico (Egypt) header from the centre of the box to the high centre of the goal. Assisted by Mohamed Hany with a cross.",
+     "wallclock": "2026-06-22T02:18:19Z"
+    },
+    {
+     "espnPlayId": "49582331",
+     "minute": "67'",
+     "team": "Egypt",
+     "scorer": "Mohamed Salah",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! New Zealand 1, Egypt 2. Mohamed Salah (Egypt) left footed shot from the centre of the box to the bottom left corner. Assisted by Mostafa Zico.",
+     "wallclock": "2026-06-22T02:27:17Z"
+    },
+    {
+     "espnPlayId": "49582496",
+     "minute": "82'",
+     "team": "Egypt",
+     "scorer": "Trézéguet",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–3",
+     "evidence": "Goal! New Zealand 1, Egypt 3. Trezeguet (Egypt) header from the centre of the box to the bottom left corner. Assisted by Mohamed Salah with a cross following a corner.",
+     "wallclock": "2026-06-22T02:41:41Z"
     }
    ]
   }
