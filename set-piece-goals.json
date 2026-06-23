@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-22T12:31:36.240Z",
+  "generated": "2026-06-23T10:09:35.379Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 121,
+  "total": 134,
   "counts": {
-   "corner": 12,
+   "corner": 14,
    "free_kick": 6,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 96
+   "open_play": 107
   },
-  "setPieceExclPens": 19,
-  "pctExclPens": 15.702479338842975,
-  "pctInclPens": 20.66115702479339
+  "setPieceExclPens": 21,
+  "pctExclPens": 15.671641791044776,
+  "pctInclPens": 20.149253731343283
  },
  "matches": [
   {
@@ -1769,7 +1769,7 @@
      "category": "open_play",
      "scoreAfter": "0–2",
      "evidence": "Goal! Tunisia 0, Japan 2. Ayase Ueda (Japan) right footed shot from the right side of the box to the bottom left corner. Assisted by Ko Itakura following a fast break.",
-     "wallclock": "2026-06-21T04:30:11Z"
+     "wallclock": "2026-06-21T04:30:12Z"
     },
     {
      "espnPlayId": "49570288",
@@ -1818,7 +1818,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Spain 1, Saudi Arabia 0. Lamine Yamal (Spain) right footed shot from the right side of the six yard box to the bottom right corner. Assisted by Mikel Oyarzabal with a cross.",
-     "wallclock": "2026-06-21T16:10:50Z"
+     "wallclock": "2026-06-21T16:10:51Z"
     },
     {
      "espnPlayId": "49572355",
@@ -1830,7 +1830,7 @@
      "category": "corner",
      "scoreAfter": "2–0",
      "evidence": "Goal! Spain 2, Saudi Arabia 0. Mikel Oyarzabal (Spain) left footed shot from the left side of the six yard box to the bottom right corner. Assisted by Aymeric Laporte with a headed pass following a corner.",
-     "wallclock": "2026-06-21T16:21:27Z"
+     "wallclock": "2026-06-21T16:21:28Z"
     },
     {
      "espnPlayId": "49572378",
@@ -1854,7 +1854,7 @@
      "category": "open_play",
      "scoreAfter": "4–0",
      "evidence": "Own Goal by Hassan Al Tambakti, Saudi Arabia. Spain 4, Saudi Arabia 0.",
-     "wallclock": "2026-06-21T17:11:15Z"
+     "wallclock": "2026-06-21T17:11:16Z"
     }
    ]
   },
@@ -1891,7 +1891,7 @@
      "category": "free_kick",
      "scoreAfter": "0–1",
      "evidence": "Goal! Uruguay 0, Cabo Verde 1. Kevin Pina (Cabo Verde) from a free kick with a right footed shot to the bottom right corner.",
-     "wallclock": "2026-06-21T22:21:03Z"
+     "wallclock": "2026-06-21T22:21:04Z"
     },
     {
      "espnPlayId": "49579665",
@@ -1915,7 +1915,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Uruguay 2, Cabo Verde 1. Agustín Canobbio (Uruguay) right footed shot from the centre of the box to the centre of the goal. Assisted by Maxi Araújo with a headed pass.",
-     "wallclock": "2026-06-21T22:50:42Z"
+     "wallclock": "2026-06-21T22:50:43Z"
     },
     {
      "espnPlayId": "49580615",
@@ -1927,7 +1927,7 @@
      "category": "open_play",
      "scoreAfter": "2–2",
      "evidence": "Goal! Uruguay 2, Cabo Verde 2. Hélio Varela (Cabo Verde) right footed shot from outside the box to the centre of the goal.",
-     "wallclock": "2026-06-21T23:25:57Z"
+     "wallclock": "2026-06-21T23:25:58Z"
     }
    ]
   },
@@ -1989,6 +1989,214 @@
      "scoreAfter": "1–3",
      "evidence": "Goal! New Zealand 1, Egypt 3. Trezeguet (Egypt) header from the centre of the box to the bottom left corner. Assisted by Mohamed Salah with a cross following a corner.",
      "wallclock": "2026-06-22T02:41:41Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760456",
+   "name": "Austria at Argentina",
+   "kickoff": "2026-06-22T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Argentina",
+   "away": "Austria",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49583440",
+     "minute": "38'",
+     "team": "Argentina",
+     "scorer": "Lionel Messi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Argentina 1, Austria 0. Lionel Messi (Argentina) left footed shot from the centre of the box to the bottom left corner. Assisted by Facundo Medina following a fast break.",
+     "wallclock": "2026-06-22T17:39:01Z"
+    },
+    {
+     "espnPlayId": "49584483",
+     "minute": "90'+5'",
+     "team": "Argentina",
+     "scorer": "Lionel Messi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Argentina 2, Austria 0. Lionel Messi (Argentina) left footed shot from the left side of the six yard box to the centre of the goal following a fast break.",
+     "wallclock": "2026-06-22T18:58:34Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760457",
+   "name": "Iraq at France",
+   "kickoff": "2026-06-22T21:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "France",
+   "away": "Iraq",
+   "homeScore": 3,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49584850",
+     "minute": "14'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! France 1, Iraq 0. Kylian Mbappé (France) left footed shot from outside the box to the bottom left corner. Assisted by Michael Olise.",
+     "wallclock": "2026-06-22T21:14:17Z"
+    },
+    {
+     "espnPlayId": "49586302",
+     "minute": "54'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! France 2, Iraq 0. Kylian Mbappé (France) right footed shot from the centre of the box to the bottom right corner. Assisted by Ousmane Dembélé.",
+     "wallclock": "2026-06-23T00:09:25Z"
+    },
+    {
+     "espnPlayId": "49586814",
+     "minute": "66'",
+     "team": "France",
+     "scorer": "Ousmane Dembélé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! France 3, Iraq 0. Ousmane Dembélé (France) right footed shot from the centre of the box to the bottom left corner. Assisted by Michael Olise with a through ball.",
+     "wallclock": "2026-06-23T00:21:35Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760454",
+   "name": "Senegal at Norway",
+   "kickoff": "2026-06-23T00:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Norway",
+   "away": "Senegal",
+   "homeScore": 3,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49587783",
+     "minute": "43'",
+     "team": "Norway",
+     "scorer": "Marcus Holmgren Pedersen",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Norway 1, Senegal 0. Marcus Pedersen (Norway) right footed shot from the right side of the box to the top right corner.",
+     "wallclock": "2026-06-23T00:42:51Z"
+    },
+    {
+     "espnPlayId": "49588273",
+     "minute": "48'",
+     "team": "Norway",
+     "scorer": "Erling Haaland",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Norway 2, Senegal 0. Erling Haaland (Norway) left footed shot from the centre of the box to the top right corner. Assisted by Martin Ødegaard with a through ball following a fast break.",
+     "wallclock": "2026-06-23T01:06:54Z"
+    },
+    {
+     "espnPlayId": "49588357",
+     "minute": "53'",
+     "team": "Senegal",
+     "scorer": "Ismaïla Sarr",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Norway 2, Senegal 1. Ismaïla Sarr (Senegal) right footed shot from the centre of the box to the top right corner. Assisted by Sadio Mané.",
+     "wallclock": "2026-06-23T01:12:04Z"
+    },
+    {
+     "espnPlayId": "49588416",
+     "minute": "58'",
+     "team": "Norway",
+     "scorer": "Erling Haaland",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–1",
+     "evidence": "Goal! Norway 3, Senegal 1. Erling Haaland (Norway) right footed shot from the centre of the box to the high centre of the goal. Assisted by Patrick Berg.",
+     "wallclock": "2026-06-23T01:16:32Z"
+    },
+    {
+     "espnPlayId": "49588808",
+     "minute": "90'+3'",
+     "team": "Senegal",
+     "scorer": "Ismaïla Sarr",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! Norway 3, Senegal 2. Ismaïla Sarr (Senegal) right footed shot from the centre of the box to the top right corner. Assisted by Nicolas Jackson.",
+     "wallclock": "2026-06-23T01:51:38Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760455",
+   "name": "Algeria at Jordan",
+   "kickoff": "2026-06-23T03:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Jordan",
+   "away": "Algeria",
+   "homeScore": 1,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49589468",
+     "minute": "36'",
+     "team": "Jordan",
+     "scorer": "Nizar Al-Rashdan",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Jordan 1, Algeria 0. Nizar Al Rashdan (Jordan) right footed shot from the centre of the box to the bottom right corner. Assisted by Mousa Al Tamari.",
+     "wallclock": "2026-06-23T03:36:05Z"
+    },
+    {
+     "espnPlayId": "49590090",
+     "minute": "69'",
+     "team": "Algeria",
+     "scorer": "Nadhir Benbouali",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Jordan 1, Algeria 1. Nadhir Benbouali (Algeria) header from the centre of the box to the bottom left corner. Assisted by Riyad Mahrez with a cross following a corner.",
+     "wallclock": "2026-06-23T04:30:39Z"
+    },
+    {
+     "espnPlayId": "49590251",
+     "minute": "82'",
+     "team": "Algeria",
+     "scorer": "Amine Gouiri",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Jordan 1, Algeria 2. Amine Gouiri (Algeria) right footed shot from very close range to the centre of the goal following a corner.",
+     "wallclock": "2026-06-23T04:44:16Z"
     }
    ]
   }
