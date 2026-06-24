@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-23T10:09:35.379Z",
+  "generated": "2026-06-24T09:56:12.014Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 134,
+  "total": 141,
   "counts": {
    "corner": 14,
-   "free_kick": 6,
+   "free_kick": 7,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 107
+   "open_play": 113
   },
-  "setPieceExclPens": 21,
-  "pctExclPens": 15.671641791044776,
-  "pctInclPens": 20.149253731343283
+  "setPieceExclPens": 22,
+  "pctExclPens": 15.602836879432624,
+  "pctInclPens": 19.858156028368793
  },
  "matches": [
   {
@@ -595,7 +595,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Sweden 2, Tunisia 1. Omar Rekik (Tunisia) header from the centre of the box to the bottom left corner. Assisted by Hannibal Mejbri with a cross.",
-     "wallclock": "2026-06-15T02:43:09Z"
+     "wallclock": "2026-06-15T02:43:10Z"
     },
     {
      "espnPlayId": "49521431",
@@ -607,7 +607,7 @@
      "category": "open_play",
      "scoreAfter": "3–1",
      "evidence": "Goal! Sweden 3, Tunisia 1. Viktor Gyökeres (Sweden) right footed shot from the centre of the box to the bottom left corner. Assisted by Alexander Isak.",
-     "wallclock": "2026-06-15T03:19:39Z"
+     "wallclock": "2026-06-15T03:19:40Z"
     },
     {
      "espnPlayId": "49521708",
@@ -631,7 +631,7 @@
      "category": "open_play",
      "scoreAfter": "5–1",
      "evidence": "Goal! Sweden 5, Tunisia 1. Yasin Ayari (Sweden) right footed shot from outside the box to the bottom left corner. Assisted by Lucas Bergvall.",
-     "wallclock": "2026-06-15T03:55:46Z"
+     "wallclock": "2026-06-15T03:55:47Z"
     }
    ]
   },
@@ -742,7 +742,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! IR Iran 0, New Zealand 1. Elijah Just (New Zealand) right footed shot from the centre of the box to the high centre of the goal. Assisted by Chris Wood.",
-     "wallclock": "2026-06-16T01:10:35Z"
+     "wallclock": "2026-06-16T01:10:36Z"
     },
     {
      "espnPlayId": "49529312",
@@ -754,7 +754,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Goal! IR Iran 1, New Zealand 1. Ramin Rezaeian (IR Iran) right footed shot from the centre of the box to the bottom left corner.",
-     "wallclock": "2026-06-16T01:35:40Z"
+     "wallclock": "2026-06-16T01:35:41Z"
     },
     {
      "espnPlayId": "49530353",
@@ -766,7 +766,7 @@
      "category": "open_play",
      "scoreAfter": "1–2",
      "evidence": "Goal! IR Iran 1, New Zealand 2. Elijah Just (New Zealand) right footed shot from the right side of the box to the centre of the goal. Assisted by Chris Wood following a fast break.",
-     "wallclock": "2026-06-16T02:21:36Z"
+     "wallclock": "2026-06-16T02:21:37Z"
     },
     {
      "espnPlayId": "49530497",
@@ -778,7 +778,7 @@
      "category": "open_play",
      "scoreAfter": "2–2",
      "evidence": "Goal! IR Iran 2, New Zealand 2. Mohammad Mohebbi (IR Iran) header from the centre of the box to the bottom left corner. Assisted by Ramin Rezaeian with a cross.",
-     "wallclock": "2026-06-16T02:30:40Z"
+     "wallclock": "2026-06-16T02:30:41Z"
     }
    ]
   },
@@ -1586,7 +1586,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Türkiye 0, Paraguay 1. Matías Galarza (Paraguay) left footed shot from outside the box to the bottom right corner. Assisted by Julio Enciso.",
-     "wallclock": "2026-06-20T03:01:12Z"
+     "wallclock": "2026-06-20T03:01:13Z"
     }
    ]
   },
@@ -1952,7 +1952,7 @@
      "category": "corner",
      "scoreAfter": "1–0",
      "evidence": "Goal! New Zealand 1, Egypt 0. Finn Surman (New Zealand) header from the centre of the box to the top left corner. Assisted by Tim Payne with a cross following a corner.",
-     "wallclock": "2026-06-22T01:14:45Z"
+     "wallclock": "2026-06-22T01:14:46Z"
     },
     {
      "espnPlayId": "49582192",
@@ -2050,7 +2050,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! France 1, Iraq 0. Kylian Mbappé (France) left footed shot from outside the box to the bottom left corner. Assisted by Michael Olise.",
-     "wallclock": "2026-06-22T21:14:17Z"
+     "wallclock": "2026-06-22T21:14:18Z"
     },
     {
      "espnPlayId": "49586302",
@@ -2062,7 +2062,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! France 2, Iraq 0. Kylian Mbappé (France) right footed shot from the centre of the box to the bottom right corner. Assisted by Ousmane Dembélé.",
-     "wallclock": "2026-06-23T00:09:25Z"
+     "wallclock": "2026-06-23T00:09:26Z"
     },
     {
      "espnPlayId": "49586814",
@@ -2123,7 +2123,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Norway 2, Senegal 1. Ismaïla Sarr (Senegal) right footed shot from the centre of the box to the top right corner. Assisted by Sadio Mané.",
-     "wallclock": "2026-06-23T01:12:04Z"
+     "wallclock": "2026-06-23T01:12:05Z"
     },
     {
      "espnPlayId": "49588416",
@@ -2135,7 +2135,7 @@
      "category": "open_play",
      "scoreAfter": "3–1",
      "evidence": "Goal! Norway 3, Senegal 1. Erling Haaland (Norway) right footed shot from the centre of the box to the high centre of the goal. Assisted by Patrick Berg.",
-     "wallclock": "2026-06-23T01:16:32Z"
+     "wallclock": "2026-06-23T01:16:33Z"
     },
     {
      "espnPlayId": "49588808",
@@ -2147,7 +2147,7 @@
      "category": "open_play",
      "scoreAfter": "3–2",
      "evidence": "Goal! Norway 3, Senegal 2. Ismaïla Sarr (Senegal) right footed shot from the centre of the box to the top right corner. Assisted by Nicolas Jackson.",
-     "wallclock": "2026-06-23T01:51:38Z"
+     "wallclock": "2026-06-23T01:51:39Z"
     }
    ]
   },
@@ -2197,6 +2197,141 @@
      "scoreAfter": "1–2",
      "evidence": "Goal! Jordan 1, Algeria 2. Amine Gouiri (Algeria) right footed shot from very close range to the centre of the goal following a corner.",
      "wallclock": "2026-06-23T04:44:16Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760461",
+   "name": "Uzbekistan at Portugal",
+   "kickoff": "2026-06-23T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Portugal",
+   "away": "Uzbekistan",
+   "homeScore": 5,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49590692",
+     "minute": "6'",
+     "team": "Portugal",
+     "scorer": "Cristiano Ronaldo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Portugal 1, Uzbekistan 0. Cristiano Ronaldo (Portugal) right footed shot from the centre of the box to the bottom right corner. Assisted by João Cancelo with a cross.",
+     "wallclock": "2026-06-23T17:06:05Z"
+    },
+    {
+     "espnPlayId": "49590807",
+     "minute": "17'",
+     "team": "Portugal",
+     "scorer": "Nuno Mendes",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Portugal 2, Uzbekistan 0. Nuno Mendes (Portugal) from a free kick with a left footed shot to the bottom left corner.",
+     "wallclock": "2026-06-23T17:16:39Z"
+    },
+    {
+     "espnPlayId": "49591092",
+     "minute": "39'",
+     "team": "Portugal",
+     "scorer": "Cristiano Ronaldo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! Portugal 3, Uzbekistan 0. Cristiano Ronaldo (Portugal) right footed shot from the right side of the box to the bottom left corner. Assisted by Bruno Fernandes with a through ball following a fast break.",
+     "wallclock": "2026-06-23T17:38:22Z"
+    },
+    {
+     "espnPlayId": "49591560",
+     "minute": "60'",
+     "team": "Portugal",
+     "scorer": "Abduvohid Nematov",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–0",
+     "evidence": "Own Goal by Abduvokhid Nematov, Uzbekistan. Portugal 4, Uzbekistan 0.",
+     "wallclock": "2026-06-23T18:23:19Z"
+    },
+    {
+     "espnPlayId": "49592008",
+     "minute": "87'",
+     "team": "Portugal",
+     "scorer": "Rafael Leão",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "5–0",
+     "evidence": "Goal! Portugal 5, Uzbekistan 0. Rafael Leão (Portugal) right footed shot from the centre of the box to the top left corner.",
+     "wallclock": "2026-06-23T18:50:58Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760458",
+   "name": "Ghana at England",
+   "kickoff": "2026-06-23T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "England",
+   "away": "Ghana",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
+  },
+  {
+   "espnId": "760460",
+   "name": "Croatia at Panama",
+   "kickoff": "2026-06-23T23:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Panama",
+   "away": "Croatia",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49595202",
+     "minute": "54'",
+     "team": "Croatia",
+     "scorer": "Ante Budimir",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Panama 0, Croatia 1. Ante Budimir (Croatia) left footed shot from very close range to the bottom left corner. Assisted by Josip Stanisic with a cross.",
+     "wallclock": "2026-06-24T00:12:42Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760459",
+   "name": "Congo DR at Colombia",
+   "kickoff": "2026-06-24T02:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Colombia",
+   "away": "Congo DR",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49597544",
+     "minute": "76'",
+     "team": "Colombia",
+     "scorer": "Daniel Muñoz",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Colombia 1, Congo DR 0. Daniel Muñoz (Colombia) left footed shot from the right side of the box to the bottom right corner. Assisted by Juan Fernando Quintero.",
+     "wallclock": "2026-06-24T03:36:26Z"
     }
    ]
   }

@@ -41,12 +41,12 @@ WC.elo = {
   "Algeria": 1780,
   "Austria": 1841,
   "Jordan": 1632,
-  "Portugal": 1967,
+  "Portugal": 1988,
   "DR Congo": 1674,
-  "Uzbekistan": 1698,
+  "Uzbekistan": 1677,
   "Colombia": 1998,
-  "England": 2055,
-  "Croatia": 1881,
-  "Ghana": 1557,
-  "Panama": 1683
+  "England": 2028,
+  "Croatia": 1896,
+  "Ghana": 1584,
+  "Panama": 1668
 };

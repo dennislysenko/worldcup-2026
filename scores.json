@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-23T10:09:32.445Z",
+  "generated": "2026-06-24T09:56:10.212Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -531,6 +531,54 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+8'",
+   "period": 2
+  },
+  "45": {
+   "espnId": "760461",
+   "utc": "2026-06-23T17:00Z",
+   "home": "Portugal",
+   "away": "Uzbekistan",
+   "homeScore": 5,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "46": {
+   "espnId": "760458",
+   "utc": "2026-06-23T20:00Z",
+   "home": "England",
+   "away": "Ghana",
+   "homeScore": 0,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "47": {
+   "espnId": "760460",
+   "utc": "2026-06-23T23:00Z",
+   "home": "Panama",
+   "away": "Croatia",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+5'",
+   "period": 2
+  },
+  "48": {
+   "espnId": "760459",
+   "utc": "2026-06-24T02:00Z",
+   "home": "Colombia",
+   "away": "Congo DR",
+   "homeScore": 1,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
    "period": 2
   }
  }
