@@ -27,15 +27,15 @@ const thirdSlots = ko.filter(m => m.away === 'Third-place qualifier').map(m => m
 const finalOf = mn => { const s = scores[mn]; return s && s.state === 'post' && s.homeScore != null ? s : null; };
 const groupPlayed = WC.matches.filter(m => m.stage === 'Group' && finalOf(m.matchNumber)).length;
 
-let elo;
+let elo, resultCap = Infinity; // only condition on group games with matchNumber <= resultCap
 const BASE = 1.35, KG = 0.5;
 const poisson = l => { const L = Math.exp(-l); let k = 0, p = 1; do { k++; p *= Math.random(); } while (p > L); return k - 1; };
 const goals = (a, b) => { const d = (elo[a] - elo[b]) / 400; return [poisson(BASE * Math.exp(KG * d)), poisson(BASE * Math.exp(-KG * d))]; };
 const koWin = (a, b) => (Math.random() < 1 / (1 + Math.pow(10, (elo[b] - elo[a]) / 400))) ? a : b;
-function simGroup(L, useResults) {
+function simGroup(L) {
   const st = {}, played = []; groups[L].forEach(t => st[t] = { t, pts: 0, gd: 0, gf: 0, r: Math.random() });
   for (const m of groupMatches[L]) {
-    let ga, gb; const s = useResults && finalOf(m.matchNumber);
+    let ga, gb; const s = m.matchNumber <= resultCap ? finalOf(m.matchNumber) : null;
     if (s) { ga = s.homeScore; gb = s.awayScore; } else { [ga, gb] = goals(m.home, m.away); }
     played.push({ home: m.home, away: m.away, ga, gb });
     st[m.home].gf += ga; st[m.away].gf += gb; st[m.home].gd += ga - gb; st[m.away].gd += gb - ga;
@@ -56,12 +56,12 @@ function simGroup(L, useResults) {
   }
   return out.map(o => ({ t: o.t, st: o }));
 }
-function snapshot(eloSet, useResults) {
-  elo = eloSet;
+function snapshot(eloSet, cap) {
+  elo = eloSet; resultCap = cap;
   const champ = {}, adv = {}, gw = {}; WC.teams.forEach(t => { champ[t.name] = adv[t.name] = gw[t.name] = 0; });
   for (let n = 0; n < N; n++) {
     const win = {}, ru = {}, thirds = [];
-    for (const L of GL) { const r = simGroup(L, useResults); win[L] = r[0].t; ru[L] = r[1].t; thirds.push({ team: r[2].t, group: L, pts: r[2].st.pts, gd: r[2].st.gd, gf: r[2].st.gf, r: Math.random() }); }
+    for (const L of GL) { const r = simGroup(L); win[L] = r[0].t; ru[L] = r[1].t; thirds.push({ team: r[2].t, group: L, pts: r[2].st.pts, gd: r[2].st.gd, gf: r[2].st.gf, r: Math.random() }); }
     thirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.r - b.r);
     const used = new Set(), slot = {};
     for (const sN of thirdSlots) { const wgp = koByNum[sN].home.replace('Winner Group ', ''); const p = thirds.slice(0, 8).find(t => !used.has(t.team) && t.group !== wgp) || thirds.slice(0, 8).find(t => !used.has(t.team)); used.add(p.team); slot[sN] = p.team; }
@@ -77,18 +77,13 @@ function snapshot(eloSet, useResults) {
   return { champ: pack(champ), adv: pack(adv), gw: pack(gw) };
 }
 
+// Clean, reconstructable checkpoints: pre-tournament + each completed matchday.
+// Group games are matchNumbers 1-72 → MD1=1-24, MD2=25-48, MD3=49-72.
+const MILESTONES = [[24, 'md1', 'Matchday 1'], [48, 'md2', 'Matchday 2'], [72, 'md3', 'Matchday 3']];
+const snapshots = [{ key: 'start', label: 'Tournament start', played: 0, ...snapshot(preElo, 0) }];
+for (const [games, key, label] of MILESTONES) {
+  if (groupPlayed >= games) snapshots.push({ key, label, played: games, ...snapshot(nowElo, games) });
+}
 const file = new URL('proj-history.json', root);
-const hist = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : { snapshots: [] };
-if (!hist.snapshots.some(s => s.key === 'start')) {
-  hist.snapshots.unshift({ key: 'start', label: 'Tournament start', played: 0, ...snapshot(preElo, false) });
-  console.error('seeded start baseline');
-}
-const key = `g${groupPlayed}`;
-if (hist.snapshots[hist.snapshots.length - 1].key !== key && groupPlayed > 0) {
-  hist.snapshots.push({ key, label: `${groupPlayed} group games in`, played: groupPlayed, ...snapshot(nowElo, true) });
-  console.error(`appended snapshot ${key}`);
-} else {
-  console.error(`no new snapshot (latest already ${hist.snapshots[hist.snapshots.length - 1].key})`);
-}
-writeFileSync(file, JSON.stringify(hist));
-console.error(`proj-history.json: ${hist.snapshots.length} snapshots`);
+writeFileSync(file, JSON.stringify({ snapshots }));
+console.error(`proj-history.json: ${snapshots.map(s => s.key).join(', ')}`);
