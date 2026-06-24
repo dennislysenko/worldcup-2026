@@ -1021,7 +1021,27 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 }
 
 /* ---------- Knockout bracket ---------- */
-.bracket-wrap { overflow-x: auto; overflow-y: hidden; padding-bottom: 10px; scrollbar-width: thin; }
+.bracket-wrap {
+  overflow-x: auto; overflow-y: hidden; padding: 6px 6px 12px; scrollbar-width: thin;
+  border: 1px solid var(--line); border-radius: 12px;
+  /* Full-bleed: break out of main's 1180px container to maximize horizontal real
+     estate (just this section). Small gutter so it doesn't touch the screen edge. */
+  width: calc(100vw - 32px); max-width: calc(100vw - 32px);
+  margin-left: calc(50% - 50vw + 16px);
+  /* Scroll affordance: a framed viewport + edge shadows that ride the content.
+     Cover gradients (local) sit over the shadows while pinned to the content edge;
+     shadow gradients (scroll) stay at the viewport edges. Result: a soft shadow
+     appears only on the side that has more bracket to scroll to, and fades at each end. */
+  background:
+    linear-gradient(to right, var(--bg) 28%, transparent) 0 0,
+    linear-gradient(to left,  var(--bg) 28%, transparent) 100% 0,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.55), transparent) 0 0,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.55), transparent) 100% 0;
+  background-color: var(--bg);
+  background-repeat: no-repeat;
+  background-size: 48px 100%, 48px 100%, 30px 100%, 30px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
 .bk-grid { position: relative; display: flex; align-items: stretch; gap: 34px; min-width: max-content; padding: 4px; }
 .bk-lines { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .bk-lines path { fill: none; stroke: rgba(242,245,238,.3); stroke-width: 2; }
