@@ -110,8 +110,26 @@
     clearTimeout(liveTimer);
     liveTimer = setTimeout(pollScores, anyLive ? 30000 : 300000); // 30s while live, 5m idle
   }
+  // Self-heal: fetch every PAST date that's still missing a final result, so the
+  // sim/standings never run on a stale bake (e.g. a baked file missing a matchday).
+  async function backfillScores() {
+    const now = Date.now(), need = new Set();
+    for (const m of WC.matches) {
+      if (new Date(m.utc).getTime() > now) continue; // not kicked off yet
+      const s = scores[m.matchNumber];
+      if (!(s && s.state === "post" && s.homeScore != null)) need.add(nyDate(new Date(m.utc)));
+    }
+    for (const d of need) {
+      try {
+        const sb = await (await fetch(`${SCORE_ESPN}/scoreboard?dates=${d}`)).json();
+        const idx = indexEspnScores(sb.events || []);
+        for (const mn in idx) { scores[mn] = idx[mn]; liveLoading.delete(+mn); }
+      } catch (e) { /* keep what we have */ }
+    }
+  }
   async function initScores() {
     try { const j = await (await fetch("scores.json")).json(); Object.assign(scores, j.scores || {}); } catch (e) { /* no bake yet */ }
+    await backfillScores(); // fill any gaps the deployed bake missed BEFORE the first sim
     const now = Date.now();
     WC.matches.forEach(m => {
       const k = new Date(m.utc).getTime(), s = scores[m.matchNumber];
