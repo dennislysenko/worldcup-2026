@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-24T14:46:49.068Z",
+  "generated": "2026-06-24T21:12:13.756Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 141,
+  "total": 148,
   "counts": {
-   "corner": 14,
+   "corner": 15,
    "free_kick": 7,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 113
+   "open_play": 119
   },
-  "setPieceExclPens": 22,
-  "pctExclPens": 15.602836879432624,
-  "pctInclPens": 19.858156028368793
+  "setPieceExclPens": 23,
+  "pctExclPens": 15.54054054054054,
+  "pctInclPens": 19.594594594594593
  },
  "matches": [
   {
@@ -2332,6 +2332,116 @@
      "scoreAfter": "1–0",
      "evidence": "Goal! Colombia 1, Congo DR 0. Daniel Muñoz (Colombia) left footed shot from the right side of the box to the bottom right corner. Assisted by Juan Fernando Quintero.",
      "wallclock": "2026-06-24T03:36:26Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760462",
+   "name": "Qatar at Bosnia-Herzegovina",
+   "kickoff": "2026-06-24T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Bosnia-Herzegovina",
+   "away": "Qatar",
+   "homeScore": 3,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49598649",
+     "minute": "29'",
+     "team": "Bosnia-Herzegovina",
+     "scorer": "Kerim Alajbegovic",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Bosnia and Herzegovina 1, Qatar 0. Kerim Alajbegovic (Bosnia and Herzegovina) right footed shot from outside the box to the top right corner. Assisted by Ivan Basic.",
+     "wallclock": "2026-06-24T19:28:53Z"
+    },
+    {
+     "espnPlayId": "49598792",
+     "minute": "34'",
+     "team": "Bosnia-Herzegovina",
+     "scorer": "Mahmoud Abunada",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Own Goal by Mahmoud Abunada, Qatar. Bosnia and Herzegovina 2, Qatar 0.",
+     "wallclock": "2026-06-24T19:34:00Z"
+    },
+    {
+     "espnPlayId": "49599029",
+     "minute": "42'",
+     "team": "Qatar",
+     "scorer": "Hassan Al-Haydos",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Bosnia and Herzegovina 2, Qatar 1. Hassan Al Haydos (Qatar) right footed shot from very close range to the centre of the goal. Assisted by Edmílson Junior.",
+     "wallclock": "2026-06-24T19:42:16Z"
+    },
+    {
+     "espnPlayId": "49600259",
+     "minute": "80'",
+     "team": "Bosnia-Herzegovina",
+     "scorer": "Ermin Mahmic",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "3–1",
+     "evidence": "Goal! Bosnia and Herzegovina 3, Qatar 1. Ermin Mahmic (Bosnia and Herzegovina) right footed shot from the centre of the box to the centre of the goal. Assisted by Dennis Hadzikadunic following a corner.",
+     "wallclock": "2026-06-24T20:42:18Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760463",
+   "name": "Canada at Switzerland",
+   "kickoff": "2026-06-24T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Switzerland",
+   "away": "Canada",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49599283",
+     "minute": "46'",
+     "team": "Switzerland",
+     "scorer": "Rubén Vargas",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Switzerland 1, Canada 0. Rubén Vargas (Switzerland) right footed shot from the centre of the box to the bottom left corner. Assisted by Johan Manzambi with a cross.",
+     "wallclock": "2026-06-24T20:04:49Z"
+    },
+    {
+     "espnPlayId": "49599590",
+     "minute": "57'",
+     "team": "Switzerland",
+     "scorer": "Johan Manzambi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Switzerland 2, Canada 0. Johan Manzambi (Switzerland) right footed shot from the right side of the box to the centre of the goal. Assisted by Breel Embolo.",
+     "wallclock": "2026-06-24T20:15:34Z"
+    },
+    {
+     "espnPlayId": "49600045",
+     "minute": "76'",
+     "team": "Canada",
+     "scorer": "Promise David",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Switzerland 2, Canada 1. Promise David (Canada) right footed shot from the centre of the box to the bottom left corner. Assisted by Nathan Saliba.",
+     "wallclock": "2026-06-24T20:34:21Z"
     }
    ]
   }

@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-24T14:46:46.380Z",
+  "generated": "2026-06-24T21:10:46.322Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -579,6 +579,30 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+7'",
+   "period": 2
+  },
+  "49": {
+   "espnId": "760463",
+   "utc": "2026-06-24T19:00Z",
+   "home": "Switzerland",
+   "away": "Canada",
+   "homeScore": 2,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
+   "period": 2
+  },
+  "50": {
+   "espnId": "760462",
+   "utc": "2026-06-24T19:00Z",
+   "home": "Bosnia-Herzegovina",
+   "away": "Qatar",
+   "homeScore": 3,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
    "period": 2
   }
  }

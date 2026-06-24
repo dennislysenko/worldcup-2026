@@ -220,7 +220,10 @@
   // safe points-only check (never declares a clinch that a tiebreak could undo).
   function groupClinch(L, rows) {
     const first = new Set(), top2 = new Set(), rem = groupRemaining(L);
-    if (rem.length === 2) {
+    if (rem.length === 0) { // group complete: winner decided, top 2 are through; 3rd's fate is the best-thirds race
+      if (rows[0]) { first.add(rows[0].team); top2.add(rows[0].team); }
+      if (rows[1]) top2.add(rows[1].team);
+    } else if (rem.length === 2) {
       const c = computeCombos(L);
       if (c) {
         const f = new Set(c.teams), t = new Set(c.teams);
