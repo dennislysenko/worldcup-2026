@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-24T21:12:13.756Z",
+  "generated": "2026-06-25T09:50:48.421Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 148,
+  "total": 161,
   "counts": {
-   "corner": 15,
+   "corner": 16,
    "free_kick": 7,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 119
+   "open_play": 131
   },
-  "setPieceExclPens": 23,
-  "pctExclPens": 15.54054054054054,
-  "pctInclPens": 19.594594594594593
+  "setPieceExclPens": 24,
+  "pctExclPens": 14.906832298136646,
+  "pctInclPens": 18.633540372670808
  },
  "matches": [
   {
@@ -2306,7 +2306,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Panama 0, Croatia 1. Ante Budimir (Croatia) left footed shot from very close range to the bottom left corner. Assisted by Josip Stanisic with a cross.",
-     "wallclock": "2026-06-24T00:12:42Z"
+     "wallclock": "2026-06-24T00:12:43Z"
     }
    ]
   },
@@ -2392,7 +2392,7 @@
      "category": "corner",
      "scoreAfter": "3–1",
      "evidence": "Goal! Bosnia and Herzegovina 3, Qatar 1. Ermin Mahmic (Bosnia and Herzegovina) right footed shot from the centre of the box to the centre of the goal. Assisted by Dennis Hadzikadunic following a corner.",
-     "wallclock": "2026-06-24T20:42:18Z"
+     "wallclock": "2026-06-24T20:42:19Z"
     }
    ]
   },
@@ -2442,6 +2442,214 @@
      "scoreAfter": "2–1",
      "evidence": "Goal! Switzerland 2, Canada 1. Promise David (Canada) right footed shot from the centre of the box to the bottom left corner. Assisted by Nathan Saliba.",
      "wallclock": "2026-06-24T20:34:21Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760464",
+   "name": "Haiti at Morocco",
+   "kickoff": "2026-06-24T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Morocco",
+   "away": "Haiti",
+   "homeScore": 4,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49601051",
+     "minute": "10'",
+     "team": "Haiti",
+     "scorer": "Yassine Bounou",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Own Goal by Yassine Bounou, Morocco. Morocco 0, Haiti 1.",
+     "wallclock": "2026-06-24T22:10:35Z"
+    },
+    {
+     "espnPlayId": "49601885",
+     "minute": "39'",
+     "team": "Morocco",
+     "scorer": "Achraf Hakimi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Morocco 1, Haiti 1. Achraf Hakimi (Morocco) left footed shot from very close range to the centre of the goal.",
+     "wallclock": "2026-06-24T22:39:22Z"
+    },
+    {
+     "espnPlayId": "49602007",
+     "minute": "43'",
+     "team": "Haiti",
+     "scorer": "Wilson Isidor",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Morocco 1, Haiti 2. Wilson Isidor (Haiti) right footed shot from outside the box to the top left corner. Assisted by Jean-Kévin Duverne.",
+     "wallclock": "2026-06-24T22:43:11Z"
+    },
+    {
+     "espnPlayId": "49602082",
+     "minute": "45'+1'",
+     "team": "Morocco",
+     "scorer": "Ismael Saibari",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Morocco 2, Haiti 2. Ismael Saibari (Morocco) right footed shot from the centre of the box to the bottom left corner. Assisted by Achraf Hakimi.",
+     "wallclock": "2026-06-24T22:46:01Z"
+    },
+    {
+     "espnPlayId": "49603221",
+     "minute": "78'",
+     "team": "Morocco",
+     "scorer": "Soufiane Rahimi",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! Morocco 3, Haiti 2. Soufiane Rahimi (Morocco) right footed shot from the centre of the box to the top right corner. Assisted by Chadi Riad following a corner.",
+     "wallclock": "2026-06-24T23:39:58Z"
+    },
+    {
+     "espnPlayId": "49603551",
+     "minute": "89'",
+     "team": "Morocco",
+     "scorer": "Gessime Yassine",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–2",
+     "evidence": "Goal! Morocco 4, Haiti 2. Gessime Yassine (Morocco) left footed shot from the centre of the box to the centre of the goal. Assisted by Soufiane Rahimi.",
+     "wallclock": "2026-06-24T23:51:06Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760465",
+   "name": "Brazil at Scotland",
+   "kickoff": "2026-06-24T22:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Scotland",
+   "away": "Brazil",
+   "homeScore": 0,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49600967",
+     "minute": "7'",
+     "team": "Brazil",
+     "scorer": "Vinícius Júnior",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Scotland 0, Brazil 1. Vinícius Júnior (Brazil) right footed shot from the centre of the box to the centre of the goal. Assisted by Rayan.",
+     "wallclock": "2026-06-24T22:08:01Z"
+    },
+    {
+     "espnPlayId": "49602205",
+     "minute": "45'+3'",
+     "team": "Brazil",
+     "scorer": "Vinícius Júnior",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Scotland 0, Brazil 2. Vinícius Júnior (Brazil) header from very close range to the top left corner. Assisted by Bruno Guimarães with a cross.",
+     "wallclock": "2026-06-24T22:49:03Z"
+    },
+    {
+     "espnPlayId": "49602878",
+     "minute": "60'",
+     "team": "Brazil",
+     "scorer": "Matheus Cunha",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–3",
+     "evidence": "Goal! Scotland 0, Brazil 3. Matheus Cunha (Brazil) right footed shot from the centre of the box to the bottom right corner. Assisted by Bruno Guimarães.",
+     "wallclock": "2026-06-24T23:25:11Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760467",
+   "name": "Mexico at Czechia",
+   "kickoff": "2026-06-25T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Czechia",
+   "away": "Mexico",
+   "homeScore": 0,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49605753",
+     "minute": "55'",
+     "team": "Mexico",
+     "scorer": "Mateo Chávez",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Czechia 0, Mexico 1. Mateo Chávez (Mexico) left footed shot from the centre of the box to the bottom left corner. Assisted by Luis Romo.",
+     "wallclock": "2026-06-25T02:14:54Z"
+    },
+    {
+     "espnPlayId": "49605967",
+     "minute": "61'",
+     "team": "Mexico",
+     "scorer": "Julián Quiñones",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Czechia 0, Mexico 2. Julián Quiñones (Mexico) right footed shot from very close range to the centre of the goal. Assisted by Jorge Sánchez following a fast break.",
+     "wallclock": "2026-06-25T02:21:11Z"
+    },
+    {
+     "espnPlayId": "49606810",
+     "minute": "90'+4'",
+     "team": "Mexico",
+     "scorer": "Álvaro Fidalgo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–3",
+     "evidence": "Goal! Czechia 0, Mexico 3. Álvaro Fidalgo (Mexico) right footed shot from the centre of the box to the top left corner. Assisted by Roberto Alvarado.",
+     "wallclock": "2026-06-25T02:53:48Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760466",
+   "name": "South Korea at South Africa",
+   "kickoff": "2026-06-25T01:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "South Africa",
+   "away": "South Korea",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49606007",
+     "minute": "63'",
+     "team": "South Africa",
+     "scorer": "Thapelo Maseko",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! South Africa 1, Korea Republic 0. Thapelo Maseko (South Africa) left footed shot from the centre of the box to the bottom right corner. Assisted by Tshepang Moremi following a fast break.",
+     "wallclock": "2026-06-25T02:23:08Z"
     }
    ]
   }
