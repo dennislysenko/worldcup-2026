@@ -630,13 +630,14 @@
       return card(sect(`<b>Finished 3rd in Group ${L}</b> <span class="bp-pct">${pc(adv)} to reach the knockouts</span>`, note));
     }
 
-    // Group still in progress: probability-ranked finishes (with ✓ for any clinch).
-    const winTag = clinch.first.has(team) ? lock("clinched") : `<span class="bp-pct">${pc(od.win || 0)}</span>`;
-    const sections = [
-      { p: od.win || 0, html: sect(`If they <b>win Group ${L}</b> ${winTag}`, routeHTML(`Winner Group ${L}`)) },
-      { p: od.runnerUp || 0, html: sect(`If they <b>finish runner-up</b> <span class="bp-pct">${pc(od.runnerUp || 0)}</span>`, routeHTML(`Runner-up Group ${L}`)) },
-      { p: third, keep: true, html: sect(`If they <b>finish 3rd &amp; advance</b> <span class="bp-pct">${pc(third)}</span>`, `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>`) },
-    ].sort((a, b) => b.p - a.p);
+    // Group still in progress: probability-ranked finishes, dropping any that a
+    // clinch has already made impossible (✓ for the clinched ones).
+    const winClinched = clinch.first.has(team), top2Clinched = clinch.top2.has(team);
+    const winTitle = winClinched ? `<b>Group ${L} winner</b> ${lock("clinched")}` : `If they <b>win Group ${L}</b> <span class="bp-pct">${pc(od.win || 0)}</span>`;
+    const sections = [{ p: od.win || 0, keep: winClinched, html: sect(winTitle, routeHTML(`Winner Group ${L}`)) }];
+    if (!winClinched) sections.push({ p: od.runnerUp || 0, keep: top2Clinched, html: sect(`If they <b>finish runner-up</b> <span class="bp-pct">${pc(od.runnerUp || 0)}</span>`, routeHTML(`Runner-up Group ${L}`)) });
+    if (!top2Clinched) sections.push({ p: third, keep: true, html: sect(`If they <b>finish 3rd &amp; advance</b> <span class="bp-pct">${pc(third)}</span>`, `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>`) });
+    sections.sort((a, b) => b.p - a.p);
     card(sections.filter(s => s.p > 0.005 || s.keep).map(s => s.html).join(""));
   }
   const PATH_TEAM_KEY = "wc2026.pathTeam";
