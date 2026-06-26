@@ -157,6 +157,20 @@
     for (const mn in scores) { const s = scores[mn]; if (s.state === "post" && s.homeScore != null) r[mn] = s; }
     return r;
   }
+  // In-progress matches, with the fraction of the game still to play, so the sim
+  // can keep the live score and simulate only the remaining minutes.
+  function liveResultsMap() {
+    const r = {};
+    for (const mn in scores) {
+      const s = scores[mn];
+      if (s.state === "in" && s.homeScore != null) {
+        const min = parseInt(String(s.minute || "").replace(/[^0-9]/g, ""), 10);
+        const remain = isFinite(min) ? Math.min(1, Math.max(0.02, (94 - min) / 94)) : 0.5;
+        r[mn] = { homeScore: s.homeScore, awayScore: s.awayScore, remain };
+      }
+    }
+    return r;
+  }
   // Recompute everything results-driven when the set of finals changes:
   // the heavy projections (WC.proj → bracket/path/calendar) AND the group odds.
   // Gated by a signature so the 12k-sim only runs when a new result lands.
@@ -164,25 +178,37 @@
     const finals = finalResultsMap();
     const sig = Object.keys(finals).sort().map(mn => `${mn}:${finals[mn].homeScore}-${finals[mn].awayScore}`).join("|");
     if (sig !== projSig) { if (WC.runProjections) WC.runProjections(finals); projSig = sig; } // refresh bracket/path/calendar
-    if (sig !== oddsSig || !Object.keys(groupOdds).length) { groupOdds = WC.runGroupOdds ? WC.runGroupOdds(finals) : {}; oddsSig = sig; }
+    // Group odds also bake in live in-progress scores, so the third-place race
+    // updates in real time; re-sim whenever a final OR a live score changes.
+    const live = liveResultsMap();
+    const osig = sig + "##" + Object.keys(live).sort().map(mn => `${mn}:${live[mn].homeScore}-${live[mn].awayScore}@${live[mn].remain.toFixed(2)}`).join("|");
+    if (osig !== oddsSig || !Object.keys(groupOdds).length) { groupOdds = WC.runGroupOdds ? WC.runGroupOdds(finals, live) : {}; oddsSig = osig; }
   }
 
-  // standings for one group from FINAL results, with FIFA-ish tiebreakers
-  function groupStanding(letter) {
+  // standings for one group from FINAL results, with FIFA-ish tiebreakers.
+  // includeLive=true also folds in-progress scores into the table (provisional)
+  // and returns per-team live-match info — used by the live third-place race.
+  function groupStanding(letter, includeLive) {
     const teams = groupTeams[letter];
     const st = {};
     teams.forEach(t => { st[t] = { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 }; });
-    const finals = [];
+    const finals = [], liveInfo = {};
     let dirty = false, played = 0, total = groupGames[letter].length, now = Date.now();
+    const apply = (m, ga, gb) => {
+      const a = st[m.home], b = st[m.away];
+      a.P++; b.P++; a.GF += ga; b.GF += gb; a.GA += gb; b.GA += ga;
+      if (ga > gb) { a.W++; b.L++; a.Pts += 3; }
+      else if (gb > ga) { b.W++; a.L++; b.Pts += 3; }
+      else { a.D++; b.D++; a.Pts++; b.Pts++; }
+    };
     groupGames[letter].forEach(m => {
       const s = scores[m.matchNumber];
       if (s && s.state === "post" && s.homeScore != null) {
-        finals.push(m); played++;
-        const a = st[m.home], b = st[m.away], ga = s.homeScore, gb = s.awayScore;
-        a.P++; b.P++; a.GF += ga; b.GF += gb; a.GA += gb; b.GA += ga;
-        if (ga > gb) { a.W++; b.L++; a.Pts += 3; }
-        else if (gb > ga) { b.W++; a.L++; b.Pts += 3; }
-        else { a.D++; b.D++; a.Pts++; b.Pts++; }
+        finals.push(m); played++; apply(m, s.homeScore, s.awayScore);
+      } else if (includeLive && s && s.state === "in" && s.homeScore != null) {
+        finals.push(m); apply(m, s.homeScore, s.awayScore); // provisional H2H + points
+        liveInfo[m.home] = { f: s.homeScore, a: s.awayScore, min: s.minute, opp: m.away };
+        liveInfo[m.away] = { f: s.awayScore, a: s.homeScore, min: s.minute, opp: m.home };
       } else if (now > new Date(m.utc).getTime() + 2.75 * 3600e3) {
         dirty = true; // kicked off long ago but no final ingested
       }
@@ -212,7 +238,7 @@
       (block.length > 1 && finals.length ? orderBlock(block) : block).forEach(r => out.push(r));
       i = j;
     }
-    return { rows: out, dirty, played, total };
+    return { rows: out, dirty, played, total, liveInfo };
   }
 
   // Mathematically clinched 1st / top-2 (so we can show ✓ instead of a capped 99.9%).
@@ -299,13 +325,17 @@
   function renderThirdTable() {
     const el = document.getElementById("third-table"); if (!el) return;
     const elo = WC.elo || {};
-    let anyDirty = false, allComplete = true;
+    const pct = p => { if (p == null) return "—"; if (p >= 0.999) return "99.9%"; if (p < 0.005) return "·"; const v = Math.round(p * 100); return (v >= 100 ? 99 : v) + "%"; };
+    let anyDirty = false, allComplete = true, anyLive = false;
     const thirds = GROUP_LETTERS.map(L => {
-      const { rows, dirty, played, total } = groupStanding(L);
+      const { rows, dirty, played, total, liveInfo } = groupStanding(L, true);
       if (dirty) anyDirty = true;
       if (played < total) allComplete = false;
       const r = rows[2] || {};
-      return { L, team: r.team, P: r.P || 0, Pts: r.Pts || 0, GD: r.GD || 0, GF: r.GF || 0, complete: played === total };
+      const lv = r.team ? liveInfo[r.team] : null;
+      if (lv) anyLive = true;
+      const od = groupOdds[r.team] || {};
+      return { L, team: r.team, P: r.P || 0, Pts: r.Pts || 0, GD: r.GD || 0, GF: r.GF || 0, live: lv, adv: od.advance };
     });
     thirds.sort((a, b) => b.Pts - a.Pts || b.GD - a.GD || b.GF - a.GF
       || (elo[b.team] || 0) - (elo[a.team] || 0) || (a.team || "").localeCompare(b.team || ""));
@@ -314,19 +344,23 @@
       const zone = i < 8 ? "tt-in" : "tt-out";
       const cut = i === 8 ? " tt-cutline" : "";
       const badge = i < 8 ? `<span class="tt-badge in">In</span>` : `<span class="tt-badge out">Out</span>`;
+      const liveBadge = t.live
+        ? `<span class="tt-live"><span class="sc-dot"></span>${t.live.f}–${t.live.a} vs ${t.live.opp}${t.live.min ? ` <span class="tt-min">${t.live.min}</span>` : ""}</span>`
+        : "";
       return `<tr class="${zone}${cut}${favorites.has(t.team) ? " g-fav" : ""}">
         <td class="tt-pos">${i + 1}</td>
         <td class="tt-grp">${t.L}</td>
-        <td class="tt-team">${team ? flag(team.iso2, "g-flag") : ""}<span>${t.team || "—"}</span></td>
+        <td class="tt-team">${team ? flag(team.iso2, "g-flag") : ""}<span>${t.team || "—"}</span>${liveBadge}</td>
         <td>${t.P}</td><td>${t.GD > 0 ? "+" + t.GD : t.GD}</td><td>${t.GF}</td><td class="tt-pts">${t.Pts}</td>
+        <td class="tt-odd">${pct(t.adv)}</td>
         <td class="tt-stat">${badge}</td>
       </tr>`;
     }).join("");
     const note = allComplete
       ? "Final — the eight teams above the line have qualified."
-      : "Provisional — third place and this order can still change as group games are played.";
+      : `Provisional — third place and this order can still change as group games are played.${anyLive ? " Live matches are baked into the standings and the Reach&nbsp;KO odds." : ""}`;
     el.innerHTML = `<div class="tt-scroll"><table class="tt-table">
-      <thead><tr><th></th><th title="Group">Grp</th><th class="tt-team">Team</th><th title="Played">P</th><th title="Goal difference">GD</th><th title="Goals for">GF</th><th title="Points">Pts</th><th></th></tr></thead>
+      <thead><tr><th></th><th title="Group">Grp</th><th class="tt-team">Team</th><th title="Played">P</th><th title="Goal difference">GD</th><th title="Goals for">GF</th><th title="Points">Pts</th><th title="Chance to reach the knockouts (conditioned on results so far, including live matches)">Reach KO</th><th></th></tr></thead>
       <tbody>${body}</tbody>
     </table></div>
     <p class="tt-note">${anyDirty ? "⚠ a result is pending — updates on next sync. " : ""}${note} Ranked by points, goal difference, then goals scored.</p>`;

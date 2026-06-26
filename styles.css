@@ -1039,6 +1039,10 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .tt-badge.in { color: var(--accent); background: rgba(120, 220, 150, .12); }
 .tt-badge.out { color: var(--muted); background: rgba(242, 245, 238, .06); }
 .tt-table tr.g-fav .tt-team span { color: var(--fav); font-weight: 700; }
+.tt-odd { font-weight: 700; font-variant-numeric: tabular-nums; }
+.tt-live { display: inline-flex; align-items: center; gap: 5px; margin-left: 4px; font-size: 11.5px; font-weight: 700; color: var(--banger); white-space: nowrap; }
+.tt-live .sc-dot { flex-shrink: 0; }
+.tt-live .tt-min { color: var(--muted); font-weight: 600; }
 .tt-note { font-size: 12px; color: var(--muted); margin: 9px 2px 0; }
 
 /* ---------- Knockout bracket ---------- */

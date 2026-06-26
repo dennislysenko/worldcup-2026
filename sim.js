@@ -47,15 +47,16 @@
     do { k++; p *= Math.random(); } while (p > L);
     return k - 1;
   }
-  function goals(a, b) {
+  function goals(a, b, scale) {
+    scale = scale == null ? 1 : scale; // <1 → only the remaining minutes of a live game
     const d = (activeElo[a] - activeElo[b]) / 400;
-    return [poisson(BASE * Math.exp(K * d)), poisson(BASE * Math.exp(-K * d))];
+    return [poisson(BASE * Math.exp(K * d) * scale), poisson(BASE * Math.exp(-K * d) * scale)];
   }
   function winProb(a, b) { return 1 / (1 + Math.pow(10, (activeElo[b] - activeElo[a]) / 400)); }
   function koWinner(a, b) { return Math.random() < winProb(a, b) ? a : b; }
 
   // simulate a group, locking any played game to its real score
-  function simGroup(letter, results) {
+  function simGroup(letter, results, live) {
     const teams = groups[letter];
     const st = {}, played = [];
     teams.forEach(t => { st[t] = { team: t, pts: 0, gd: 0, gf: 0, r: Math.random() }; });
@@ -63,7 +64,11 @@
       const res = results[m.matchNumber];
       let ga, gb;
       if (res && res.state === "post" && res.homeScore != null) { ga = res.homeScore; gb = res.awayScore; }
-      else { [ga, gb] = goals(m.home, m.away); }
+      else {
+        const lv = live && live[m.matchNumber];
+        if (lv) { const [ra, rb] = goals(m.home, m.away, lv.remain); ga = lv.homeScore + ra; gb = lv.awayScore + rb; }
+        else { [ga, gb] = goals(m.home, m.away); }
+      }
       played.push({ home: m.home, away: m.away, ga, gb });
       st[m.home].gf += ga; st[m.away].gf += gb;
       st[m.home].gd += ga - gb; st[m.away].gd += gb - ga;
@@ -162,7 +167,7 @@
 
   // ---- live group odds, conditioned on actual results (uses activeElo) ----
   // { [team]: { win, runnerUp, advance } }. Cheap; re-run whenever a result lands.
-  WC.runGroupOdds = function (results, Nopt) {
+  WC.runGroupOdds = function (results, live, Nopt) {
     results = results || {};
     const N = Nopt || 4000;
     const NQ = thirdSlots.length;
@@ -171,7 +176,7 @@
     for (let i = 0; i < N; i++) {
       const thirds = [];
       for (const L of GROUP_LETTERS) {
-        const r = simGroup(L, results);
+        const r = simGroup(L, results, live);
         tally[r.ranked[0]].win++; tally[r.ranked[0]].adv++;
         tally[r.ranked[1]].ru++; tally[r.ranked[1]].adv++;
         const t3 = r.ranked[2];
