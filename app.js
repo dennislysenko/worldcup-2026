@@ -372,7 +372,7 @@
     // even before the slot is officially confirmed. Kept in muted "proj" style.
     if (dist && dist.length && dist[0].p >= 0.995) {
       const t = dist[0].team;
-      return `<div class="bk-side proj">${teamFlag(t, "bk-flag")}<span class="bk-name">${t}</span></div>`;
+      return `<div class="bk-side">${teamFlag(t, "bk-flag")}<span class="bk-name">${t}</span></div>`;
     }
     // overlapping flag strip of the 2–4 contenders, flags above the slot name (no % — it's noise here)
     const strip = (dist && dist.length)
