@@ -317,7 +317,6 @@
           <tbody>${body}</tbody>
         </table></div>${combos}</section>`;
     }).join("");
-    renderThirdTable();
   }
   // Live "best eight third-placed teams" race across all 12 groups. FIFA ranks
   // thirds by points → GD → GF → (disciplinary, then FIFA ranking — we proxy the
@@ -933,7 +932,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "groups", "bracket", "path", "movers", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "groups", "thirds", "bracket", "path", "movers", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
@@ -1006,7 +1005,7 @@
     setPickerCollapsed(false); document.getElementById("team-search").focus();
   });
 
-  function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderBracket(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
+  function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderThirdTable(); renderBracket(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
@@ -1478,7 +1477,7 @@
   setActiveNav("calendar");
   initScores();
   const initial = (location.hash || "").replace("#", "");
-  if (["my-teams", "planner", "projections"].includes(initial)) {
+  if (["thirds", "movers", "my-teams", "planner", "projections"].includes(initial)) {
     // jump to the deep-linked section once layout settles
     requestAnimationFrame(() => document.getElementById("view-" + initial).scrollIntoView({ block: "start" }));
     setActiveNav(initial);

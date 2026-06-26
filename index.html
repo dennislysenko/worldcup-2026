@@ -46,6 +46,7 @@
   <nav class="main-nav" id="main-nav">
     <button class="nav-link" data-view="calendar">Calendar</button>
     <button class="nav-link" data-view="groups">Groups</button>
+    <button class="nav-link" data-view="thirds">3rd Place</button>
     <button class="nav-link" data-view="bracket">Bracket</button>
     <button class="nav-link" data-view="path">Road to Final</button>
     <button class="nav-link" data-view="movers">Movers</button>
@@ -128,11 +129,12 @@
         <span class="groups-hint">tip: tap any group to expand it</span>
       </div>
       <div id="groups" class="groups-wrap"></div>
+    </div>
 
-      <div class="tt-wrap">
-        <h3 class="tt-title">Third-place race<span class="tt-sub">The best 8 of the 12 third-placed teams advance — live, as things stand</span></h3>
-        <div id="third-table"></div>
-      </div>
+    <!-- ===================== THIRD-PLACE VIEW ===================== -->
+    <div class="view" id="view-thirds">
+      <h2 class="section-title">Third-place race<span class="st-sub">The best 8 of the 12 third-placed teams advance · live standings + Reach KO odds, conditioned on results so far (including live matches)</span></h2>
+      <div id="third-table"></div>
     </div>
 
     <!-- ===================== BRACKET VIEW ===================== -->
