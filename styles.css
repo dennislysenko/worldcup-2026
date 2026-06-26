@@ -344,6 +344,8 @@ main {
 .mm-row .mm-opp img { width: 22px; height: 16px; border-radius: 3px; }
 .mm-row .mm-meta { color: var(--muted); font-size: 12px; text-align: right; }
 .mm-row .mm-flame { color: var(--banger); }
+.mm-row.mm-ko { background: rgba(158, 201, 255, .07); border-left: 2px solid var(--accent-2); }
+.mm-row.mm-ko .mm-likely { color: var(--muted); font-size: 11.5px; font-style: italic; }
 
 /* ---------- Popover ---------- */
 .popover {

@@ -599,6 +599,34 @@
     }
     return null;
   }
+  // A team's Round-of-32 fixture once it's known: certain when they're a resolved
+  // group winner/runner-up (group complete → exact slot), or a projected best-eight
+  // third (likely). Returns { match, side, certain } or null.
+  function teamR32(team) {
+    const L = teamGroup(team);
+    if (L) {
+      const { rows, played, total } = groupStanding(L);
+      const clinch = groupClinch(L, rows);
+      const pos = rows.findIndex(r => r.team === team);
+      // Slot is locked when 1st is clinched (covers a finished group's winner too),
+      // or when the group is over and they finished runner-up.
+      let slotStr = clinch.first.has(team) ? `Winner Group ${L}`
+        : (played === total && pos === 1) ? `Runner-up Group ${L}` : null;
+      if (slotStr) { const e = findSlot(slotStr); if (e) return { match: e.match, side: e.side, certain: true }; }
+    }
+    const slot = thirdSlotFor(team);
+    if (slot) return { match: slot, side: "away", certain: false };
+    return null;
+  }
+  // Opponent name for one side of a KO match: resolved team, else dominant projection, else slot label.
+  function koOppName(matchNum, side) {
+    const r = resolveSide(matchNum, side);
+    if (r) return { name: dispName(r), sure: true };
+    const d = projDist(matchNum, side);
+    if (d && d.length && d[0].p >= 0.5) return { name: dispName(d[0].team), sure: false };
+    const slot = (koByNum[matchNum][side] || "").replace("Third-place qualifier", "a third-placed team").replace(/^Winner Match /, "winner of Match ").replace(/^Runner-up Group /, "runner-up of Group ").replace(/^Winner Group /, "winner of Group ");
+    return { name: slot, sure: false };
+  }
   const ORD = ["1st", "2nd", "3rd", "4th"];
   function renderPath(team) {
     const el = document.getElementById("path-panel"); if (!el) return;
@@ -1209,22 +1237,34 @@
       const games = WC.matches.filter(m => m.home === team || m.away === team)
         .sort((a, b) => a.date.localeCompare(b.date) || (a.mins ?? 1e9) - (b.mins ?? 1e9));
       const t = WC.teamByName[team];
+      const dateRow = m => { const dt = parseDate(m.date); return `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`; };
       const rows = games.map(m => {
         const oppName = m.home === team ? m.away : m.home;
         const oppHtml = isKnown(oppName) ? `${teamFlag(oppName, "")}<span>${oppName}</span>` : `<span>${oppName}</span>`;
-        const dt = parseDate(m.date);
-        const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
         const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
         const flame = (ui.showBangers && isBanger(m)) ? ` <span class="mm-flame" title="Banger">🔥</span>` : "";
         const sc = scoreHTML(m);
-        return `<div class="mm-row"><span class="mm-date">${dateStr}</span>
+        return `<div class="mm-row"><span class="mm-date">${dateRow(m)}</span>
           <span class="mm-opp">vs ${oppHtml}${flame}</span>
-          <span class="mm-meta">${sc ? sc + " · " : (m.time ? m.time + " · " : "")}${stageStr} · ${m.city}</span></div>`;
+          <span class="mm-meta">${sc ? sc + " · " : (m.time ? m.time + " · " : "")}${stageStr} · ${CITY_SHORT[m.city] || m.city}</span></div>`;
       }).join("");
+      // Known next-round fixture once the team has advanced.
+      const ko = teamR32(team);
+      let koRow = "", koNote = "";
+      if (ko) {
+        const km = koByNum[ko.match], opp = koOppName(ko.match, ko.side === "home" ? "away" : "home");
+        const oppHtml = WC.teamByName[opp.name] ? `${teamFlag(opp.name, "")}<span>${opp.name}</span>` : `<span>${opp.name}</span>`;
+        const sc = scoreHTML(km);
+        const firm = ko.certain && opp.sure; // both this team and the opponent are locked
+        koRow = `<div class="mm-row mm-ko"><span class="mm-date">${dateRow(km)}</span>
+          <span class="mm-opp">vs ${oppHtml}${firm ? "" : ` <span class="mm-likely">(likely)</span>`}</span>
+          <span class="mm-meta">${sc ? sc + " · " : (km.time ? km.time + " · " : "")}${km.stage} · ${CITY_SHORT[km.city] || km.city}</span></div>`;
+        koNote = ko.certain ? " + Round of 32" : " + likely Round of 32";
+      }
       return `<div class="mm-group">
-        <div class="mm-team-head">${flag(t.iso2, "")} ${team}
-          <span style="color:var(--muted);font-weight:400;font-size:12px;">(${games.length} guaranteed group games)</span></div>
-        ${rows}</div>`;
+        <div class="mm-team-head">${flag(t.iso2, "")} ${dispName(team)}
+          <span style="color:var(--muted);font-weight:400;font-size:12px;">(${games.length} group games${koNote})</span></div>
+        ${rows}${koRow}</div>`;
     }).join("");
   }
 
