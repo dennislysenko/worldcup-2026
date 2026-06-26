@@ -482,8 +482,12 @@
   function strongestOpps(matchNum, side) {
     const team = resolveSide(matchNum, side);
     if (team) return { resolved: team };
-    if (/Third-place qualifier/.test(koByNum[matchNum][side] || "")) return { unknown: true };
     const dist = projDist(matchNum, side) || [];
+    // Essentially locked (one team ≥99.5%) → name it, even a third-place slot whose
+    // opponent is now fixed via FIFA's Annexe C table (e.g. Bosnia & Herzegovina).
+    if (dist.length && dist[0].p >= 0.995) return { resolved: dist[0].team };
+    // No usable projection for a third-place slot → still genuinely open.
+    if (!dist.length && /Third-place qualifier/.test(koByNum[matchNum][side] || "")) return { unknown: true };
     let cand = dist.filter(d => d.p >= 0.04);          // realistic chance to be there
     if (cand.length < 2) cand = dist.slice(0, 3);       // fallback for very open slots
     cand = cand.slice().sort((a, b) => b.p - a.p).slice(0, 3); // most likely first
