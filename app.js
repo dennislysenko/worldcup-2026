@@ -301,7 +301,7 @@
         const winCell = clinch.first.has(r.team) ? `<span class="g-clinch" title="Clinched 1st">✓</span>` : pct(od.win);
         return `<tr class="${zone}${favorites.has(r.team) ? " g-fav" : ""}" data-team="${r.team}">
           <td class="g-pos">${i + 1}</td>
-          <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${r.team}</span></td>
+          <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${dispName(r.team)}</span></td>
           <td>${r.P}</td><td class="g-detail">${r.W}</td><td class="g-detail">${r.D}</td><td class="g-detail">${r.L}</td>
           <td class="g-detail">${r.GF}</td><td class="g-detail">${r.GA}</td><td>${r.GD > 0 ? "+" + r.GD : r.GD}</td><td class="g-pts">${r.Pts}</td>
           <td class="g-odd g-odd2">${winCell}</td><td class="g-odd g-odd2">${pct(od.runnerUp)}</td><td class="g-odd g-adv">${advCell(od.advance, clinch.top2.has(r.team))}</td>
@@ -349,7 +349,7 @@
       return `<tr class="${zone}${cut}${favorites.has(t.team) ? " g-fav" : ""}">
         <td class="tt-pos">${i + 1}</td>
         <td class="tt-grp">${t.L}</td>
-        <td class="tt-team">${team ? flag(team.iso2, "g-flag") : ""}<span>${t.team || "—"}</span>${liveBadge}</td>
+        <td class="tt-team">${team ? flag(team.iso2, "g-flag") : ""}<span>${t.team ? dispName(t.team) : "—"}</span>${liveBadge}</td>
         <td>${t.P}</td><td>${t.GD > 0 ? "+" + t.GD : t.GD}</td><td>${t.GF}</td><td class="tt-pts">${t.Pts}</td>
         <td class="tt-odd">${pct(t.adv)}</td>
         <td class="tt-stat">${badge}</td>
@@ -435,7 +435,7 @@
     const team = resolveSide(num, side);
     if (team) {
       const w = matchWinner(num), won = w && team === w, lost = w && team !== w;
-      return `<div class="bk-side${won ? " won" : ""}${lost ? " lost" : ""}">${teamFlag(team, "bk-flag")}<span class="bk-name">${team}</span></div>`;
+      return `<div class="bk-side${won ? " won" : ""}${lost ? " lost" : ""}">${teamFlag(team, "bk-flag")}<span class="bk-name">${dispName(team)}</span></div>`;
     }
     const slot = koByNum[num][side] || "";
     const dist = projDist(num, side);
@@ -444,7 +444,7 @@
     // even before the slot is officially confirmed. Kept in muted "proj" style.
     if (dist && dist.length && dist[0].p >= 0.995) {
       const t = dist[0].team;
-      return `<div class="bk-side">${teamFlag(t, "bk-flag")}<span class="bk-name">${t}</span></div>`;
+      return `<div class="bk-side">${teamFlag(t, "bk-flag")}<span class="bk-name">${dispName(t)}</span></div>`;
     }
     // overlapping flag strip of the 2–4 contenders, flags above the slot name (no % — it's noise here)
     const strip = (dist && dist.length)
@@ -462,14 +462,18 @@
     }
     return "";
   }
+  const CITY_SHORT = { "New York New Jersey": "New York", "San Francisco Bay Area": "San Francisco" };
   function bkMatch(num) {
     const m = koByNum[num];
     const sc = bkScore(num);
+    const city = CITY_SHORT[m.city] || m.city;
+    const where = city ? `<span class="bk-where" title="${m.venue ? m.venue + " · " : ""}${m.city}">${city}</span>` : "";
     return `<div class="bk-match" data-bk="${num}" data-match="${num}">
       <span class="bk-when">${shortDate(m.date)}</span>
       ${bkSide(num, "home")}
       ${sc ? `<div class="bk-mid">${sc}</div>` : `<div class="bk-divider"></div>`}
       ${bkSide(num, "away")}
+      ${where}
     </div>`;
   }
   function shortDate(ds) { const dt = parseDate(ds); return `${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`; }
@@ -567,9 +571,9 @@
   }
   function oppList(matchNum, side) {
     const r = strongestOpps(matchNum, side);
-    if (r.resolved) return `<span class="bp-opp1">${teamFlag(r.resolved, "bk-flag")}<span class="bp-opp-name">${r.resolved}</span></span>`;
+    if (r.resolved) return `<span class="bp-opp1">${teamFlag(r.resolved, "bk-flag")}<span class="bp-opp-name">${dispName(r.resolved)}</span></span>`;
     if (r.unknown) return `<span class="bp-unknown">Unknown — any third-placed team (set after the group stage)</span>`;
-    return r.cand.map(d => `<span class="bp-opp1">${teamFlag(d.team, "bk-flag")}<span class="bp-opp-name">${d.team}</span><span class="bp-odds">${Math.round(d.p * 100)}%</span></span>`).join("");
+    return r.cand.map(d => `<span class="bp-opp1">${teamFlag(d.team, "bk-flag")}<span class="bp-opp-name">${dispName(d.team)}</span><span class="bp-odds">${Math.round(d.p * 100)}%</span></span>`).join("");
   }
   function routeHTML(entrySlotStr) {
     const e = findSlot(entrySlotStr); if (!e) return "<p class='bp-note'>No route found.</p>";
@@ -597,7 +601,7 @@
     sections.push({ p: third, head: `If they <b>finish 3rd &amp; advance</b>`, body: `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>` });
     sections.sort((a, b) => b.p - a.p);
     el.innerHTML = `<div class="bp-card">
-      <div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${team}</b><span class="bp-grp">Group ${L}</span></div>
+      <div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${dispName(team)}</b><span class="bp-grp">Group ${L}</span></div>
       ${sections.filter(s => s.p > 0.005 || s.head.includes("3rd")).map(s => `
         <div class="bp-section"><div class="bp-otitle">${s.head} <span class="bp-pct">${pc(s.p)}</span></div>${s.body}</div>`).join("")}
     </div>`;
@@ -606,7 +610,7 @@
   (function () {
     const sel = document.getElementById("path-team"); if (!sel) return;
     [...WC.teams].map(t => t.name).sort((a, b) => a.localeCompare(b))
-      .forEach(n => { const o = document.createElement("option"); o.value = n; o.textContent = n; sel.appendChild(o); });
+      .forEach(n => { const o = document.createElement("option"); o.value = n; o.textContent = dispName(n); sel.appendChild(o); });
     const saved = localStorage.getItem(PATH_TEAM_KEY) || "";
     if (saved && WC.teamByName[saved]) sel.value = saved;
     sel.addEventListener("change", e => { localStorage.setItem(PATH_TEAM_KEY, e.target.value); renderPath(e.target.value); });
@@ -822,6 +826,8 @@
     return `<img class="${cls}" loading="lazy" src="https://flagcdn.com/w40/${iso}.png" srcset="https://flagcdn.com/w80/${iso}.png 2x" alt="">`;
   }
   function teamFlag(name, cls) { const t = WC.teamByName[name]; return t ? flag(t.iso2, cls) : ""; }
+  // Display label for a team name (data keys stay canonical for joins/sims).
+  function dispName(n) { return n === "Bosnia and Herzegovina" ? "Bosnia & Herzegovina" : n; }
   function isFavMatch(m) { return favorites.has(m.home) || favorites.has(m.away); }
   function parseDate(s) { const [y, mo, d] = s.split("-").map(Number); return new Date(y, mo - 1, d); }
 
