@@ -1020,6 +1020,27 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
   .g-card.expanded .g-detail { display: none; }
 }
 
+/* ---------- Third-place race ---------- */
+.tt-wrap { margin-top: 26px; }
+.tt-title { font-size: 17px; font-weight: 800; margin: 0 0 10px; }
+.tt-title .tt-sub { font-weight: 400; font-size: 12.5px; color: var(--muted); margin-left: 9px; }
+.tt-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.tt-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
+.tt-table th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 700; padding: 9px 8px; text-align: center; }
+.tt-table td { padding: 8px; text-align: center; border-top: 1px solid rgba(242,245,238,.06); }
+.tt-table th.tt-team, .tt-table td.tt-team { text-align: left; padding-left: 12px; }
+.tt-team { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tt-pos { color: var(--muted); width: 2em; }
+.tt-grp { color: var(--muted); font-weight: 700; }
+.tt-pts { font-weight: 800; }
+.tt-out { opacity: .5; }
+.tt-cutline td { border-top: 2px solid var(--accent-2); }
+.tt-badge { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; padding: 2px 7px; border-radius: 999px; }
+.tt-badge.in { color: var(--accent); background: rgba(120, 220, 150, .12); }
+.tt-badge.out { color: var(--muted); background: rgba(242, 245, 238, .06); }
+.tt-table tr.g-fav .tt-team span { color: var(--fav); font-weight: 700; }
+.tt-note { font-size: 12px; color: var(--muted); margin: 9px 2px 0; }
+
 /* ---------- Knockout bracket ---------- */
 .bracket-wrap {
   overflow-x: auto; overflow-y: hidden; padding: 6px 6px 12px; scrollbar-width: thin;

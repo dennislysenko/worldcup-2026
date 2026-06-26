@@ -291,6 +291,45 @@
           <tbody>${body}</tbody>
         </table></div>${combos}</section>`;
     }).join("");
+    renderThirdTable();
+  }
+  // Live "best eight third-placed teams" race across all 12 groups. FIFA ranks
+  // thirds by points → GD → GF → (disciplinary, then FIFA ranking — we proxy the
+  // last with Elo). Cutline drawn after the 8th, which qualifies.
+  function renderThirdTable() {
+    const el = document.getElementById("third-table"); if (!el) return;
+    const elo = WC.elo || {};
+    let anyDirty = false, allComplete = true;
+    const thirds = GROUP_LETTERS.map(L => {
+      const { rows, dirty, played, total } = groupStanding(L);
+      if (dirty) anyDirty = true;
+      if (played < total) allComplete = false;
+      const r = rows[2] || {};
+      return { L, team: r.team, P: r.P || 0, Pts: r.Pts || 0, GD: r.GD || 0, GF: r.GF || 0, complete: played === total };
+    });
+    thirds.sort((a, b) => b.Pts - a.Pts || b.GD - a.GD || b.GF - a.GF
+      || (elo[b.team] || 0) - (elo[a.team] || 0) || (a.team || "").localeCompare(b.team || ""));
+    const body = thirds.map((t, i) => {
+      const team = WC.teamByName[t.team];
+      const zone = i < 8 ? "tt-in" : "tt-out";
+      const cut = i === 8 ? " tt-cutline" : "";
+      const badge = i < 8 ? `<span class="tt-badge in">In</span>` : `<span class="tt-badge out">Out</span>`;
+      return `<tr class="${zone}${cut}${favorites.has(t.team) ? " g-fav" : ""}">
+        <td class="tt-pos">${i + 1}</td>
+        <td class="tt-grp">${t.L}</td>
+        <td class="tt-team">${team ? flag(team.iso2, "g-flag") : ""}<span>${t.team || "—"}</span></td>
+        <td>${t.P}</td><td>${t.GD > 0 ? "+" + t.GD : t.GD}</td><td>${t.GF}</td><td class="tt-pts">${t.Pts}</td>
+        <td class="tt-stat">${badge}</td>
+      </tr>`;
+    }).join("");
+    const note = allComplete
+      ? "Final — the eight teams above the line have qualified."
+      : "Provisional — third place and this order can still change as group games are played.";
+    el.innerHTML = `<div class="tt-scroll"><table class="tt-table">
+      <thead><tr><th></th><th title="Group">Grp</th><th class="tt-team">Team</th><th title="Played">P</th><th title="Goal difference">GD</th><th title="Goals for">GF</th><th title="Points">Pts</th><th></th></tr></thead>
+      <tbody>${body}</tbody>
+    </table></div>
+    <p class="tt-note">${anyDirty ? "⚠ a result is pending — updates on next sync. " : ""}${note} Ranked by points, goal difference, then goals scored.</p>`;
   }
   function toggleGroup(card) {
     if (groupsDetailed) return; // global switch is driving; per-group tap is a no-op
