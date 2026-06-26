@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-25T09:50:48.421Z",
+  "generated": "2026-06-26T09:57:37.180Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 161,
+  "total": 177,
   "counts": {
-   "corner": 16,
-   "free_kick": 7,
+   "corner": 20,
+   "free_kick": 8,
    "throw_in": 1,
    "penalty": 6,
-   "open_play": 131
+   "open_play": 142
   },
-  "setPieceExclPens": 24,
-  "pctExclPens": 14.906832298136646,
-  "pctInclPens": 18.633540372670808
+  "setPieceExclPens": 29,
+  "pctExclPens": 16.384180790960453,
+  "pctInclPens": 19.774011299435028
  },
  "matches": [
   {
@@ -2356,7 +2356,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Bosnia and Herzegovina 1, Qatar 0. Kerim Alajbegovic (Bosnia and Herzegovina) right footed shot from outside the box to the top right corner. Assisted by Ivan Basic.",
-     "wallclock": "2026-06-24T19:28:53Z"
+     "wallclock": "2026-06-24T19:28:54Z"
     },
     {
      "espnPlayId": "49598792",
@@ -2380,7 +2380,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Bosnia and Herzegovina 2, Qatar 1. Hassan Al Haydos (Qatar) right footed shot from very close range to the centre of the goal. Assisted by Edmílson Junior.",
-     "wallclock": "2026-06-24T19:42:16Z"
+     "wallclock": "2026-06-24T19:42:17Z"
     },
     {
      "espnPlayId": "49600259",
@@ -2417,7 +2417,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Switzerland 1, Canada 0. Rubén Vargas (Switzerland) right footed shot from the centre of the box to the bottom left corner. Assisted by Johan Manzambi with a cross.",
-     "wallclock": "2026-06-24T20:04:49Z"
+     "wallclock": "2026-06-24T20:04:50Z"
     },
     {
      "espnPlayId": "49599590",
@@ -2526,7 +2526,7 @@
      "category": "open_play",
      "scoreAfter": "4–2",
      "evidence": "Goal! Morocco 4, Haiti 2. Gessime Yassine (Morocco) left footed shot from the centre of the box to the centre of the goal. Assisted by Soufiane Rahimi.",
-     "wallclock": "2026-06-24T23:51:06Z"
+     "wallclock": "2026-06-24T23:51:07Z"
     }
    ]
   },
@@ -2551,7 +2551,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Scotland 0, Brazil 1. Vinícius Júnior (Brazil) right footed shot from the centre of the box to the centre of the goal. Assisted by Rayan.",
-     "wallclock": "2026-06-24T22:08:01Z"
+     "wallclock": "2026-06-24T22:08:02Z"
     },
     {
      "espnPlayId": "49602205",
@@ -2600,7 +2600,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Czechia 0, Mexico 1. Mateo Chávez (Mexico) left footed shot from the centre of the box to the bottom left corner. Assisted by Luis Romo.",
-     "wallclock": "2026-06-25T02:14:54Z"
+     "wallclock": "2026-06-25T02:14:55Z"
     },
     {
      "espnPlayId": "49605967",
@@ -2612,7 +2612,7 @@
      "category": "open_play",
      "scoreAfter": "0–2",
      "evidence": "Goal! Czechia 0, Mexico 2. Julián Quiñones (Mexico) right footed shot from very close range to the centre of the goal. Assisted by Jorge Sánchez following a fast break.",
-     "wallclock": "2026-06-25T02:21:11Z"
+     "wallclock": "2026-06-25T02:21:12Z"
     },
     {
      "espnPlayId": "49606810",
@@ -2650,6 +2650,275 @@
      "scoreAfter": "1–0",
      "evidence": "Goal! South Africa 1, Korea Republic 0. Thapelo Maseko (South Africa) left footed shot from the centre of the box to the bottom right corner. Assisted by Tshepang Moremi following a fast break.",
      "wallclock": "2026-06-25T02:23:08Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760473",
+   "name": "Ivory Coast at Curaçao",
+   "kickoff": "2026-06-25T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Curaçao",
+   "away": "Ivory Coast",
+   "homeScore": 0,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49607162",
+     "minute": "7'",
+     "team": "Ivory Coast",
+     "scorer": "Nicolas Pépé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Curaçao 0, Côte d'Ivoire 1. Nicolas Pépé (Côte d'Ivoire) left footed shot from very close range to the centre of the goal. Assisted by Yan Diomande.",
+     "wallclock": "2026-06-25T20:07:03Z"
+    },
+    {
+     "espnPlayId": "49609165",
+     "minute": "64'",
+     "team": "Ivory Coast",
+     "scorer": "Nicolas Pépé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Curaçao 0, Côte d'Ivoire 2. Nicolas Pépé (Côte d'Ivoire) left footed shot from the right side of the box to the top left corner. Assisted by Ibrahim Sangaré.",
+     "wallclock": "2026-06-25T21:24:39Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760468",
+   "name": "Germany at Ecuador",
+   "kickoff": "2026-06-25T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Ecuador",
+   "away": "Germany",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49606989",
+     "minute": "2'",
+     "team": "Germany",
+     "scorer": "Leroy Sané",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Ecuador 0, Germany 1. Leroy Sané (Germany) left footed shot from the centre of the box to the bottom left corner. Assisted by Florian Wirtz.",
+     "wallclock": "2026-06-25T20:01:59Z"
+    },
+    {
+     "espnPlayId": "49607208",
+     "minute": "9'",
+     "team": "Ecuador",
+     "scorer": "Nilson Angulo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Ecuador 1, Germany 1. Nilson Angulo (Ecuador) right footed shot from outside the box to the bottom right corner. Assisted by Pedro Vite.",
+     "wallclock": "2026-06-25T20:08:36Z"
+    },
+    {
+     "espnPlayId": "49609448",
+     "minute": "77'",
+     "team": "Ecuador",
+     "scorer": "Gonzalo Plata",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Ecuador 2, Germany 1. Gonzalo Plata (Ecuador) left footed shot from very close range to the top right corner. Assisted by Kevin Rodríguez with a headed pass following a corner.",
+     "wallclock": "2026-06-25T21:37:49Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760471",
+   "name": "Sweden at Japan",
+   "kickoff": "2026-06-25T23:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Japan",
+   "away": "Sweden",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49612506",
+     "minute": "56'",
+     "team": "Japan",
+     "scorer": "Daizen Maeda",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Japan 1, Sweden 0. Daizen Maeda (Japan) right footed shot from the centre of the box to the bottom left corner. Assisted by Ritsu Doan with a through ball.",
+     "wallclock": "2026-06-26T00:16:06Z"
+    },
+    {
+     "espnPlayId": "49612729",
+     "minute": "62'",
+     "team": "Sweden",
+     "scorer": "Anthony Elanga",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Japan 1, Sweden 1. Anthony Elanga (Sweden) left footed shot from outside the box to the bottom left corner. Assisted by Viktor Gyökeres.",
+     "wallclock": "2026-06-26T00:22:02Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760472",
+   "name": "Netherlands at Tunisia",
+   "kickoff": "2026-06-25T23:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Tunisia",
+   "away": "Netherlands",
+   "homeScore": 1,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49610143",
+     "minute": "3'",
+     "team": "Netherlands",
+     "scorer": "Ellyes Skhiri",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Own Goal by Ellyes Skhiri, Tunisia. Tunisia 0, Netherlands 1.",
+     "wallclock": "2026-06-25T23:02:28Z"
+    },
+    {
+     "espnPlayId": "49610259",
+     "minute": "7'",
+     "team": "Netherlands",
+     "scorer": "Brian Brobbey",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Tunisia 0, Netherlands 2. Brian Brobbey (Netherlands) right footed shot from the centre of the box to the top right corner. Assisted by Virgil van Dijk with a headed pass following a set piece situation.",
+     "wallclock": "2026-06-25T23:06:30Z"
+    },
+    {
+     "espnPlayId": "49612363",
+     "minute": "54'",
+     "team": "Tunisia",
+     "scorer": "Hazem Mastouri",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Tunisia 1, Netherlands 2. Hazem Mastouri (Tunisia) header from the centre of the box to the bottom left corner. Assisted by Hannibal Mejbri with a cross following a corner.",
+     "wallclock": "2026-06-26T00:12:50Z"
+    },
+    {
+     "espnPlayId": "49612690",
+     "minute": "62'",
+     "team": "Netherlands",
+     "scorer": "Jan Paul van Hecke",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–3",
+     "evidence": "Goal! Tunisia 1, Netherlands 3. Jan Paul van Hecke (Netherlands) header from the left side of the six yard box to the top right corner. Assisted by Tijjani Reijnders with a cross following a corner.",
+     "wallclock": "2026-06-26T00:20:40Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760469",
+   "name": "Australia at Paraguay",
+   "kickoff": "2026-06-26T02:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Paraguay",
+   "away": "Australia",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
+  },
+  {
+   "espnId": "760470",
+   "name": "United States at Türkiye",
+   "kickoff": "2026-06-26T02:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Türkiye",
+   "away": "United States",
+   "homeScore": 3,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49614444",
+     "minute": "3'",
+     "team": "United States",
+     "scorer": "Auston Trusty",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Türkiye 0, USA 1. Auston Trusty (USA) left footed shot from a difficult angle on the right to the bottom right corner. Assisted by Sebastian Berhalter with a cross following a corner.",
+     "wallclock": "2026-06-26T02:02:23Z"
+    },
+    {
+     "espnPlayId": "49614701",
+     "minute": "10'",
+     "team": "Türkiye",
+     "scorer": "Arda Güler",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Türkiye 1, USA 1. Arda Güler (Türkiye) left footed shot from the centre of the box to the centre of the goal. Assisted by Baris Alper Yilmaz.",
+     "wallclock": "2026-06-26T02:09:57Z"
+    },
+    {
+     "espnPlayId": "49615262",
+     "minute": "31'",
+     "team": "Türkiye",
+     "scorer": "Baris Alper Yilmaz",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Türkiye 2, USA 1. Baris Alper Yilmaz (Türkiye) right footed shot from very close range to the bottom right corner. Assisted by Orkun Kökçü.",
+     "wallclock": "2026-06-26T02:30:40Z"
+    },
+    {
+     "espnPlayId": "49616083",
+     "minute": "49'",
+     "team": "United States",
+     "scorer": "Sebastian Berhalter",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Türkiye 2, USA 2. Sebastian Berhalter (USA) right footed shot from outside the box to the bottom left corner.",
+     "wallclock": "2026-06-26T03:11:00Z"
+    },
+    {
+     "espnPlayId": "49617570",
+     "minute": "90'+8'",
+     "team": "Türkiye",
+     "scorer": "Kaan Ayhan",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! Türkiye 3, USA 2. Kaan Ayhan (Türkiye) right footed shot from very close range to the bottom right corner.",
+     "wallclock": "2026-06-26T04:00:46Z"
     }
    ]
   }
