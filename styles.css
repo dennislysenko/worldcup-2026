@@ -1115,6 +1115,9 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .bp-otitle { font-size: 15px; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 1px dashed rgba(242,245,238,.16); }
 .bp-otitle b { color: var(--text); }
 .bp-pct { color: var(--accent); font-weight: 800; margin-left: 4px; }
+.bp-lock { color: var(--accent); font-weight: 800; font-size: 13px; margin-left: 4px; }
+.bp-elim { font-size: 14.5px; color: var(--muted); margin: 6px 2px; line-height: 1.5; }
+.bp-elim b { color: #ff9a8d; }
 .bp-step { padding: 10px 8px; border-radius: 8px; }
 .bp-step + .bp-step { border-top: 1px solid rgba(242,245,238,.06); }
 .bp-step:hover { background: rgba(255,255,255,.035); }

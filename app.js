@@ -575,10 +575,9 @@
     if (r.unknown) return `<span class="bp-unknown">Unknown — any third-placed team (set after the group stage)</span>`;
     return r.cand.map(d => `<span class="bp-opp1">${teamFlag(d.team, "bk-flag")}<span class="bp-opp-name">${dispName(d.team)}</span><span class="bp-odds">${Math.round(d.p * 100)}%</span></span>`).join("");
   }
-  function routeHTML(entrySlotStr) {
-    const e = findSlot(entrySlotStr); if (!e) return "<p class='bp-note'>No route found.</p>";
-    // data-match wires each row into the existing hover popover (full distribution)
-    return tracePath(e.match, e.side).map(s => {
+  // data-match wires each row into the existing hover popover (full distribution)
+  function routeFrom(match, side) {
+    return tracePath(match, side).map(s => {
       const m = koByNum[s.match], r = strongestOpps(s.match, s.oppSide);
       const cap = r.resolved ? "Opponent" : r.unknown ? "" : "Likely opponents";
       return `<div class="bp-step" data-match="${s.match}">
@@ -587,24 +586,58 @@
       </div>`;
     }).join("");
   }
+  function routeHTML(entrySlotStr) {
+    const e = findSlot(entrySlotStr); if (!e) return "<p class='bp-note'>No route found.</p>";
+    return routeFrom(e.match, e.side);
+  }
+  // The R32 third-place slot a given team is (projected) slotted into, via Annexe C.
+  function thirdSlotFor(team) {
+    for (const m of WC.matches) {
+      if (m.away !== "Third-place qualifier") continue;
+      const d = projDist(m.matchNumber, "away");
+      if (d && d.length && d[0].team === team && d[0].p >= 0.5) return m.matchNumber;
+    }
+    return null;
+  }
+  const ORD = ["1st", "2nd", "3rd", "4th"];
   function renderPath(team) {
     const el = document.getElementById("path-panel"); if (!el) return;
     if (!team) { el.innerHTML = `<p class="bp-empty">Pick a team above to see their road to the final.</p>`; return; }
     ensureSims();
     const L = teamGroup(team), od = groupOdds[team] || {};
     const t = WC.teamByName[team];
-    const third = Math.max(0, (od.advance || 0) - (od.win || 0) - (od.runnerUp || 0));
+    const { rows, played, total } = groupStanding(L);
+    const complete = played === total;
+    const pos = rows.findIndex(r => r.team === team);
+    const clinch = groupClinch(L, rows);
+    const adv = od.advance || 0;
+    const third = Math.max(0, adv - (od.win || 0) - (od.runnerUp || 0));
     const pc = p => { if (p >= 0.999) return "99.9%"; const v = Math.round((p || 0) * 100); return (v >= 100 ? 99 : v) + "%"; };
-    const sections = [];
-    sections.push({ p: od.win || 0, head: `If they <b>win Group ${L}</b>`, body: routeHTML(`Winner Group ${L}`) });
-    sections.push({ p: od.runnerUp || 0, head: `If they <b>finish runner-up</b>`, body: routeHTML(`Runner-up Group ${L}`) });
-    sections.push({ p: third, head: `If they <b>finish 3rd &amp; advance</b>`, body: `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>` });
-    sections.sort((a, b) => b.p - a.p);
-    el.innerHTML = `<div class="bp-card">
-      <div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${dispName(team)}</b><span class="bp-grp">Group ${L}</span></div>
-      ${sections.filter(s => s.p > 0.005 || s.head.includes("3rd")).map(s => `
-        <div class="bp-section"><div class="bp-otitle">${s.head} <span class="bp-pct">${pc(s.p)}</span></div>${s.body}</div>`).join("")}
-    </div>`;
+    const sect = (title, body) => `<div class="bp-section"><div class="bp-otitle">${title}</div>${body}</div>`;
+    const lock = txt => `<span class="bp-lock">✓ ${txt}</span>`;
+    const card = inner => { el.innerHTML = `<div class="bp-card"><div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${dispName(team)}</b><span class="bp-grp">Group ${L}</span></div>${inner}</div>`; };
+
+    // Group finished: show the actual finish. 1st/runner-up and 4th-out are facts;
+    // a 3rd's advancement depends on the cross-group best-eight race, so show the % (no false ✓).
+    if (complete && pos >= 0) {
+      if (pos === 3) return card(`<p class="bp-elim">❌ <b>Eliminated</b> — finished 4th in Group ${L}.</p>`);
+      if (pos === 0) return card(sect(`<b>Won Group ${L}</b> ${lock("clinched")}`, routeHTML(`Winner Group ${L}`)));
+      if (pos === 1) return card(sect(`<b>Finished runner-up in Group ${L}</b> ${lock("clinched")}`, routeHTML(`Runner-up Group ${L}`)));
+      const slot = thirdSlotFor(team);
+      const note = adv < 0.005
+        ? `<p class="bp-note">Almost certainly out — it would take a very unlikely set of other results to sneak into the best eight thirds.</p>`
+        : (slot ? routeFrom(slot, "away") : `<p class="bp-note">Their Round-of-32 slot locks once the eight best thirds are set.</p>`);
+      return card(sect(`<b>Finished 3rd in Group ${L}</b> <span class="bp-pct">${pc(adv)} to reach the knockouts</span>`, note));
+    }
+
+    // Group still in progress: probability-ranked finishes (with ✓ for any clinch).
+    const winTag = clinch.first.has(team) ? lock("clinched") : `<span class="bp-pct">${pc(od.win || 0)}</span>`;
+    const sections = [
+      { p: od.win || 0, html: sect(`If they <b>win Group ${L}</b> ${winTag}`, routeHTML(`Winner Group ${L}`)) },
+      { p: od.runnerUp || 0, html: sect(`If they <b>finish runner-up</b> <span class="bp-pct">${pc(od.runnerUp || 0)}</span>`, routeHTML(`Runner-up Group ${L}`)) },
+      { p: third, keep: true, html: sect(`If they <b>finish 3rd &amp; advance</b> <span class="bp-pct">${pc(third)}</span>`, `<p class="bp-note">Route depends on the final third-place bracket (FIFA assigns the 8 best thirds by a fixed table) — it locks once the group stage ends.</p>`) },
+    ].sort((a, b) => b.p - a.p);
+    card(sections.filter(s => s.p > 0.005 || s.keep).map(s => s.html).join(""));
   }
   const PATH_TEAM_KEY = "wc2026.pathTeam";
   (function () {
