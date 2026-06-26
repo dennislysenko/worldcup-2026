@@ -367,6 +367,13 @@
     }
     const slot = koByNum[num][side] || "";
     const dist = projDist(num, side);
+    // Essentially locked (one team ≥99.5%) → name it. Group B is complete, so e.g.
+    // the third-placed team feeding a slot is a real, known side (Bosnia & Herzegovina)
+    // even before the slot is officially confirmed. Kept in muted "proj" style.
+    if (dist && dist.length && dist[0].p >= 0.995) {
+      const t = dist[0].team;
+      return `<div class="bk-side proj">${teamFlag(t, "bk-flag")}<span class="bk-name">${t}</span></div>`;
+    }
     // overlapping flag strip of the 2–4 contenders, flags above the slot name (no % — it's noise here)
     const strip = (dist && dist.length)
       ? `<span class="bk-strip">${dist.slice(0, 4).map((t, i) => `<img loading="lazy" style="z-index:${9 - i}" src="https://flagcdn.com/w40/${iso(t.team)}.png" alt="">`).join("")}</span>`

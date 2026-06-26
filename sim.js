@@ -93,8 +93,26 @@
     return { ranked, st };
   }
 
+  // Index of each winner-slot letter within an Annexe C value string.
+  const ANNEXE_IDX = {};
+  (WC.annexeThirdSlots || []).forEach((g, i) => { ANNEXE_IDX[g] = i; });
+
+  // Assign the 8 qualifying third-placed teams to their R32 slots using FIFA's
+  // official Annexe C combination table (annexe.js): the assignment is a pure
+  // function of WHICH eight groups supply a qualifying third. Falls back to a
+  // same-group-avoidance heuristic only if the table is unavailable.
   function allocateThirds(qual, used) {
     const assign = {};
+    const map = WC.annexeThird && WC.annexeThird[qual.map(t => t.group).sort().join("")];
+    if (map) {
+      const teamOfGroup = {};
+      qual.forEach(t => { teamOfGroup[t.group] = t.team; });
+      for (const s of thirdSlots) {
+        const wgroup = koByNum[s].home.replace("Winner Group ", "");
+        assign[s] = teamOfGroup[map[ANNEXE_IDX[wgroup]]];
+      }
+      return assign;
+    }
     for (const s of thirdSlots) {
       const wgroup = koByNum[s].home.replace("Winner Group ", "");
       let pick = qual.find(t => !used.has(t.team) && t.group !== wgroup) || qual.find(t => !used.has(t.team));
