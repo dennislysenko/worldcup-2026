@@ -925,19 +925,20 @@
     const m = WC.matches.find(x => x.stage === "Group" && (x.home === team || x.away === team));
     return m ? m.group : null;
   }
-  // Single flag ONLY for a near-lock favourite (#1 ≥ 80%). Otherwise show the leaders
-  // that cover the bulk of outcomes (cumulative ≥ 60%), and keep extending while the
-  // next contender stays within 70% of the one above (a tight pack). Clamped 2–4.
+  // One flag ONLY when the slot is effectively locked to a single team (#1 ≥ 99%,
+  // i.e. resolved or all-but-resolved). Otherwise show every realistic opponent:
+  // the leaders that cover the bulk of outcomes (cumulative ≥ 60%), extending while
+  // the next contender stays within 70% of the one above (a tight pack). Clamped 2–4.
   function pickIcon(dist) {
     const p = i => (dist[i] ? dist[i].p : 0);
-    if (p(0) >= 0.80) return { n: 1, style: "single", teams: dist.slice(0, 1) };
+    if (p(0) >= 0.99 || p(1) < 0.005) return { n: 1, style: "single", teams: dist.slice(0, 1) };
     let n = 2;
     while (n < 4 && p(n) > 0) {
       let cum = 0; for (let i = 0; i < n; i++) cum += p(i);
       if (cum < 0.60 || p(n) >= 0.7 * p(n - 1)) n++;
       else break;
     }
-    const style = n === 2 ? ((p(0) - p(1) <= 0.06) ? "even2" : "b2") : n === 3 ? "b3" : "g4";
+    const style = n === 2 ? "even2" : n === 3 ? "b3" : "g4"; // two flags shown side-by-side, not overlapped
     return { n, style, teams: dist.slice(0, n) };
   }
   function projIconHTML(dist, cap) {
