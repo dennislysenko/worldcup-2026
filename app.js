@@ -1078,7 +1078,7 @@
     setPickerCollapsed(false); document.getElementById("team-search").focus();
   });
 
-  function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderThirdTable(); renderBracket(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
+  function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderThirdTable(); renderBracket(); renderProjections(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
 
   function toggleTeam(name) {
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
@@ -1429,9 +1429,11 @@
     </div>`;
   }
 
-  let projectionsRendered = false;
+  let projViewSig = null;
   function renderProjections() {
-    if (projectionsRendered) return; // static — independent of favorites
+    // Re-render whenever the projection inputs change (new results) — not once.
+    if (projViewSig === projSig) return;
+    projViewSig = projSig;
     const meta = WC.projMeta || {};
     document.getElementById("proj-intro").innerHTML = `
       <p style="margin-top:0">Group fixtures are set; the knockout bracket isn't. We simulate the whole tournament ${meta.sims ? meta.sims.toLocaleString() : ""} times from current Elo ratings — group games as Poisson-goal matches, knockout ties as single games — and tally how often each nation reaches each slot.</p>
@@ -1446,7 +1448,6 @@
       html += `<div class="proj-stage-head">${stage}</div>` + ms.map(projCard).join("");
     });
     document.getElementById("proj-list").innerHTML = html;
-    projectionsRendered = true;
   }
 
   // ======================================================================
