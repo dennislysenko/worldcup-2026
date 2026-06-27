@@ -292,16 +292,21 @@
       return `<span class="adv-wrap"><span class="adv-bar"><span class="adv-fill" style="width:${Math.round(p * 100)}%"></span></span><b>${pct(p)}</b></span>`;
     };
     el.innerHTML = GROUP_LETTERS.map(L => {
-      const { rows, dirty, played, total } = groupStanding(L);
-      const clinch = groupClinch(L, rows);
+      // Display standings fold in live in-progress scores (provisional); clinch (✓)
+      // stays strictly on FINAL results so a live score never declares a clinch.
+      const { rows, dirty, played, total, liveInfo } = groupStanding(L, true);
+      const clinch = groupClinch(L, groupStanding(L).rows);
+      const liveN = Object.keys(liveInfo).length / 2;
       const open = groupsDetailed || expandedGroups.has(L);
       const body = rows.map((r, i) => {
         const t = WC.teamByName[r.team], od = groupOdds[r.team] || {};
         const zone = i < 2 ? "g-top" : i === 2 ? "g-third" : "";
         const winCell = clinch.first.has(r.team) ? `<span class="g-clinch" title="Clinched 1st">✓</span>` : pct(od.win);
-        return `<tr class="${zone}${favorites.has(r.team) ? " g-fav" : ""}" data-team="${r.team}">
+        const lv = liveInfo[r.team];
+        const liveBadge = lv ? ` <span class="g-live" title="Live vs ${lv.opp}${lv.min ? " · " + lv.min : ""}"><span class="sc-dot"></span>${lv.f}–${lv.a}</span>` : "";
+        return `<tr class="${zone}${favorites.has(r.team) ? " g-fav" : ""}${lv ? " g-live-row" : ""}" data-team="${r.team}">
           <td class="g-pos">${i + 1}</td>
-          <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${dispName(r.team)}</span></td>
+          <td class="g-team">${t ? flag(t.iso2, "g-flag") : ""}<span>${dispName(r.team)}</span>${liveBadge}</td>
           <td>${r.P}</td><td class="g-detail">${r.W}</td><td class="g-detail">${r.D}</td><td class="g-detail">${r.L}</td>
           <td class="g-detail">${r.GF}</td><td class="g-detail">${r.GA}</td><td>${r.GD > 0 ? "+" + r.GD : r.GD}</td><td class="g-pts">${r.Pts}</td>
           <td class="g-odd g-odd2">${winCell}</td><td class="g-odd g-odd2">${pct(od.runnerUp)}</td><td class="g-odd g-adv">${advCell(od.advance, clinch.top2.has(r.team))}</td>
@@ -311,7 +316,7 @@
       const chevron = groupsDetailed ? "" : `<span class="g-toggle">${open ? "▾" : "▸"}</span>`;
       const combos = groupRemaining(L).length === 2 ? `<button type="button" class="g-combos" data-combos="${L}">🎲 Final-day combos</button>` : "";
       return `<section class="g-card${open ? " expanded" : ""}" data-group="${L}">
-        <div class="g-head" role="button" tabindex="0" aria-expanded="${open}"><h3>Group ${L}</h3><span class="g-prog">${played}/${total} played</span>${dirtyBadge}${chevron}</div>
+        <div class="g-head" role="button" tabindex="0" aria-expanded="${open}"><h3>Group ${L}</h3><span class="g-prog">${played}/${total} played</span>${liveN ? `<span class="g-live-n"><span class="sc-dot"></span>${liveN} live</span>` : ""}${dirtyBadge}${chevron}</div>
         <div class="g-scroll"><table class="g-table">
           <thead><tr><th></th><th class="g-team">Team</th><th title="Played">P</th><th class="g-detail">W</th><th class="g-detail">D</th><th class="g-detail">L</th><th class="g-detail">GF</th><th class="g-detail">GA</th><th title="Goal difference">GD</th><th title="Points">Pts</th><th class="g-odd g-odd2" title="Chance to win the group">1st</th><th class="g-odd g-odd2" title="Chance to finish runner-up">2nd</th><th class="g-odd g-adv" title="Chance to reach the knockouts">Adv</th></tr></thead>
           <tbody>${body}</tbody>
