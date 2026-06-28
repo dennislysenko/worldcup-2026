@@ -46,10 +46,10 @@
   <nav class="main-nav" id="main-nav">
     <button class="nav-link" data-view="calendar">Calendar</button>
     <button class="nav-link" data-view="bracket">Bracket</button>
-    <button class="nav-link" data-view="groups">Groups</button>
-    <button class="nav-link" data-view="thirds">3rd Place</button>
     <button class="nav-link" data-view="path">Road to Final</button>
     <button class="nav-link" data-view="movers">Movers</button>
+    <button class="nav-link" data-view="groups">Groups</button>
+    <button class="nav-link" data-view="thirds">3rd Place</button>
     <button class="nav-link" data-view="my-teams">My Teams</button>
     <button class="nav-link" data-view="planner">Plan Watch Party</button>
     <a class="nav-link nav-page" href="set-piece-tracker.html">Set Pieces 🎯</a>
@@ -128,22 +128,6 @@
       <div id="bracket" class="bracket-wrap"></div>
     </div>
 
-    <!-- ===================== GROUPS VIEW ===================== -->
-    <div class="view" id="view-groups">
-      <h2 class="section-title">Groups<span class="st-sub">Live standings from results · 1st / 2nd / Adv = chance to win the group, finish runner-up, or reach the knockouts (simulated from results so far)</span></h2>
-      <div class="groups-ctl">
-        <label class="toggle"><input type="checkbox" id="toggle-groups-detail" /><span>Detailed (all stats)</span></label>
-        <span class="groups-hint">tip: tap any group to expand it</span>
-      </div>
-      <div id="groups" class="groups-wrap"></div>
-    </div>
-
-    <!-- ===================== THIRD-PLACE VIEW ===================== -->
-    <div class="view" id="view-thirds">
-      <h2 class="section-title">Third-place race<span class="st-sub">The best 8 of the 12 third-placed teams advance · live standings + Reach KO odds, conditioned on results so far (including live matches)</span></h2>
-      <div id="third-table"></div>
-    </div>
-
     <!-- ===================== ROAD TO FINAL VIEW ===================== -->
     <div class="view" id="view-path">
       <h2 class="section-title">Road to the Final<span class="st-sub">Pick a team to see the route they'd face under each group finish — most likely first</span></h2>
@@ -162,6 +146,22 @@
         <label class="mv-base-lbl">Title odds since <select id="mv-base"></select></label>
       </div>
       <div id="movers"></div>
+    </div>
+
+    <!-- ===================== GROUPS VIEW ===================== -->
+    <div class="view" id="view-groups">
+      <h2 class="section-title">Groups<span class="st-sub">Live standings from results · 1st / 2nd / Adv = chance to win the group, finish runner-up, or reach the knockouts (simulated from results so far)</span></h2>
+      <div class="groups-ctl">
+        <label class="toggle"><input type="checkbox" id="toggle-groups-detail" /><span>Detailed (all stats)</span></label>
+        <span class="groups-hint">tip: tap any group to expand it</span>
+      </div>
+      <div id="groups" class="groups-wrap"></div>
+    </div>
+
+    <!-- ===================== THIRD-PLACE VIEW ===================== -->
+    <div class="view" id="view-thirds">
+      <h2 class="section-title">Third-place race<span class="st-sub">The best 8 of the 12 third-placed teams advance · live standings + Reach KO odds, conditioned on results so far (including live matches)</span></h2>
+      <div id="third-table"></div>
     </div>
 
     <!-- ===================== MY TEAMS VIEW ===================== -->

@@ -1019,7 +1019,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "bracket", "groups", "thirds", "path", "movers", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "bracket", "path", "movers", "groups", "thirds", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
