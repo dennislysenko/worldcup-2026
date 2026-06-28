@@ -115,6 +115,7 @@
         <div class="view-toggles">
           <label class="toggle"><input type="checkbox" id="toggle-only-fav" /><span>Only my matches</span></label>
           <label class="toggle"><input type="checkbox" id="toggle-bangers" checked /><span>🔥 Highlight bangers</span></label>
+          <label class="toggle"><input type="checkbox" id="toggle-show-past" /><span>Show earlier matches</span></label>
         </div>
       </section>
 
@@ -190,63 +191,6 @@
   </main>
 
   <div id="popover" class="popover hidden"></div>
-
-  <a class="arteta-peek" href="set-piece-tracker.html" aria-label="Set-Piece Tracker">
-    <span class="arteta-peek-tip" id="arteta-peek-tip">Set pieces. Non-negotiable.</span>
-    <img src="arteta.png" alt="Mikel Arteta, watching" />
-  </a>
-  <script>
-    // Mikel's bubble: live set-piece share + an All-or-Nothing-ism.
-    // He gets mad when 2026 drops below the 2018/2022 average.
-    (function () {
-      var happy = [
-        "Now THAT is a standard.",
-        "Can you smell it? That's a routine.",
-        "This is who we are.",
-        "Every corner, a chance. Beautiful.",
-        "Big cojones. I love it.",
-        "We rehearsed this. We DESERVE this.",
-        "Nicolas — clip that one.",
-      ];
-      var mad = [
-        "It's a disgrace! Where are the standards?",
-        "Below the average. I cannot accept it.",
-        "The box is RIGHT THERE. Use it!",
-        "Nicolas. The laptop. NOW.",
-        "I am very calm. (He is not calm.)",
-        "Unacceptable. We go again tomorrow.",
-      ];
-      var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
-      Promise.all([
-        fetch("set-piece-goals.json").then(function (r) { return r.json(); }),
-        fetch("set-piece-baselines.json").then(function (r) { return r.json(); }),
-      ]).then(function (res) {
-        // full total: corners + free kicks + long throws + penalties + own goals
-        var SP = { corner: 1, free_kick: 1, throw_in: 1, penalty: 1 };
-        var sp = 0, total = 0;
-        res[0].matches.forEach(function (m) { (m.goals || []).forEach(function (g) {
-          total++;
-          if (SP[g.category] || g.ownGoal) sp++;
-        }); });
-        if (!total) return;
-        var pct = 100 * sp / total;
-        var avg = 0, years = 0;
-        Object.values(res[1].tournaments).forEach(function (t) {
-          var s = 0;
-          t.goals.forEach(function (g) {
-            if ((g.category === "corner" || g.category === "free_kick" || g.category === "throw_in") && g.elapsed_s != null && g.elapsed_s <= 15) s++;
-            else if (g.category === "penalty" || g.own_goal) s++;
-          });
-          avg += 100 * s / t.total_goals; years++;
-        });
-        avg /= years;
-        var isMad = pct < avg;
-        if (isMad) document.querySelector(".arteta-peek").classList.add("mad");
-        document.getElementById("arteta-peek-tip").innerHTML =
-          "<b>" + pct.toFixed(0) + "%</b> set pieces.<br>" + pick(isMad ? mad : happy);
-      }).catch(function () {});
-    })();
-  </script>
 
   <footer>
     Schedule from the Dec 5 2025 final draw, spot-checked vs FIFA / Wikipedia / ESPN.

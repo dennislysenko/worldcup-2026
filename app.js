@@ -35,7 +35,7 @@
   let favorites = loadFavorites();
   let currentView = "calendar";
   let plannerSel = { start: null, end: null };
-  const ui = { showElo: false, onlyFav: false, showBangers: true, search: "" };
+  const ui = { showElo: false, onlyFav: false, showBangers: true, showPast: false, search: "" };
 
   // ======================================================================
   // LIVE SCORES — baked scores.json + ESPN live poll (CORS-open public API).
@@ -1151,6 +1151,11 @@
       const hasFav = all.some(isFavMatch);
       const matches = ui.onlyFav ? all.filter(isFavMatch) : all;
       const favDot = hasFav ? `<span class="dot-fav">★</span>` : "";
+      if (isCollapsedDay(ds)) { // earlier than today−2d: number only, a dot if it had games
+        const cls = ["day", "day-past", all.length ? "had" : ""].filter(Boolean).join(" ");
+        cells += `<div class="${cls}"><div class="day-num"><span>${d}</span></div>${all.length ? `<span class="day-past-dot"></span>` : ""}</div>`;
+        continue;
+      }
       const cls = ["day", hasFav ? "has-fav" : "", ds === todayStr ? "today" : ""].filter(Boolean).join(" ");
       cells += `<div class="${cls}"><div class="day-num"><span>${d}</span>${favDot}</div>${matches.map(matchPill).join("")}</div>`;
     }
@@ -1182,6 +1187,7 @@
     const dates = Object.keys(byDate).sort();
     let html = "", curMonth = "";
     dates.forEach(ds => {
+      if (isCollapsedDay(ds)) return; // earlier than today−2d unless expanded
       const dt = parseDate(ds);
       const monthKey = `${dt.getFullYear()}-${dt.getMonth()}`;
       const all = byDate[ds];
@@ -1213,6 +1219,9 @@
   // ======================================================================
   // current date (YYYY-MM-DD) in tournament time, so "upcoming" / "today" track reality
   const TODAY = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+  // Calendar starts ~2 days back: earlier days are collapsed until the user opts in.
+  const PAST_CUTOFF = (() => { const d = parseDate(TODAY); d.setDate(d.getDate() - 2); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; })();
+  const isCollapsedDay = ds => !ui.showPast && ds < PAST_CUTOFF;
   function renderUpcomingBangers() {
     const el = document.getElementById("upcoming-bangers");
     const row = document.getElementById("upcoming-row");
@@ -1562,6 +1571,7 @@
   // ---- calendar view toggles ----
   document.getElementById("toggle-only-fav").addEventListener("change", e => { ui.onlyFav = e.target.checked; renderCalendar(); });
   document.getElementById("toggle-bangers").addEventListener("change", e => { ui.showBangers = e.target.checked; renderCalendar(); });
+  document.getElementById("toggle-show-past").addEventListener("change", e => { ui.showPast = e.target.checked; renderCalendar(); });
 
   // ======================================================================
   // INIT
