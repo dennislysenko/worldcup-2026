@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-27T09:10:52.421Z",
+  "generated": "2026-06-28T09:40:41.086Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -792,6 +792,78 @@
    "away": "Belgium",
    "homeScore": 1,
    "awayScore": 5,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "67": {
+   "espnId": "760485",
+   "utc": "2026-06-27T21:00Z",
+   "home": "Panama",
+   "away": "England",
+   "homeScore": 0,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "68": {
+   "espnId": "760480",
+   "utc": "2026-06-27T21:00Z",
+   "home": "Croatia",
+   "away": "Ghana",
+   "homeScore": 2,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "69": {
+   "espnId": "760481",
+   "utc": "2026-06-27T23:30Z",
+   "home": "Colombia",
+   "away": "Portugal",
+   "homeScore": 0,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "70": {
+   "espnId": "760482",
+   "utc": "2026-06-27T23:30Z",
+   "home": "Congo DR",
+   "away": "Uzbekistan",
+   "homeScore": 3,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "71": {
+   "espnId": "760484",
+   "utc": "2026-06-28T02:00Z",
+   "home": "Algeria",
+   "away": "Austria",
+   "homeScore": 3,
+   "awayScore": 3,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
+   "period": 2
+  },
+  "72": {
+   "espnId": "760483",
+   "utc": "2026-06-28T02:00Z",
+   "home": "Jordan",
+   "away": "Argentina",
+   "homeScore": 1,
+   "awayScore": 3,
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
