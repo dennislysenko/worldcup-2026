@@ -898,13 +898,26 @@
   function isFavMatch(m) { return favorites.has(m.home) || favorites.has(m.away); }
   function parseDate(s) { const [y, mo, d] = s.split("-").map(Number); return new Date(y, mo - 1, d); }
 
+  // The real team on a side: a group game's team, or a knockout slot once it's
+  // resolved / locked to one team (≥99%). null while still undecided. Lets bangers
+  // and team names work for knockout matches too, not just the group stage.
+  function effTeam(m, side) {
+    const raw = m[side];
+    if (isKnown(raw)) return raw;
+    const r = resolveSide(m.matchNumber, side);
+    if (r) return r;
+    const d = projDist(m.matchNumber, side);
+    if (d && d.length && d[0].p >= 0.99) return d[0].team;
+    return null;
+  }
   function bangerInfo(m) {
-    if (!isKnown(m.home) || !isKnown(m.away)) return null;
-    const a = WC.elo[m.home], b = WC.elo[m.away];
+    const hn = effTeam(m, "home"), an = effTeam(m, "away");
+    if (!hn || !an) return null;
+    const a = WC.elo[hn], b = WC.elo[an];
     if (a == null || b == null) return null;
     const avg = (a + b) / 2, gap = Math.abs(a - b);
     const score = avg - gap * 0.25;
-    return { a, b, avg, gap, score, banger: a >= 1700 && b >= 1700 && score >= 1860 };
+    return { a, b, avg, gap, score, home: hn, away: an, banger: a >= 1700 && b >= 1700 && score >= 1860 };
   }
   function isBanger(m) { const i = bangerInfo(m); return !!(i && i.banger); }
 
@@ -1006,7 +1019,7 @@
   });
 
   function setupScrollSpy() {
-    const ids = ["calendar", "groups", "thirds", "bracket", "path", "movers", "my-teams", "planner", "projections"];
+    const ids = ["calendar", "bracket", "groups", "thirds", "path", "movers", "my-teams", "planner", "projections"];
     const obs = new IntersectionObserver(entries => {
       const vis = entries.filter(en => en.isIntersecting);
       if (!vis.length) return;
@@ -1116,8 +1129,8 @@
   function matchPill(m) {
     const fav = isFavMatch(m), banger = ui.showBangers && isBanger(m), dim = ui.onlyFav && !fav;
     const abbr = STAGE_ABBR[m.stage] || "";
-    const side = (name, which) => isKnown(name) ? teamFlag(name, "flag")
-      : (projIconHTML(projDist(m.matchNumber, which), 2) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
+    const side = (name, which) => { const eff = effTeam(m, which); return eff ? teamFlag(eff, "flag")
+      : (projIconHTML(projDist(m.matchNumber, which), 2) || `<span class="ko-badge" title="${name}">${abbr}</span>`); };
     const cls = ["match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
     const sc = scoreHTML(m);
@@ -1151,10 +1164,10 @@
     const abbr = STAGE_ABBR[m.stage] || "";
     const stageStr = m.stage === "Group" ? `Group ${m.group}` : m.stage;
     const side = (name, which) => {
-      const known = isKnown(name);
-      const f = known ? teamFlag(name, "flag")
+      const eff = effTeam(m, which);
+      const f = eff ? teamFlag(eff, "flag")
         : (projIconHTML(projDist(m.matchNumber, which)) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
-      return `<span class="ar-team">${f}<span class="ar-name">${known ? name : shortLabel(name)}</span></span>`;
+      return `<span class="ar-team">${f}<span class="ar-name">${eff ? dispName(eff) : shortLabel(name)}</span></span>`;
     };
     const cls = ["agenda-match", fav ? "fav" : "", banger ? "banger" : "", dim ? "dimmed" : ""].filter(Boolean).join(" ");
     const flame = banger ? `<span class="flame" title="Banger matchup">🔥</span>` : "";
@@ -1214,10 +1227,11 @@
     row.innerHTML = show.map(m => {
       const dt = parseDate(m.date);
       const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
+      const hn = effTeam(m, "home") || m.home, an = effTeam(m, "away") || m.away;
       return `<div class="ub-card ${isFavMatch(m) ? "fav" : ""}" data-match="${m.matchNumber}">
         <div class="ub-date">${dateStr}${m.time ? " · " + m.time : ""}</div>
-        <div class="ub-teams">${teamFlag(m.home, "")}<span>${m.home}</span><span class="vs">v</span>${teamFlag(m.away, "")}<span>${m.away}</span></div>
-        <div class="ub-meta">${m.stage === "Group" ? "Group " + m.group : m.stage} · ${m.city}</div>
+        <div class="ub-teams">${teamFlag(hn, "")}<span>${dispName(hn)}</span><span class="vs">v</span>${teamFlag(an, "")}<span>${dispName(an)}</span></div>
+        <div class="ub-meta">${m.stage === "Group" ? "Group " + m.group : m.stage} · ${CITY_SHORT[m.city] || m.city}</div>
       </div>`;
     }).join("");
   }
@@ -1331,10 +1345,10 @@
     const dt = parseDate(m.date);
     const dateStr = `${WEEKDAYS[dt.getDay()]} ${MONTHS[dt.getMonth()].slice(0, 3)} ${dt.getDate()}`;
     const side = (name, which) => {
-      const known = isKnown(name);
-      const f = known ? teamFlag(name, "flag")
+      const eff = effTeam(m, which);
+      const f = eff ? teamFlag(eff, "flag")
         : (projIconHTML(projDist(m.matchNumber, which)) || `<span class="ko-badge" title="${name}">${abbr}</span>`);
-      return `<span class="ar-team">${f}<span class="ar-name">${known ? name : shortLabel(name)}</span></span>`;
+      return `<span class="ar-team">${f}<span class="ar-name">${eff ? dispName(eff) : shortLabel(name)}</span></span>`;
     };
     const badges = [
       fav ? `<span class="q-badge q-fav">★ your team</span>` : "",
@@ -1503,16 +1517,19 @@
     const dateStr = `${WEEKDAYS[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${dt.getDate()}${m.time ? " · " + m.time : ""}`;
     const isKO = !isKnown(m.home) || !isKnown(m.away);
     let body;
+    const bi = bangerInfo(m);
     if (isKO) {
       const side = (which, name) => {
+        const eff = effTeam(m, which);
+        if (eff) return `<div class="pv-side"><div class="pv-slot">${teamFlag(eff, "")}<span>${dispName(eff)}</span></div></div>`;
         const dist = projDist(m.matchNumber, which);
         const odds = dist ? dist.slice(0, 5).map((d, i) =>
-          `<div class="pv-odd${i === 0 ? " lead" : ""}">${teamFlag(d.team, "")}<span class="pv-nm">${d.team}</span><span class="pv-pct">${Math.round(d.p * 100)}%</span></div>`).join("") : "";
+          `<div class="pv-odd${i === 0 ? " lead" : ""}">${teamFlag(d.team, "")}<span class="pv-nm">${dispName(d.team)}</span><span class="pv-pct">${Math.round(d.p * 100)}%</span></div>`).join("") : "";
         return `<div class="pv-side"><div class="pv-slot">${projIconHTML(dist)}<span>${shortLabel(name)}</span></div><div class="pv-odds">${odds}</div></div>`;
       };
-      body = `<div class="pv-ko">${side("home", m.home)}<div class="pv-mid">vs</div>${side("away", m.away)}</div>`;
+      const eloRow = bi ? `<div class="pv-row pv-elo">Elo: ${dispName(bi.home)} ${bi.a} · ${dispName(bi.away)} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>` : "";
+      body = `<div class="pv-ko">${side("home", m.home)}<div class="pv-mid">vs</div>${side("away", m.away)}</div>${eloRow}`;
     } else {
-      const bi = bangerInfo(m);
       const eloRow = bi ? `<div class="pv-row pv-elo">Elo: ${m.home} ${bi.a} · ${m.away} ${bi.b}${bi.banger ? " · 🔥 banger" : ""}</div>` : "";
       body = `<div class="pv-teams">${teamFlag(m.home, "")}<span>${m.home}</span><span class="vs">v</span>${teamFlag(m.away, "")}<span>${m.away}</span></div>${eloRow}`;
     }
