@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-28T09:40:41.086Z",
+  "generated": "2026-06-29T11:30:43.220Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -864,6 +864,18 @@
    "away": "Argentina",
    "homeScore": 1,
    "awayScore": 3,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+6'",
+   "period": 2
+  },
+  "73": {
+   "espnId": "760486",
+   "utc": "2026-06-28T19:00Z",
+   "home": "South Africa",
+   "away": "Canada",
+   "homeScore": 0,
+   "awayScore": 1,
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
