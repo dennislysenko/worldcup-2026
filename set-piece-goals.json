@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-29T11:30:46.635Z",
+  "generated": "2026-06-30T10:06:33.234Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 216,
+  "total": 223,
   "counts": {
-   "corner": 25,
+   "corner": 26,
    "free_kick": 11,
    "throw_in": 1,
    "penalty": 8,
-   "open_play": 171
+   "open_play": 177
   },
-  "setPieceExclPens": 37,
-  "pctExclPens": 17.12962962962963,
-  "pctInclPens": 20.833333333333332
+  "setPieceExclPens": 38,
+  "pctExclPens": 17.04035874439462,
+  "pctInclPens": 20.62780269058296
  },
  "matches": [
   {
@@ -3554,6 +3554,129 @@
      "scoreAfter": "0–1",
      "evidence": "Goal! South Africa 0, Canada 1. Stephen Eustaquio (Canada) right footed shot from outside the box to the bottom left corner.",
      "wallclock": "2026-06-28T20:51:29Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760487",
+   "name": "Japan at Brazil",
+   "kickoff": "2026-06-29T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Brazil",
+   "away": "Japan",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49660180",
+     "minute": "29'",
+     "team": "Japan",
+     "scorer": "Kaishu Sano",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Brazil 0, Japan 1. Kaishu Sano (Japan) right footed shot from outside the box to the bottom left corner following a fast break.",
+     "wallclock": "2026-06-29T17:29:03Z"
+    },
+    {
+     "espnPlayId": "49660720",
+     "minute": "56'",
+     "team": "Brazil",
+     "scorer": "Casemiro",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Brazil 1, Japan 1. Casemiro (Brazil) header from the right side of the six yard box to the top right corner. Assisted by Gabriel Magalhães with a cross.",
+     "wallclock": "2026-06-29T18:16:57Z"
+    },
+    {
+     "espnPlayId": "49661275",
+     "minute": "90'+5'",
+     "team": "Brazil",
+     "scorer": "Gabriel Martinelli",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Brazil 2, Japan 1. Gabriel Martinelli (Brazil) right footed shot from the centre of the box to the bottom right corner. Assisted by Bruno Guimarães.",
+     "wallclock": "2026-06-29T18:56:51Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760489",
+   "name": "Paraguay at Germany",
+   "kickoff": "2026-06-29T20:30Z",
+   "state": "post",
+   "statusText": "Final Score - After Penalties",
+   "home": "Germany",
+   "away": "Paraguay",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49661929",
+     "minute": "42'",
+     "team": "Paraguay",
+     "scorer": "Julio Enciso",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Germany 0, Paraguay 1. Julio Enciso (Paraguay) header from the centre of the box to the bottom left corner. Assisted by Matías Galarza with a cross following a corner.",
+     "wallclock": "2026-06-29T21:11:34Z"
+    },
+    {
+     "espnPlayId": "49662217",
+     "minute": "54'",
+     "team": "Germany",
+     "scorer": "Kai Havertz",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Germany 1, Paraguay 1. Kai Havertz (Germany) header from the centre of the box to the bottom right corner. Assisted by Florian Wirtz with a cross.",
+     "wallclock": "2026-06-29T21:46:50Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760488",
+   "name": "Morocco at Netherlands",
+   "kickoff": "2026-06-30T01:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Penalties",
+   "home": "Netherlands",
+   "away": "Morocco",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49664354",
+     "minute": "72'",
+     "team": "Netherlands",
+     "scorer": "Cody Gakpo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Netherlands 1, Morocco 0. Cody Gakpo (Netherlands) right footed shot from the centre of the box to the centre of the goal. Assisted by Crysencio Summerville.",
+     "wallclock": "2026-06-30T02:33:31Z"
+    },
+    {
+     "espnPlayId": "49664627",
+     "minute": "90'+1'",
+     "team": "Morocco",
+     "scorer": "Issa Diop",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Netherlands 1, Morocco 1. Issa Diop (Morocco) header from the centre of the box to the top right corner. Assisted by Chemsdine Talbi with a cross.",
+     "wallclock": "2026-06-30T02:52:14Z"
     }
    ]
   }

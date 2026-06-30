@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-29T11:30:43.220Z",
+  "generated": "2026-06-30T10:06:24.568Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -880,6 +880,42 @@
    "statusText": "FT",
    "minute": "90'+6'",
    "period": 2
+  },
+  "74": {
+   "espnId": "760487",
+   "utc": "2026-06-29T17:00Z",
+   "home": "Brazil",
+   "away": "Japan",
+   "homeScore": 2,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+11'",
+   "period": 2
+  },
+  "75": {
+   "espnId": "760489",
+   "utc": "2026-06-29T20:30Z",
+   "home": "Germany",
+   "away": "Paraguay",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT-Pens",
+   "minute": "120'",
+   "period": 5
+  },
+  "76": {
+   "espnId": "760488",
+   "utc": "2026-06-30T01:00Z",
+   "home": "Netherlands",
+   "away": "Morocco",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT-Pens",
+   "minute": "120'",
+   "period": 5
   }
  }
 }
