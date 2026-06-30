@@ -656,6 +656,20 @@
     const slot = (koByNum[matchNum][side] || "").replace("Third-place qualifier", "a third-placed team").replace(/^Winner Match /, "winner of Match ").replace(/^Runner-up Group /, "runner-up of Group ").replace(/^Winner Group /, "winner of Group ");
     return { name: slot, sure: false };
   }
+  // Walk a team's knockout path; if they've lost a played match, return where.
+  function koElimination(team) {
+    const r = teamR32(team); if (!r) return null;
+    let cur = r.match;
+    while (cur != null) {
+      const sc = scores[cur];
+      if (!(sc && sc.state === "post" && sc.homeScore != null)) return null; // not played → still alive
+      const w = matchWinner(cur);
+      if (w == null) return null;
+      if (w !== team) return { match: cur, stage: koByNum[cur].stage, beatenBy: w };
+      const up = childToParent[cur]; cur = up ? up.parent : null;
+    }
+    return null;
+  }
   const ORD = ["1st", "2nd", "3rd", "4th"];
   function renderPath(team) {
     const el = document.getElementById("path-panel"); if (!el) return;
@@ -673,6 +687,14 @@
     const sect = (title, body) => `<div class="bp-section"><div class="bp-otitle">${title}</div>${body}</div>`;
     const lock = txt => `<span class="bp-lock">✓ ${txt}</span>`;
     const card = inner => { el.innerHTML = `<div class="bp-card"><div class="bp-head">${t ? flag(t.iso2, "bp-flag") : ""}<b>${dispName(team)}</b><span class="bp-grp">Group ${L}</span></div>${inner}</div>`; };
+
+    // Knocked out: they lost a played knockout match → say so, don't show a future path.
+    const elim = koElimination(team);
+    if (elim) {
+      const sc = scores[elim.match];
+      const res = sc ? ` (${sc.homeScore}–${sc.awayScore}${(sc.homePens != null && sc.awayPens != null) ? `, ${sc.homePens}–${sc.awayPens} pens` : ""})` : "";
+      return card(`<p class="bp-elim">❌ <b>Eliminated</b> — lost to ${dispName(elim.beatenBy)} in the ${elim.stage}${res}.</p>`);
+    }
 
     // Group finished: show the actual finish. 1st/runner-up and 4th-out are facts;
     // a 3rd's advancement depends on the cross-group best-eight race, so show the % (no false ✓).
