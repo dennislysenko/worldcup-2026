@@ -40,6 +40,9 @@ export function eventToScore(e) {
     away: a.team?.displayName || '',
     homeScore: h.score != null && h.score !== '' ? Number(h.score) : null,
     awayScore: a.score != null && a.score !== '' ? Number(a.score) : null,
+    homePens: h.shootoutScore != null && h.shootoutScore !== '' ? Number(h.shootoutScore) : null,
+    awayPens: a.shootoutScore != null && a.shootoutScore !== '' ? Number(a.shootoutScore) : null,
+    winner: h.winner ? 'home' : a.winner ? 'away' : null, // knockout shootout/ET winner
     state: st.type?.state || 'pre', // pre | in | post
     statusText: st.type?.shortDetail || st.type?.description || '',
     minute: st.displayClock || '',

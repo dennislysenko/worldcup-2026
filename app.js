@@ -54,11 +54,14 @@
     const c = (e.competitions || [])[0] || {}, comp = c.competitors || [];
     const h = comp.find(x => x.homeAway === "home") || {}, a = comp.find(x => x.homeAway === "away") || {};
     const st = e.status || c.status || {};
+    const pen = x => (x && x.shootoutScore != null && x.shootoutScore !== "") ? Number(x.shootoutScore) : null;
     return {
       utc: e.date,
       home: (h.team || {}).displayName || "", away: (a.team || {}).displayName || "",
       homeScore: h.score != null && h.score !== "" ? Number(h.score) : null,
       awayScore: a.score != null && a.score !== "" ? Number(a.score) : null,
+      homePens: pen(h), awayPens: pen(a),
+      winner: h.winner ? "home" : a.winner ? "away" : null, // knockout shootout/ET winner
       state: (st.type || {}).state || "pre",
       statusText: (st.type || {}).shortDetail || (st.type || {}).description || "",
       minute: st.displayClock || "",
@@ -83,10 +86,11 @@
     const s = scores[m.matchNumber];
     if (s && s.homeScore != null && (s.state === "in" || s.state === "post")) {
       const live = s.state === "in";
+      const pens = (s.homePens != null && s.awayPens != null) ? ` (${s.homePens}–${s.awayPens}p)` : "";
       const tail = live
         ? `<span class="sc-dot"></span>${s.minute ? `<span class="sc-min">${s.minute}</span>` : ""}`
-        : `<span class="sc-ft">FT</span>`;
-      return `<span class="mscore${live ? " live" : ""}">${s.homeScore}<span class="sc-dash">–</span>${s.awayScore}${tail}</span>`;
+        : `<span class="sc-ft">${pens ? "pens" : "FT"}</span>`;
+      return `<span class="mscore${live ? " live" : ""}">${s.homeScore}<span class="sc-dash">–</span>${s.awayScore}${pens}${tail}</span>`;
     }
     if (liveLoading.has(m.matchNumber)) return `<span class="mscore loading"><span class="sc-dot"></span><span class="sc-load">···</span></span>`;
     return null;
@@ -431,13 +435,31 @@
     if (fm) return matchWinner(fm);
     return null; // Third-place qualifier (FIFA table TBD) → projection
   }
+  // Map an ESPN team name to our canonical name (handles 3rd-place slots once a KO match is played).
+  function canonTeam(name) {
+    if (!name) return null;
+    if (WC.teamByName[name]) return name;
+    let best = null, bs = 0;
+    for (const t of WC.teams) { const o = scoreOverlap(t.name, name); if (o > bs) { bs = o; best = t.name; } }
+    return bs > 0 ? best : name;
+  }
+  // The actual team on a side: resolved slot, or — for a played match — the real team from the result.
+  function koActualTeam(num, side) {
+    const r = resolveSide(num, side);
+    if (r) return r;
+    const sc = scores[num];
+    if (sc && sc.state === "post" && sc.homeScore != null) return canonTeam(side === "home" ? sc.home : sc.away);
+    return null;
+  }
   function matchWinner(num) {
     const sc = scores[num];
-    if (!sc || sc.state !== "post" || sc.homeScore == null || sc.homeScore === sc.awayScore) return null;
-    return resolveSide(num, sc.homeScore > sc.awayScore ? "home" : "away");
+    if (!sc || sc.state !== "post" || sc.homeScore == null) return null;
+    if (sc.homeScore === sc.awayScore) // knockout level after ET → decided on penalties
+      return sc.winner ? koActualTeam(num, sc.winner) : null;
+    return koActualTeam(num, sc.homeScore > sc.awayScore ? "home" : "away");
   }
   function bkSide(num, side) {
-    const team = resolveSide(num, side);
+    const team = koActualTeam(num, side);
     if (team) {
       const w = matchWinner(num), won = w && team === w, lost = w && team !== w;
       return `<div class="bk-side${won ? " won" : ""}${lost ? " lost" : ""}">${teamFlag(team, "bk-flag")}<span class="bk-name">${dispName(team)}</span></div>`;
@@ -463,7 +485,9 @@
   function bkScore(num) {
     const sc = scores[num];
     if (sc && sc.homeScore != null && (sc.state === "in" || sc.state === "post")) {
-      return `<span class="bk-sc${sc.state === "in" ? " live" : ""}">${sc.homeScore}–${sc.awayScore}</span>`;
+      const pens = (sc.homePens != null && sc.awayPens != null)
+        ? `<span class="bk-pens">(${sc.homePens}–${sc.awayPens} pens)</span>` : "";
+      return `<span class="bk-sc${sc.state === "in" ? " live" : ""}">${sc.homeScore}–${sc.awayScore}${pens}</span>`;
     }
     return "";
   }

@@ -1017,6 +1017,7 @@ footer { background: transparent; border-top: 1px solid var(--line); color: var(
 .bk-mid { display: flex; justify-content: center; padding: 5px 0; margin: 4px 0; border-top: 1px dashed rgba(242,245,238,.12); border-bottom: 1px dashed rgba(242,245,238,.12); }
 .bk-sc { font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; font-size: 16px; }
 .bk-sc.live { color: var(--banger); }
+.bk-pens { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 1px; }
 .bk-final { justify-content: center; }
 .bk-final .bk-col-body { justify-content: center; gap: 22px; }
 .bk-final .bk-match { border-color: var(--fav); box-shadow: 0 0 0 1px rgba(255,224,138,.25); }
