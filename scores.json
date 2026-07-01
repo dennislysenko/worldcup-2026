@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-06-30T10:06:24.568Z",
+  "generated": "2026-07-01T10:28:46.083Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -916,6 +916,30 @@
    "statusText": "FT-Pens",
    "minute": "120'",
    "period": 5
+  },
+  "77": {
+   "espnId": "760490",
+   "utc": "2026-06-30T17:00Z",
+   "home": "Ivory Coast",
+   "away": "Norway",
+   "homeScore": 1,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
+   "period": 2
+  },
+  "78": {
+   "espnId": "760492",
+   "utc": "2026-06-30T21:00Z",
+   "home": "France",
+   "away": "Sweden",
+   "homeScore": 3,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+4'",
+   "period": 2
   }
  }
 }

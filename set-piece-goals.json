@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-06-30T10:06:33.234Z",
+  "generated": "2026-07-01T10:28:50.033Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 223,
+  "total": 231,
   "counts": {
-   "corner": 26,
+   "corner": 27,
    "free_kick": 11,
    "throw_in": 1,
    "penalty": 8,
-   "open_play": 177
+   "open_play": 184
   },
-  "setPieceExclPens": 38,
-  "pctExclPens": 17.04035874439462,
-  "pctInclPens": 20.62780269058296
+  "setPieceExclPens": 39,
+  "pctExclPens": 16.883116883116884,
+  "pctInclPens": 20.346320346320347
  },
  "matches": [
   {
@@ -3677,6 +3677,141 @@
      "scoreAfter": "1–1",
      "evidence": "Goal! Netherlands 1, Morocco 1. Issa Diop (Morocco) header from the centre of the box to the top right corner. Assisted by Chemsdine Talbi with a cross.",
      "wallclock": "2026-06-30T02:52:14Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760490",
+   "name": "Norway at Ivory Coast",
+   "kickoff": "2026-06-30T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Ivory Coast",
+   "away": "Norway",
+   "homeScore": 1,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49665838",
+     "minute": "39'",
+     "team": "Norway",
+     "scorer": "Antonio Nusa",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Côte d'Ivoire 0, Norway 1. Antonio Nusa (Norway) right footed shot from the left side of the box to the top right corner. Assisted by Martin Ødegaard.",
+     "wallclock": "2026-06-30T17:39:14Z"
+    },
+    {
+     "espnPlayId": "49666375",
+     "minute": "74'",
+     "team": "Ivory Coast",
+     "scorer": "Amad Diallo",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Côte d'Ivoire 1, Norway 1. Amad Diallo (Côte d'Ivoire) left footed shot from the right side of the six yard box to the bottom left corner. Assisted by Nicolas Pépé.",
+     "wallclock": "2026-06-30T18:33:38Z"
+    },
+    {
+     "espnPlayId": "49666558",
+     "minute": "86'",
+     "team": "Norway",
+     "scorer": "Erling Haaland",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Côte d'Ivoire 1, Norway 2. Erling Haaland (Norway) left footed shot from the centre of the box to the centre of the goal. Assisted by Patrick Berg.",
+     "wallclock": "2026-06-30T18:45:29Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760492",
+   "name": "Sweden at France",
+   "kickoff": "2026-06-30T21:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "France",
+   "away": "Sweden",
+   "homeScore": 3,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49667350",
+     "minute": "45'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! France 1, Sweden 0. Kylian Mbappé (France) right footed shot from the centre of the box to the top right corner. Assisted by Ousmane Dembélé following a corner.",
+     "wallclock": "2026-06-30T21:44:52Z"
+    },
+    {
+     "espnPlayId": "49667506",
+     "minute": "53'",
+     "team": "France",
+     "scorer": "Bradley Barcola",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! France 2, Sweden 0. Bradley Barcola (France) right footed shot from the centre of the box to the top left corner. Assisted by Michael Olise with a through ball following a fast break.",
+     "wallclock": "2026-06-30T22:11:20Z"
+    },
+    {
+     "espnPlayId": "49667819",
+     "minute": "74'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–0",
+     "evidence": "Goal! France 3, Sweden 0. Kylian Mbappé (France) right footed shot from the left side of the box to the bottom right corner. Assisted by Michael Olise with a through ball.",
+     "wallclock": "2026-06-30T22:32:31Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760491",
+   "name": "Ecuador at Mexico",
+   "kickoff": "2026-07-01T02:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Mexico",
+   "away": "Ecuador",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49669961",
+     "minute": "22'",
+     "team": "Mexico",
+     "scorer": "Julián Quiñones",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Mexico 1, Ecuador 0. Julián Quiñones (Mexico) right footed shot from the left side of the box to the top left corner. Assisted by Roberto Alvarado with a through ball.",
+     "wallclock": "2026-07-01T02:22:01Z"
+    },
+    {
+     "espnPlayId": "49670048",
+     "minute": "31'",
+     "team": "Mexico",
+     "scorer": "Raúl Jiménez",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! Mexico 2, Ecuador 0. Raúl Jiménez (Mexico) right footed shot from the centre of the box to the top right corner. Assisted by Julián Quiñones.",
+     "wallclock": "2026-07-01T02:31:16Z"
     }
    ]
   }
