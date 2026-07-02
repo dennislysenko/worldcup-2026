@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-01T10:28:50.033Z",
+  "generated": "2026-07-02T09:42:08.847Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 231,
+  "total": 241,
   "counts": {
    "corner": 27,
-   "free_kick": 11,
+   "free_kick": 12,
    "throw_in": 1,
-   "penalty": 8,
-   "open_play": 184
+   "penalty": 9,
+   "open_play": 192
   },
-  "setPieceExclPens": 39,
-  "pctExclPens": 16.883116883116884,
-  "pctInclPens": 20.346320346320347
+  "setPieceExclPens": 40,
+  "pctExclPens": 16.597510373443985,
+  "pctInclPens": 20.33195020746888
  },
  "matches": [
   {
@@ -3762,7 +3762,7 @@
      "category": "open_play",
      "scoreAfter": "2–0",
      "evidence": "Goal! France 2, Sweden 0. Bradley Barcola (France) right footed shot from the centre of the box to the top left corner. Assisted by Michael Olise with a through ball following a fast break.",
-     "wallclock": "2026-06-30T22:11:20Z"
+     "wallclock": "2026-06-30T22:11:21Z"
     },
     {
      "espnPlayId": "49667819",
@@ -3774,7 +3774,7 @@
      "category": "open_play",
      "scoreAfter": "3–0",
      "evidence": "Goal! France 3, Sweden 0. Kylian Mbappé (France) right footed shot from the left side of the box to the bottom right corner. Assisted by Michael Olise with a through ball.",
-     "wallclock": "2026-06-30T22:32:31Z"
+     "wallclock": "2026-06-30T22:32:32Z"
     }
    ]
   },
@@ -3812,6 +3812,165 @@
      "scoreAfter": "2–0",
      "evidence": "Goal! Mexico 2, Ecuador 0. Raúl Jiménez (Mexico) right footed shot from the centre of the box to the top right corner. Assisted by Julián Quiñones.",
      "wallclock": "2026-07-01T02:31:16Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760495",
+   "name": "Congo DR at England",
+   "kickoff": "2026-07-01T16:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "England",
+   "away": "Congo DR",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49671136",
+     "minute": "7'",
+     "team": "Congo DR",
+     "scorer": "Brian Cipenga",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! England 0, Congo DR 1. Brian Cipenga (Congo DR) right footed shot from the left side of the box to the bottom left corner. Assisted by Chancel Mbemba.",
+     "wallclock": "2026-07-01T16:06:48Z"
+    },
+    {
+     "espnPlayId": "49672227",
+     "minute": "75'",
+     "team": "England",
+     "scorer": "Harry Kane",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! England 1, Congo DR 1. Harry Kane (England) header from the centre of the box to the bottom left corner. Assisted by Anthony Gordon with a cross.",
+     "wallclock": "2026-07-01T17:37:17Z"
+    },
+    {
+     "espnPlayId": "49672418",
+     "minute": "86'",
+     "team": "England",
+     "scorer": "Harry Kane",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! England 2, Congo DR 1. Harry Kane (England) right footed shot from the right side of the box to the top right corner. Assisted by Anthony Gordon.",
+     "wallclock": "2026-07-01T17:48:48Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760493",
+   "name": "Senegal at Belgium",
+   "kickoff": "2026-07-01T20:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Extra Time",
+   "home": "Belgium",
+   "away": "Senegal",
+   "homeScore": 3,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49673012",
+     "minute": "24'",
+     "team": "Senegal",
+     "scorer": "Habib Diarra",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Belgium 0, Senegal 1. Habib Diarra (Senegal) right footed shot from very close range to the centre of the goal.",
+     "wallclock": "2026-07-01T20:24:35Z"
+    },
+    {
+     "espnPlayId": "49673468",
+     "minute": "51'",
+     "team": "Senegal",
+     "scorer": "Ismaïla Sarr",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Belgium 0, Senegal 2. Ismaïla Sarr (Senegal) right footed shot from the centre of the box to the bottom right corner. Assisted by Moussa Niakhaté with a through ball.",
+     "wallclock": "2026-07-01T21:13:12Z"
+    },
+    {
+     "espnPlayId": "49673944",
+     "minute": "86'",
+     "team": "Belgium",
+     "scorer": "Romelu Lukaku",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Belgium 1, Senegal 2. Romelu Lukaku (Belgium) right footed shot from the right side of the six yard box to the high centre of the goal. Assisted by Thomas Meunier with a cross.",
+     "wallclock": "2026-07-01T21:48:07Z"
+    },
+    {
+     "espnPlayId": "49673977",
+     "minute": "89'",
+     "team": "Belgium",
+     "scorer": "Youri Tielemans",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Belgium 2, Senegal 2. Youri Tielemans (Belgium) header from the centre of the box to the bottom left corner. Assisted by Leandro Trossard.",
+     "wallclock": "2026-07-01T21:50:44Z"
+    },
+    {
+     "espnPlayId": "49674562",
+     "minute": "120'+5'",
+     "team": "Belgium",
+     "scorer": "Youri Tielemans",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! Belgium 3, Senegal 2. Youri Tielemans (Belgium) converts the penalty with a right footed shot to the top right corner.",
+     "wallclock": "2026-07-01T22:42:38Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760494",
+   "name": "Bosnia-Herzegovina at United States",
+   "kickoff": "2026-07-02T00:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "United States",
+   "away": "Bosnia-Herzegovina",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49675351",
+     "minute": "45'",
+     "team": "United States",
+     "scorer": "Folarin Balogun",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! USA 1, Bosnia and Herzegovina 0. Folarin Balogun (USA) left footed shot from the centre of the box to the centre of the goal.",
+     "wallclock": "2026-07-02T00:44:28Z"
+    },
+    {
+     "espnPlayId": "49675883",
+     "minute": "82'",
+     "team": "United States",
+     "scorer": "Malik Tillman",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! USA 2, Bosnia and Herzegovina 0. Malik Tillman (USA) from a free kick with a right footed shot to the top left corner.",
+     "wallclock": "2026-07-02T01:47:46Z"
     }
    ]
   }
