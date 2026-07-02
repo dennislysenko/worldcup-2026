@@ -70,14 +70,30 @@
   function indexEspnScores(events) {
     const byInstant = new Map();
     WC.matches.forEach(m => { const t = new Date(m.utc).getTime(); if (!byInstant.has(t)) byInstant.set(t, []); byInstant.get(t).push(m); });
-    const out = {};
+    const out = {}, used = new Set(), pending = [];
+    // Pass 1: exact kickoff instant + best name overlap.
     for (const e of events) {
       const sc = espnEventToScore(e);
       if (sc.state === "pre") continue;
-      const cands = byInstant.get(new Date(e.date).getTime()) || [];
-      let best = null, bestScore = -1;
-      for (const m of cands) { const s = scoreOverlap(m.home, sc.home) + scoreOverlap(m.away, sc.away); if (s > bestScore) { bestScore = s; best = m; } }
-      if (best) out[best.matchNumber] = sc;
+      const cands = (byInstant.get(new Date(e.date).getTime()) || []).filter(m => !used.has(m.matchNumber));
+      if (!cands.length) { pending.push({ t: new Date(e.date).getTime(), sc }); continue; }
+      let best = cands[0], bs = -1;
+      for (const m of cands) { const s = scoreOverlap(m.home, sc.home) + scoreOverlap(m.away, sc.away); if (s > bs) { bs = s; best = m; } }
+      out[best.matchNumber] = sc; used.add(best.matchNumber);
+    }
+    // Pass 2: kickoff-time drift (a match listed an hour off) — nearest unused match
+    // within 6h, preferring name overlap. Keeps knockout results from silently dropping
+    // (their slot names can't name-match, so they rely on the instant).
+    for (const { t, sc } of pending) {
+      let best = null, bestOv = -1, bestDt = Infinity;
+      for (const m of WC.matches) {
+        if (used.has(m.matchNumber)) continue;
+        const dt = Math.abs(new Date(m.utc).getTime() - t);
+        if (dt > 6 * 3600e3) continue;
+        const ov = scoreOverlap(m.home, sc.home) + scoreOverlap(m.away, sc.away);
+        if (ov > bestOv || (ov === bestOv && dt < bestDt)) { bestOv = ov; bestDt = dt; best = m; }
+      }
+      if (best) { out[best.matchNumber] = sc; used.add(best.matchNumber); }
     }
     return out;
   }
@@ -607,7 +623,19 @@
   // data-match wires each row into the existing hover popover (full distribution)
   function routeFrom(match, side) {
     return tracePath(match, side).map(s => {
-      const m = koByNum[s.match], r = strongestOpps(s.match, s.oppSide);
+      const m = koByNum[s.match], sc = scores[s.match];
+      // A round already played on this route was a win (we follow the winner up the
+      // tree) → show the actual result + who they beat, and mark it done.
+      if (sc && sc.state === "post" && sc.homeScore != null) {
+        const opp = koActualTeam(s.match, s.oppSide);
+        const pens = (sc.homePens != null && sc.awayPens != null) ? ` (${sc.homePens}–${sc.awayPens}p)` : "";
+        const oppHtml = opp ? `${teamFlag(opp, "bk-flag")}<span class="bp-opp-name">beat ${dispName(opp)}</span>` : `<span class="bp-opp-name">won</span>`;
+        return `<div class="bp-step bp-done" data-match="${s.match}">
+          <div class="bp-step-top"><span class="bp-round">${s.stage}</span><span class="bp-cap bp-won">✓ won</span><span class="bp-when">${shortDate(m.date)}</span></div>
+          <div class="bp-opps"><span class="bp-opp1">${oppHtml}<span class="bp-odds">${sc.homeScore}–${sc.awayScore}${pens}</span></span></div>
+        </div>`;
+      }
+      const r = strongestOpps(s.match, s.oppSide);
       const cap = r.resolved ? "Opponent" : r.unknown ? "" : "Likely opponents";
       return `<div class="bp-step" data-match="${s.match}">
         <div class="bp-step-top"><span class="bp-round">${s.stage}</span>${cap ? `<span class="bp-cap">${cap}</span>` : ""}<span class="bp-when">${shortDate(m.date)}</span></div>

@@ -156,7 +156,17 @@
       tm.home[home] = (tm.home[home] || 0) + 1;
       tm.away[away] = (tm.away[away] || 0) + 1;
       (seen[m.stage] = seen[m.stage] || new Set()).add(home).add(away);
-      const w = koWinner(home, away);
+      // Lock a played knockout match to its real winner (incl. penalty shootouts);
+      // otherwise simulate it. Groups are conditioned in simGroup, so home/away are
+      // the actual teams once the group stage is complete.
+      const res = results[m.matchNumber];
+      let w;
+      if (res && res.state === "post" && res.homeScore != null) {
+        const side = res.homeScore > res.awayScore ? "home" : res.awayScore > res.homeScore ? "away" : res.winner;
+        w = side === "home" ? home : side === "away" ? away : koWinner(home, away);
+      } else {
+        w = koWinner(home, away);
+      }
       winnerOf[m.matchNumber] = w;
       loserOf[m.matchNumber] = w === home ? away : home;
     }

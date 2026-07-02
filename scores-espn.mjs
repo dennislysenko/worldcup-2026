@@ -59,16 +59,31 @@ export function indexScores(dataMatches, events, { includePre = false } = {}) {
     if (!byInstant.has(t)) byInstant.set(t, []);
     byInstant.get(t).push(m);
   }
+  const used = new Set(), pending = [];
+  // Pass 1: exact kickoff instant + best name overlap.
   for (const e of events) {
     const sc = eventToScore(e);
     if (!includePre && sc.state === 'pre') continue;
-    const cands = byInstant.get(new Date(e.date).getTime()) || [];
-    let best = null, bestScore = -1;
+    const cands = (byInstant.get(new Date(e.date).getTime()) || []).filter((m) => !used.has(m.matchNumber));
+    if (!cands.length) { pending.push({ t: new Date(e.date).getTime(), sc }); continue; }
+    let best = cands[0], bestScore = -1;
     for (const m of cands) {
       const s = overlap(m.home, sc.home) + overlap(m.away, sc.away);
       if (s > bestScore) { bestScore = s; best = m; }
     }
-    if (best) out[best.matchNumber] = sc;
+    out[best.matchNumber] = sc; used.add(best.matchNumber);
+  }
+  // Pass 2: kickoff-time drift — nearest unused match within 6h (name overlap preferred).
+  for (const { t, sc } of pending) {
+    let best = null, bestOv = -1, bestDt = Infinity;
+    for (const m of dataMatches) {
+      if (used.has(m.matchNumber)) continue;
+      const dt = Math.abs(new Date(m.utc).getTime() - t);
+      if (dt > 6 * 3600e3) continue;
+      const ov = overlap(m.home, sc.home) + overlap(m.away, sc.away);
+      if (ov > bestOv || (ov === bestOv && dt < bestDt)) { bestOv = ov; bestDt = dt; best = m; }
+    }
+    if (best) { out[best.matchNumber] = sc; used.add(best.matchNumber); }
   }
   return out;
 }
