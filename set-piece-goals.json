@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-03T09:41:29.805Z",
+  "generated": "2026-07-04T09:04:33.840Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 249,
+  "total": 257,
   "counts": {
-   "corner": 27,
-   "free_kick": 12,
+   "corner": 28,
+   "free_kick": 13,
    "throw_in": 1,
    "penalty": 10,
-   "open_play": 199
+   "open_play": 205
   },
-  "setPieceExclPens": 40,
-  "pctExclPens": 16.06425702811245,
-  "pctInclPens": 20.080321285140563
+  "setPieceExclPens": 42,
+  "pctExclPens": 16.342412451361866,
+  "pctInclPens": 20.233463035019454
  },
  "matches": [
   {
@@ -4019,7 +4019,7 @@
      "category": "open_play",
      "scoreAfter": "3–0",
      "evidence": "Goal! Spain 3, Austria 0. Mikel Oyarzabal (Spain) right footed shot from the centre of the box to the bottom right corner. Assisted by Marc Cucurella.",
-     "wallclock": "2026-07-02T20:50:21Z"
+     "wallclock": "2026-07-02T20:50:22Z"
     }
    ]
   },
@@ -4068,7 +4068,7 @@
      "category": "open_play",
      "scoreAfter": "2–1",
      "evidence": "Goal! Portugal 2, Croatia 1. Gonçalo Ramos (Portugal) header from the centre of the box to the bottom right corner. Assisted by Rafael Leão with a cross.",
-     "wallclock": "2026-07-03T00:53:22Z"
+     "wallclock": "2026-07-03T00:53:23Z"
     }
    ]
   },
@@ -4106,6 +4106,141 @@
      "scoreAfter": "2–0",
      "evidence": "Goal! Switzerland 2, Algeria 0. Dan Ndoye (Switzerland) right footed shot from the centre of the box to the bottom left corner.",
      "wallclock": "2026-07-03T04:05:49Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760499",
+   "name": "Egypt at Australia",
+   "kickoff": "2026-07-03T18:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Penalties",
+   "home": "Australia",
+   "away": "Egypt",
+   "homeScore": 1,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49685303",
+     "minute": "13'",
+     "team": "Egypt",
+     "scorer": "Emam Ashour",
+     "ownGoal": false,
+     "header": true,
+     "category": "free_kick",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Australia 0, Egypt 1. Emam Ashour (Egypt) header from the centre of the box to the bottom left corner. Assisted by Karim Hafez with a cross following a set piece situation.",
+     "wallclock": "2026-07-03T18:12:31Z"
+    },
+    {
+     "espnPlayId": "49686000",
+     "minute": "55'",
+     "team": "Australia",
+     "scorer": "Mohamed Hany",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Own Goal by Mohamed Hany, Egypt. Australia 1, Egypt 1.",
+     "wallclock": "2026-07-03T19:16:08Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760500",
+   "name": "Cape Verde at Argentina",
+   "kickoff": "2026-07-03T22:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Extra Time",
+   "home": "Argentina",
+   "away": "Cape Verde",
+   "homeScore": 3,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49687566",
+     "minute": "29'",
+     "team": "Argentina",
+     "scorer": "Lionel Messi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Argentina 1, Cabo Verde 0. Lionel Messi (Argentina) left footed shot from the right side of the six yard box to the top right corner. Assisted by Lisandro Martínez with a through ball.",
+     "wallclock": "2026-07-03T22:28:30Z"
+    },
+    {
+     "espnPlayId": "49688156",
+     "minute": "59'",
+     "team": "Cape Verde",
+     "scorer": "Deroy Duarte",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Argentina 1, Cabo Verde 1. Deroy Duarte (Cabo Verde) right footed shot from a difficult angle on the right to the bottom left corner. Assisted by Ryan Mendes.",
+     "wallclock": "2026-07-03T23:19:36Z"
+    },
+    {
+     "espnPlayId": "49688681",
+     "minute": "92'",
+     "team": "Argentina",
+     "scorer": "Lisandro Martínez",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Argentina 2, Cabo Verde 1. Lisandro Martínez (Argentina) left footed shot from the right side of the box to the top right corner. Assisted by Alexis Mac Allister with a headed pass following a corner.",
+     "wallclock": "2026-07-04T00:06:41Z"
+    },
+    {
+     "espnPlayId": "49688979",
+     "minute": "103'",
+     "team": "Cape Verde",
+     "scorer": "Sidny Lopes Cabral",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Argentina 2, Cabo Verde 2. Sidny Cabral (Cabo Verde) right footed shot from the left side of the box to the top right corner. Assisted by Yannick Semedo.",
+     "wallclock": "2026-07-04T00:17:25Z"
+    },
+    {
+     "espnPlayId": "49689366",
+     "minute": "111'",
+     "team": "Argentina",
+     "scorer": "Diney Borges",
+     "ownGoal": true,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–2",
+     "evidence": "Own Goal by Diney Borges, Cabo Verde. Argentina 3, Cabo Verde 2.",
+     "wallclock": "2026-07-04T00:31:23Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760501",
+   "name": "Ghana at Colombia",
+   "kickoff": "2026-07-04T01:30Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Colombia",
+   "away": "Ghana",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49690543",
+     "minute": "14'",
+     "team": "Colombia",
+     "scorer": "Jhon Arias",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Colombia 1, Ghana 0. Jhon Arias (Colombia) right footed shot from the centre of the box to the bottom right corner. Assisted by Luis Suárez with a cross.",
+     "wallclock": "2026-07-04T01:44:07Z"
     }
    ]
   }

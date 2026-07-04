@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-03T09:41:25.027Z",
+  "generated": "2026-07-04T09:04:25.725Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1011,6 +1011,42 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+7'",
+   "period": 2
+  },
+  "86": {
+   "espnId": "760499",
+   "utc": "2026-07-03T18:00Z",
+   "home": "Australia",
+   "away": "Egypt",
+   "homeScore": 1,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT-Pens",
+   "minute": "120'",
+   "period": 5
+  },
+  "87": {
+   "espnId": "760500",
+   "utc": "2026-07-03T22:00Z",
+   "home": "Argentina",
+   "away": "Cape Verde",
+   "homeScore": 3,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "AET",
+   "minute": "120'+3'",
+   "period": 4
+  },
+  "88": {
+   "espnId": "760501",
+   "utc": "2026-07-04T01:30Z",
+   "home": "Colombia",
+   "away": "Ghana",
+   "homeScore": 1,
+   "awayScore": 0,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+8'",
    "period": 2
   }
  }
