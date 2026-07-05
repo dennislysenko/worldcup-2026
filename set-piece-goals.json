@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-04T09:04:33.840Z",
+  "generated": "2026-07-05T09:26:42.228Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 257,
+  "total": 261,
   "counts": {
    "corner": 28,
-   "free_kick": 13,
+   "free_kick": 14,
    "throw_in": 1,
-   "penalty": 10,
-   "open_play": 205
+   "penalty": 11,
+   "open_play": 207
   },
-  "setPieceExclPens": 42,
-  "pctExclPens": 16.342412451361866,
-  "pctInclPens": 20.233463035019454
+  "setPieceExclPens": 43,
+  "pctExclPens": 16.47509578544061,
+  "pctInclPens": 20.689655172413794
  },
  "matches": [
   {
@@ -4179,7 +4179,7 @@
      "category": "open_play",
      "scoreAfter": "1–1",
      "evidence": "Goal! Argentina 1, Cabo Verde 1. Deroy Duarte (Cabo Verde) right footed shot from a difficult angle on the right to the bottom left corner. Assisted by Ryan Mendes.",
-     "wallclock": "2026-07-03T23:19:36Z"
+     "wallclock": "2026-07-03T23:19:37Z"
     },
     {
      "espnPlayId": "49688681",
@@ -4241,6 +4241,80 @@
      "scoreAfter": "1–0",
      "evidence": "Goal! Colombia 1, Ghana 0. Jhon Arias (Colombia) right footed shot from the centre of the box to the bottom right corner. Assisted by Luis Suárez with a cross.",
      "wallclock": "2026-07-04T01:44:07Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760502",
+   "name": "Morocco at Canada",
+   "kickoff": "2026-07-04T17:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Canada",
+   "away": "Morocco",
+   "homeScore": 0,
+   "awayScore": 3,
+   "goals": [
+    {
+     "espnPlayId": "49702398",
+     "minute": "50'",
+     "team": "Morocco",
+     "scorer": "Azzedine Ounahi",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Canada 0, Morocco 1. Azzedine Ounahi (Morocco) right footed shot from outside the box to the bottom right corner. Assisted by Achraf Hakimi following a set piece situation.",
+     "wallclock": "2026-07-04T18:13:32Z"
+    },
+    {
+     "espnPlayId": "49702813",
+     "minute": "82'",
+     "team": "Morocco",
+     "scorer": "Azzedine Ounahi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Canada 0, Morocco 2. Azzedine Ounahi (Morocco) right footed shot from the centre of the box to the top right corner. Assisted by Brahim Díaz following a fast break.",
+     "wallclock": "2026-07-04T18:45:33Z"
+    },
+    {
+     "espnPlayId": "49703081",
+     "minute": "90'+8'",
+     "team": "Morocco",
+     "scorer": "Soufiane Rahimi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–3",
+     "evidence": "Goal! Canada 0, Morocco 3. Soufiane Rahimi (Morocco) left footed shot from the centre of the box to the bottom right corner. Assisted by Brahim Díaz following a fast break.",
+     "wallclock": "2026-07-04T19:01:51Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760503",
+   "name": "France at Paraguay",
+   "kickoff": "2026-07-04T21:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Paraguay",
+   "away": "France",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49708338",
+     "minute": "70'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Paraguay 0, France 1. Kylian Mbappé (France) converts the penalty with a right footed shot to the bottom right corner.",
+     "wallclock": "2026-07-04T22:33:27Z"
     }
    ]
   }

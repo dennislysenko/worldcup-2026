@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-04T09:04:25.725Z",
+  "generated": "2026-07-05T09:26:39.335Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1047,6 +1047,30 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+8'",
+   "period": 2
+  },
+  "89": {
+   "espnId": "760502",
+   "utc": "2026-07-04T17:00Z",
+   "home": "Canada",
+   "away": "Morocco",
+   "homeScore": 0,
+   "awayScore": 3,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+9'",
+   "period": 2
+  },
+  "90": {
+   "espnId": "760503",
+   "utc": "2026-07-04T21:00Z",
+   "home": "Paraguay",
+   "away": "France",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+11'",
    "period": 2
   }
  }
