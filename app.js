@@ -943,6 +943,7 @@
     return cv;
   }
   async function openCombos(letter) {
+    track("combos-open", { group: letter });
     const flags = await loadGroupFlags(letter);
     const cv = drawCombos(letter, flags); if (!cv) return;
     let ov = document.getElementById("combo-ov");
@@ -951,7 +952,7 @@
     const box = document.createElement("div"); box.className = "combo-box";
     const bar = document.createElement("div"); bar.className = "combo-bar";
     const dl = document.createElement("button"); dl.className = "combo-dl"; dl.textContent = "⬇ Download image";
-    dl.onclick = () => cv.toBlob(b => { const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = `group-${letter}-final-combos.png`; a.click(); URL.revokeObjectURL(u); });
+    dl.onclick = () => { track("combos-download", { group: letter }); cv.toBlob(b => { const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = `group-${letter}-final-combos.png`; a.click(); URL.revokeObjectURL(u); }); };
     const cl = document.createElement("button"); cl.className = "combo-close"; cl.textContent = "✕"; cl.onclick = () => ov.remove();
     bar.append(dl, cl); box.append(bar, cv); ov.append(box);
   }
@@ -1081,9 +1082,12 @@
     currentView = v;
     document.querySelectorAll(".nav-link").forEach(a => a.classList.toggle("active", a.dataset.view === v));
   }
+  // Vercel Web Analytics custom event (no-op if analytics isn't loaded/enabled).
+  function track(name, data) { try { window.va && window.va("event", data ? { name, data } : { name }); } catch (e) { } }
   function scrollToView(v) {
     const el = document.getElementById("view-" + v);
     if (!el) return;
+    track("view", { tab: v });
     setActiveNav(v);
     if (location.hash !== "#" + v) history.replaceState(null, "", "#" + v);
     el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1169,7 +1173,9 @@
   function rerenderAll() { ensureSims(); renderCalendar(); renderUpcomingBangers(); renderGroups(); renderThirdTable(); renderBracket(); renderProjections(); renderMovers(); renderMyMatches(); renderPlanner(); const pt = document.getElementById("path-team"); if (pt && pt.value) renderPath(pt.value); }
 
   function toggleTeam(name) {
+    const adding = !favorites.has(name);
     if (favorites.has(name)) favorites.delete(name); else favorites.add(name);
+    track(adding ? "follow-team" : "unfollow-team", { team: name });
     saveFavorites();
     renderPicker();
     rerenderAll();
