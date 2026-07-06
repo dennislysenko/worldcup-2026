@@ -1,15 +1,15 @@
 // World Football Elo ratings — auto-refreshed from eloratings.net (current, reflects results).
 // Regenerate: node scripts/update-elo.mjs   ·   pre-tournament snapshot archived in elo-pretournament.js
 WC.elo = {
-  "Mexico": 1943,
-  "South Africa": 1559,
+  "Mexico": 1913,
+  "South Africa": 1560,
   "South Korea": 1723,
   "Czechia": 1680,
   "Canada": 1729,
   "Bosnia and Herzegovina": 1605,
   "Qatar": 1411,
   "Switzerland": 1943,
-  "Brazil": 2031,
+  "Brazil": 1993,
   "Morocco": 1921,
   "Haiti": 1517,
   "Scotland": 1745,
@@ -17,7 +17,7 @@ WC.elo = {
   "Paraguay": 1814,
   "Australia": 1795,
   "Türkiye": 1852,
-  "Germany": 1908,
+  "Germany": 1907,
   "Curaçao": 1438,
   "Ivory Coast": 1727,
   "Ecuador": 1871,
@@ -36,7 +36,7 @@ WC.elo = {
   "France": 2143,
   "Senegal": 1816,
   "Iraq": 1561,
-  "Norway": 1934,
+  "Norway": 1972,
   "Argentina": 2151,
   "Algeria": 1756,
   "Austria": 1821,
@@ -45,8 +45,8 @@ WC.elo = {
   "DR Congo": 1704,
   "Uzbekistan": 1631,
   "Colombia": 2009,
-  "England": 2046,
-  "Croatia": 1882,
+  "England": 2076,
+  "Croatia": 1881,
   "Ghana": 1570,
   "Panama": 1658
 };

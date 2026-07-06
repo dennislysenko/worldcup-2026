@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-05T09:26:39.335Z",
+  "generated": "2026-07-06T11:12:15.923Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1068,6 +1068,18 @@
    "away": "France",
    "homeScore": 0,
    "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+11'",
+   "period": 2
+  },
+  "91": {
+   "espnId": "760504",
+   "utc": "2026-07-05T20:00Z",
+   "home": "Brazil",
+   "away": "Norway",
+   "homeScore": 1,
+   "awayScore": 2,
    "state": "post",
    "statusText": "FT",
    "minute": "90'+11'",
