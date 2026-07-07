@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-06T11:12:15.923Z",
+  "generated": "2026-07-07T10:05:08.382Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1083,6 +1083,30 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+11'",
+   "period": 2
+  },
+  "93": {
+   "espnId": "760506",
+   "utc": "2026-07-06T19:00Z",
+   "home": "Portugal",
+   "away": "Spain",
+   "homeScore": 0,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+9'",
+   "period": 2
+  },
+  "94": {
+   "espnId": "760507",
+   "utc": "2026-07-07T00:00Z",
+   "home": "United States",
+   "away": "Belgium",
+   "homeScore": 1,
+   "awayScore": 4,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+4'",
    "period": 2
   }
  }

@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-06T11:12:19.149Z",
+  "generated": "2026-07-07T10:05:12.195Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 269,
+  "total": 275,
   "counts": {
    "corner": 28,
-   "free_kick": 15,
+   "free_kick": 16,
    "throw_in": 1,
    "penalty": 14,
-   "open_play": 211
+   "open_play": 216
   },
-  "setPieceExclPens": 44,
-  "pctExclPens": 16.356877323420075,
-  "pctInclPens": 21.561338289962826
+  "setPieceExclPens": 45,
+  "pctExclPens": 16.363636363636363,
+  "pctInclPens": 21.454545454545453
  },
  "matches": [
   {
@@ -4339,7 +4339,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Brazil 0, Norway 1. Erling Haaland (Norway) header from the centre of the box to the bottom right corner. Assisted by Andreas Schjelderup with a cross.",
-     "wallclock": "2026-07-05T21:41:20Z"
+     "wallclock": "2026-07-05T21:41:21Z"
     },
     {
      "espnPlayId": "49719983",
@@ -4388,7 +4388,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! Mexico 0, England 1. Jude Bellingham (England) header from very close range to the bottom left corner. Assisted by Bukayo Saka with a cross.",
-     "wallclock": "2026-07-06T01:36:05Z"
+     "wallclock": "2026-07-06T01:36:06Z"
     },
     {
      "espnPlayId": "49723891",
@@ -4412,7 +4412,7 @@
      "category": "free_kick",
      "scoreAfter": "1–2",
      "evidence": "Goal! Mexico 1, England 2. Julián Quiñones (Mexico) right footed shot from the centre of the box to the high centre of the goal following a set piece situation.",
-     "wallclock": "2026-07-06T01:41:59Z"
+     "wallclock": "2026-07-06T01:42:00Z"
     },
     {
      "espnPlayId": "49724230",
@@ -4424,7 +4424,7 @@
      "category": "penalty",
      "scoreAfter": "1–3",
      "evidence": "Goal! Mexico 1, England 3. Harry Kane (England) converts the penalty with a right footed shot to the bottom left corner.",
-     "wallclock": "2026-07-06T02:22:14Z"
+     "wallclock": "2026-07-06T02:22:15Z"
     },
     {
      "espnPlayId": "49724333",
@@ -4437,6 +4437,104 @@
      "scoreAfter": "2–3",
      "evidence": "Goal! Mexico 2, England 3. Raúl Jiménez (Mexico) converts the penalty with a right footed shot to the bottom left corner.",
      "wallclock": "2026-07-06T02:30:58Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760506",
+   "name": "Spain at Portugal",
+   "kickoff": "2026-07-06T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Portugal",
+   "away": "Spain",
+   "homeScore": 0,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49726216",
+     "minute": "90'+1'",
+     "team": "Spain",
+     "scorer": "Mikel Merino",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Portugal 0, Spain 1. Mikel Merino (Spain) left footed shot from the centre of the box to the bottom left corner. Assisted by Ferran Torres with a through ball.",
+     "wallclock": "2026-07-06T20:52:50Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760507",
+   "name": "Belgium at United States",
+   "kickoff": "2026-07-07T00:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "United States",
+   "away": "Belgium",
+   "homeScore": 1,
+   "awayScore": 4,
+   "goals": [
+    {
+     "espnPlayId": "49729208",
+     "minute": "9'",
+     "team": "Belgium",
+     "scorer": "Charles De Ketelaere",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! USA 0, Belgium 1. Charles De Ketelaere (Belgium) right footed shot from very close range to the centre of the goal. Assisted by Nicolas Raskin.",
+     "wallclock": "2026-07-07T00:09:10Z"
+    },
+    {
+     "espnPlayId": "49729493",
+     "minute": "31'",
+     "team": "United States",
+     "scorer": "Malik Tillman",
+     "ownGoal": false,
+     "header": false,
+     "category": "free_kick",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! USA 1, Belgium 1. Malik Tillman (USA) from a free kick with a right footed shot to the high centre of the goal.",
+     "wallclock": "2026-07-07T00:31:05Z"
+    },
+    {
+     "espnPlayId": "49729516",
+     "minute": "33'",
+     "team": "Belgium",
+     "scorer": "Charles De Ketelaere",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! USA 1, Belgium 2. Charles De Ketelaere (Belgium) header from very close range to the top right corner. Assisted by Leandro Trossard with a cross.",
+     "wallclock": "2026-07-07T00:33:00Z"
+    },
+    {
+     "espnPlayId": "49730052",
+     "minute": "57'",
+     "team": "Belgium",
+     "scorer": "Hans Vanaken",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–3",
+     "evidence": "Goal! USA 1, Belgium 3. Hans Vanaken (Belgium) right footed shot from outside the box to the bottom right corner. Assisted by Charles De Ketelaere.",
+     "wallclock": "2026-07-07T01:20:36Z"
+    },
+    {
+     "espnPlayId": "49730641",
+     "minute": "90'+3'",
+     "team": "Belgium",
+     "scorer": "Romelu Lukaku",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–4",
+     "evidence": "Goal! USA 1, Belgium 4. Romelu Lukaku (Belgium) right footed shot from the left side of the box to the bottom right corner. Assisted by Hans Vanaken.",
+     "wallclock": "2026-07-07T01:56:25Z"
     }
    ]
   }
