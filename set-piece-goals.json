@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-07T10:05:12.195Z",
+  "generated": "2026-07-08T09:05:37.771Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 275,
+  "total": 280,
   "counts": {
-   "corner": 28,
+   "corner": 29,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 14,
-   "open_play": 216
+   "open_play": 220
   },
-  "setPieceExclPens": 45,
-  "pctExclPens": 16.363636363636363,
-  "pctInclPens": 21.454545454545453
+  "setPieceExclPens": 46,
+  "pctExclPens": 16.428571428571427,
+  "pctInclPens": 21.428571428571427
  },
  "matches": [
   {
@@ -4537,6 +4537,91 @@
      "wallclock": "2026-07-07T01:56:25Z"
     }
    ]
+  },
+  {
+   "espnId": "760509",
+   "name": "Egypt at Argentina",
+   "kickoff": "2026-07-07T16:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Argentina",
+   "away": "Egypt",
+   "homeScore": 3,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49730975",
+     "minute": "15'",
+     "team": "Egypt",
+     "scorer": "Yasser Ibrahim",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! Argentina 0, Egypt 1. Yasser Ibrahim (Egypt) header from the centre of the box to the bottom right corner. Assisted by Marwan Attia with a cross following a corner.",
+     "wallclock": "2026-07-07T16:15:52Z"
+    },
+    {
+     "espnPlayId": "49731888",
+     "minute": "67'",
+     "team": "Egypt",
+     "scorer": "Mostafa Zico",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! Argentina 0, Egypt 2. Mostafa Zico (Egypt) right footed shot from the centre of the box to the centre of the goal. Assisted by Haissem Hassan following a fast break.",
+     "wallclock": "2026-07-07T17:30:49Z"
+    },
+    {
+     "espnPlayId": "49732063",
+     "minute": "79'",
+     "team": "Argentina",
+     "scorer": "Cristian Romero",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Argentina 1, Egypt 2. Cristian Romero (Argentina) header from the centre of the box to the top right corner. Assisted by Lionel Messi with a cross.",
+     "wallclock": "2026-07-07T17:42:43Z"
+    },
+    {
+     "espnPlayId": "49732134",
+     "minute": "83'",
+     "team": "Argentina",
+     "scorer": "Lionel Messi",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–2",
+     "evidence": "Goal! Argentina 2, Egypt 2. Lionel Messi (Argentina) left footed shot from the centre of the box to the high centre of the goal. Assisted by Gonzalo Montiel.",
+     "wallclock": "2026-07-07T17:47:02Z"
+    },
+    {
+     "espnPlayId": "49732266",
+     "minute": "90'+2'",
+     "team": "Argentina",
+     "scorer": "Enzo Fernández",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "3–2",
+     "evidence": "Goal! Argentina 3, Egypt 2. Enzo Fernández (Argentina) header from the centre of the box to the bottom right corner. Assisted by Lautaro Martínez with a cross following a fast break.",
+     "wallclock": "2026-07-07T17:55:58Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760508",
+   "name": "Colombia at Switzerland",
+   "kickoff": "2026-07-07T20:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Penalties",
+   "home": "Switzerland",
+   "away": "Colombia",
+   "homeScore": 0,
+   "awayScore": 0,
+   "goals": []
   }
  ]
 }
