@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-08T09:05:37.771Z",
+  "generated": "2026-07-10T09:59:04.801Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 280,
+  "total": 282,
   "counts": {
    "corner": 29,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 14,
-   "open_play": 220
+   "open_play": 222
   },
   "setPieceExclPens": 46,
-  "pctExclPens": 16.428571428571427,
-  "pctInclPens": 21.428571428571427
+  "pctExclPens": 16.31205673758865,
+  "pctInclPens": 21.27659574468085
  },
  "matches": [
   {
@@ -4559,7 +4559,7 @@
      "category": "corner",
      "scoreAfter": "0–1",
      "evidence": "Goal! Argentina 0, Egypt 1. Yasser Ibrahim (Egypt) header from the centre of the box to the bottom right corner. Assisted by Marwan Attia with a cross following a corner.",
-     "wallclock": "2026-07-07T16:15:52Z"
+     "wallclock": "2026-07-07T16:15:53Z"
     },
     {
      "espnPlayId": "49731888",
@@ -4607,7 +4607,7 @@
      "category": "open_play",
      "scoreAfter": "3–2",
      "evidence": "Goal! Argentina 3, Egypt 2. Enzo Fernández (Argentina) header from the centre of the box to the bottom right corner. Assisted by Lautaro Martínez with a cross following a fast break.",
-     "wallclock": "2026-07-07T17:55:58Z"
+     "wallclock": "2026-07-07T17:55:59Z"
     }
    ]
   },
@@ -4622,6 +4622,43 @@
    "homeScore": 0,
    "awayScore": 0,
    "goals": []
+  },
+  {
+   "espnId": "760510",
+   "name": "Morocco at France",
+   "kickoff": "2026-07-09T20:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "France",
+   "away": "Morocco",
+   "homeScore": 2,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49742002",
+     "minute": "60'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! France 1, Morocco 0. Kylian Mbappé (France) right footed shot from the left side of the box to the top right corner. Assisted by Désiré Doué.",
+     "wallclock": "2026-07-09T21:23:45Z"
+    },
+    {
+     "espnPlayId": "49742073",
+     "minute": "66'",
+     "team": "France",
+     "scorer": "Ousmane Dembélé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–0",
+     "evidence": "Goal! France 2, Morocco 0. Ousmane Dembélé (France) right footed shot from outside the box to the bottom right corner. Assisted by Kylian Mbappé.",
+     "wallclock": "2026-07-09T21:29:47Z"
+    }
+   ]
   }
  ]
 }
