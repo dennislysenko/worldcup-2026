@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-10T09:59:04.801Z",
+  "generated": "2026-07-11T08:19:12.125Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 282,
+  "total": 285,
   "counts": {
    "corner": 29,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 14,
-   "open_play": 222
+   "open_play": 225
   },
   "setPieceExclPens": 46,
-  "pctExclPens": 16.31205673758865,
-  "pctInclPens": 21.27659574468085
+  "pctExclPens": 16.140350877192983,
+  "pctInclPens": 21.05263157894737
  },
  "matches": [
   {
@@ -4657,6 +4657,55 @@
      "scoreAfter": "2–0",
      "evidence": "Goal! France 2, Morocco 0. Ousmane Dembélé (France) right footed shot from outside the box to the bottom right corner. Assisted by Kylian Mbappé.",
      "wallclock": "2026-07-09T21:29:47Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760511",
+   "name": "Belgium at Spain",
+   "kickoff": "2026-07-10T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "Spain",
+   "away": "Belgium",
+   "homeScore": 2,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49747537",
+     "minute": "30'",
+     "team": "Spain",
+     "scorer": "Fabián Ruiz",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Spain 1, Belgium 0. Fabián Ruiz (Spain) right footed shot from the centre of the box to the high centre of the goal.",
+     "wallclock": "2026-07-10T19:29:57Z"
+    },
+    {
+     "espnPlayId": "49747686",
+     "minute": "41'",
+     "team": "Belgium",
+     "scorer": "Charles De Ketelaere",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Spain 1, Belgium 1. Charles De Ketelaere (Belgium) header from the centre of the box to the centre of the goal. Assisted by Timothy Castagne with a cross.",
+     "wallclock": "2026-07-10T19:40:47Z"
+    },
+    {
+     "espnPlayId": "49748447",
+     "minute": "88'",
+     "team": "Spain",
+     "scorer": "Mikel Merino",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Spain 2, Belgium 1. Mikel Merino (Spain) left footed shot from very close range to the top left corner.",
+     "wallclock": "2026-07-10T20:49:33Z"
     }
    ]
   }

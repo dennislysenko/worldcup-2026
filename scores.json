@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-10T09:58:56.172Z",
+  "generated": "2026-07-11T08:19:04.390Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1143,6 +1143,18 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+6'",
+   "period": 2
+  },
+  "98": {
+   "espnId": "760511",
+   "utc": "2026-07-10T19:00Z",
+   "home": "Spain",
+   "away": "Belgium",
+   "homeScore": 2,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+7'",
    "period": 2
   }
  }
