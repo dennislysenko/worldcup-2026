@@ -2,7 +2,7 @@
 // Regenerate: node scripts/update-elo.mjs   ·   pre-tournament snapshot archived in elo-pretournament.js
 WC.elo = {
   "Mexico": 1913,
-  "South Africa": 1560,
+  "South Africa": 1559,
   "South Korea": 1723,
   "Czechia": 1680,
   "Canada": 1729,
@@ -17,7 +17,7 @@ WC.elo = {
   "Paraguay": 1814,
   "Australia": 1795,
   "Türkiye": 1852,
-  "Germany": 1907,
+  "Germany": 1908,
   "Curaçao": 1438,
   "Ivory Coast": 1727,
   "Ecuador": 1871,
@@ -36,7 +36,7 @@ WC.elo = {
   "France": 2163,
   "Senegal": 1816,
   "Iraq": 1561,
-  "Norway": 1972,
+  "Norway": 1951,
   "Argentina": 2156,
   "Algeria": 1756,
   "Austria": 1821,
@@ -45,8 +45,8 @@ WC.elo = {
   "DR Congo": 1704,
   "Uzbekistan": 1631,
   "Colombia": 2003,
-  "England": 2076,
-  "Croatia": 1881,
+  "England": 2097,
+  "Croatia": 1882,
   "Ghana": 1570,
   "Panama": 1658
 };

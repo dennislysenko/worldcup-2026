@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-11T08:19:12.125Z",
+  "generated": "2026-07-12T08:37:35.608Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 285,
+  "total": 292,
   "counts": {
-   "corner": 29,
+   "corner": 31,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 14,
-   "open_play": 225
+   "open_play": 230
   },
-  "setPieceExclPens": 46,
-  "pctExclPens": 16.140350877192983,
-  "pctInclPens": 21.05263157894737
+  "setPieceExclPens": 48,
+  "pctExclPens": 16.438356164383563,
+  "pctInclPens": 21.232876712328768
  },
  "matches": [
   {
@@ -4706,6 +4706,116 @@
      "scoreAfter": "2–1",
      "evidence": "Goal! Spain 2, Belgium 1. Mikel Merino (Spain) left footed shot from very close range to the top left corner.",
      "wallclock": "2026-07-10T20:49:33Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760512",
+   "name": "England at Norway",
+   "kickoff": "2026-07-11T21:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Extra Time",
+   "home": "Norway",
+   "away": "England",
+   "homeScore": 1,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49766335",
+     "minute": "36'",
+     "team": "Norway",
+     "scorer": "Andreas Schjelderup",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Norway 1, England 0. Andreas Schjelderup (Norway) left footed shot from the left side of the box to the top right corner. Assisted by Martin Ødegaard.",
+     "wallclock": "2026-07-11T21:36:26Z"
+    },
+    {
+     "espnPlayId": "49766475",
+     "minute": "45'+2'",
+     "team": "England",
+     "scorer": "Jude Bellingham",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Norway 1, England 1. Jude Bellingham (England) left footed shot from the left side of the box to the bottom right corner. Assisted by Anthony Gordon.",
+     "wallclock": "2026-07-11T21:47:32Z"
+    },
+    {
+     "espnPlayId": "49767779",
+     "minute": "93'",
+     "team": "England",
+     "scorer": "Jude Bellingham",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! Norway 1, England 2. Jude Bellingham (England) right footed shot from the centre of the box to the bottom left corner following a corner.",
+     "wallclock": "2026-07-11T23:09:58Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760513",
+   "name": "Switzerland at Argentina",
+   "kickoff": "2026-07-12T01:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Extra Time",
+   "home": "Argentina",
+   "away": "Switzerland",
+   "homeScore": 3,
+   "awayScore": 1,
+   "goals": [
+    {
+     "espnPlayId": "49769783",
+     "minute": "10'",
+     "team": "Argentina",
+     "scorer": "Alexis Mac Allister",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Argentina 1, Switzerland 0. Alexis Mac Allister (Argentina) header from the left side of the six yard box to the bottom right corner. Assisted by Lionel Messi with a cross following a corner.",
+     "wallclock": "2026-07-12T01:10:18Z"
+    },
+    {
+     "espnPlayId": "49771642",
+     "minute": "67'",
+     "team": "Switzerland",
+     "scorer": "Dan Ndoye",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! Argentina 1, Switzerland 1. Dan Ndoye (Switzerland) right footed shot from a difficult angle on the left to the centre of the goal. Assisted by Ricardo Rodríguez with a through ball.",
+     "wallclock": "2026-07-12T02:28:18Z"
+    },
+    {
+     "espnPlayId": "49772661",
+     "minute": "112'",
+     "team": "Argentina",
+     "scorer": "Julián Álvarez",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–1",
+     "evidence": "Goal! Argentina 2, Switzerland 1. Julián Alvarez (Argentina) right footed shot from outside the box to the top right corner. Assisted by José Manuel López.",
+     "wallclock": "2026-07-12T03:32:05Z"
+    },
+    {
+     "espnPlayId": "49772761",
+     "minute": "120'+1'",
+     "team": "Argentina",
+     "scorer": "Lautaro Martínez",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–1",
+     "evidence": "Goal! Argentina 3, Switzerland 1. Lautaro Martínez (Argentina) right footed shot from the centre of the box to the bottom right corner following a fast break.",
+     "wallclock": "2026-07-12T03:41:07Z"
     }
    ]
   }

@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-11T08:19:04.390Z",
+  "generated": "2026-07-12T08:37:27.585Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1156,6 +1156,30 @@
    "statusText": "FT",
    "minute": "90'+7'",
    "period": 2
+  },
+  "99": {
+   "espnId": "760512",
+   "utc": "2026-07-11T21:00Z",
+   "home": "Norway",
+   "away": "England",
+   "homeScore": 1,
+   "awayScore": 2,
+   "state": "post",
+   "statusText": "AET",
+   "minute": "120'+2'",
+   "period": 4
+  },
+  "100": {
+   "espnId": "760513",
+   "utc": "2026-07-12T01:00Z",
+   "home": "Argentina",
+   "away": "Switzerland",
+   "homeScore": 3,
+   "awayScore": 1,
+   "state": "post",
+   "statusText": "AET",
+   "minute": "120'+4'",
+   "period": 4
   }
  }
 }
