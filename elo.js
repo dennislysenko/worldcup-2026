@@ -46,7 +46,7 @@ WC.elo = {
   "Uzbekistan": 1631,
   "Colombia": 2003,
   "England": 2097,
-  "Croatia": 1882,
+  "Croatia": 1881,
   "Ghana": 1570,
   "Panama": 1658
 };

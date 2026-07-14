@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-13T09:52:44.325Z",
+  "generated": "2026-07-14T08:34:24.374Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
