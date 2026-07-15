@@ -1,2 +1,4 @@
 .vercel
 .DS_Store
+.playwright-mcp/
+.votes.json
