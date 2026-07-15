@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-14T08:34:24.374Z",
+  "generated": "2026-07-15T08:41:17.140Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 292,
+  "total": 294,
   "counts": {
    "corner": 31,
    "free_kick": 16,
    "throw_in": 1,
-   "penalty": 14,
-   "open_play": 230
+   "penalty": 15,
+   "open_play": 231
   },
   "setPieceExclPens": 48,
-  "pctExclPens": 16.438356164383563,
-  "pctInclPens": 21.232876712328768
+  "pctExclPens": 16.3265306122449,
+  "pctInclPens": 21.428571428571427
  },
  "matches": [
   {
@@ -4816,6 +4816,43 @@
      "scoreAfter": "3–1",
      "evidence": "Goal! Argentina 3, Switzerland 1. Lautaro Martínez (Argentina) right footed shot from the centre of the box to the bottom right corner following a fast break.",
      "wallclock": "2026-07-12T03:41:07Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760514",
+   "name": "Spain at France",
+   "kickoff": "2026-07-14T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "France",
+   "away": "Spain",
+   "homeScore": 0,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49792518",
+     "minute": "22'",
+     "team": "Spain",
+     "scorer": "Mikel Oyarzabal",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! France 0, Spain 1. Mikel Oyarzabal (Spain) converts the penalty with a left footed shot to the top right corner.",
+     "wallclock": "2026-07-14T19:21:59Z"
+    },
+    {
+     "espnPlayId": "49793380",
+     "minute": "58'",
+     "team": "Spain",
+     "scorer": "Pedro Porro",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! France 0, Spain 2. Pedro Porro (Spain) right footed shot from the centre of the box to the bottom right corner. Assisted by Dani Olmo.",
+     "wallclock": "2026-07-14T20:19:32Z"
     }
    ]
   }
