@@ -447,9 +447,18 @@
     if (mm) { const r = groupFinal(mm[1]); return r ? r[0].team : null; }
     mm = /^Runner-up Group (.+)$/.exec(slot);
     if (mm) { const r = groupFinal(mm[1]); return r ? r[1].team : null; }
+    mm = /^Loser Match (\d+)$/.exec(slot); // 3rd-place match feeds off the semi-final losers
+    if (mm) return matchLoser(+mm[1]);
     const fm = feederMatch(slot);
     if (fm) return matchWinner(fm);
     return null; // Third-place qualifier (FIFA table TBD) → projection
+  }
+  function matchLoser(num) {
+    const sc = scores[num];
+    if (!sc || sc.state !== "post" || sc.homeScore == null) return null;
+    const winSide = sc.homeScore === sc.awayScore ? sc.winner : (sc.homeScore > sc.awayScore ? "home" : "away");
+    if (!winSide) return null;
+    return koActualTeam(num, winSide === "home" ? "away" : "home");
   }
   // Map an ESPN team name to our canonical name (handles 3rd-place slots once a KO match is played).
   function canonTeam(name) {
