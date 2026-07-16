@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-15T08:41:13.851Z",
+  "generated": "2026-07-16T08:39:39.894Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1518,6 +1518,21 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+7'",
+   "period": 2
+  },
+  "102": {
+   "espnId": "760515",
+   "utc": "2026-07-15T19:00Z",
+   "home": "England",
+   "away": "Argentina",
+   "homeScore": 1,
+   "awayScore": 2,
+   "homePens": null,
+   "awayPens": null,
+   "winner": "away",
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+12'",
    "period": 2
   }
  }

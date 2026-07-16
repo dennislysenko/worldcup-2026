@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-15T08:41:17.140Z",
+  "generated": "2026-07-16T08:39:45.408Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 294,
+  "total": 297,
   "counts": {
-   "corner": 31,
+   "corner": 32,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 15,
-   "open_play": 231
+   "open_play": 233
   },
-  "setPieceExclPens": 48,
-  "pctExclPens": 16.3265306122449,
-  "pctInclPens": 21.428571428571427
+  "setPieceExclPens": 49,
+  "pctExclPens": 16.4983164983165,
+  "pctInclPens": 21.54882154882155
  },
  "matches": [
   {
@@ -4853,6 +4853,55 @@
      "scoreAfter": "0–2",
      "evidence": "Goal! France 0, Spain 2. Pedro Porro (Spain) right footed shot from the centre of the box to the bottom right corner. Assisted by Dani Olmo.",
      "wallclock": "2026-07-14T20:19:32Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760515",
+   "name": "Argentina at England",
+   "kickoff": "2026-07-15T19:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "England",
+   "away": "Argentina",
+   "homeScore": 1,
+   "awayScore": 2,
+   "goals": [
+    {
+     "espnPlayId": "49797120",
+     "minute": "55'",
+     "team": "England",
+     "scorer": "Anthony Gordon",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! England 1, Argentina 0. Anthony Gordon (England) right footed shot from very close range to the bottom left corner. Assisted by Morgan Rogers with a cross.",
+     "wallclock": "2026-07-15T20:15:30Z"
+    },
+    {
+     "espnPlayId": "49797604",
+     "minute": "85'",
+     "team": "Argentina",
+     "scorer": "Enzo Fernández",
+     "ownGoal": false,
+     "header": false,
+     "category": "corner",
+     "scoreAfter": "1–1",
+     "evidence": "Goal! England 1, Argentina 1. Enzo Fernández (Argentina) right footed shot from outside the box to the bottom left corner. Assisted by Lionel Messi following a corner.",
+     "wallclock": "2026-07-15T20:46:00Z"
+    },
+    {
+     "espnPlayId": "49797667",
+     "minute": "90'+2'",
+     "team": "Argentina",
+     "scorer": "Lautaro Martínez",
+     "ownGoal": false,
+     "header": true,
+     "category": "open_play",
+     "scoreAfter": "1–2",
+     "evidence": "Goal! England 1, Argentina 2. Lautaro Martínez (Argentina) header from very close range to the top left corner. Assisted by Lionel Messi with a cross.",
+     "wallclock": "2026-07-15T20:52:33Z"
     }
    ]
   }
