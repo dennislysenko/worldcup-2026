@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-16T08:39:45.408Z",
+  "generated": "2026-07-17T08:33:19.130Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
@@ -4901,7 +4901,7 @@
      "category": "open_play",
      "scoreAfter": "1–2",
      "evidence": "Goal! England 1, Argentina 2. Lautaro Martínez (Argentina) header from very close range to the top left corner. Assisted by Lionel Messi with a cross.",
-     "wallclock": "2026-07-15T20:52:33Z"
+     "wallclock": "2026-07-15T20:52:34Z"
     }
    ]
   }

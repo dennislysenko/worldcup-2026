@@ -2,7 +2,7 @@
 // Regenerate: node scripts/update-elo.mjs   ·   pre-tournament snapshot archived in elo-pretournament.js
 WC.elo = {
   "Mexico": 1913,
-  "South Africa": 1560,
+  "South Africa": 1559,
   "South Korea": 1723,
   "Czechia": 1680,
   "Canada": 1729,
