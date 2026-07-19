@@ -33,7 +33,7 @@ WC.elo = {
   "Cape Verde": 1619,
   "Saudi Arabia": 1596,
   "Uruguay": 1841,
-  "France": 2121,
+  "France": 2070,
   "Senegal": 1816,
   "Iraq": 1561,
   "Norway": 1951,
@@ -45,7 +45,7 @@ WC.elo = {
   "DR Congo": 1704,
   "Uzbekistan": 1631,
   "Colombia": 2003,
-  "England": 2074,
+  "England": 2125,
   "Croatia": 1882,
   "Ghana": 1570,
   "Panama": 1658

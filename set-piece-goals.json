@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-17T08:33:19.130Z",
+  "generated": "2026-07-19T08:42:13.771Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 297,
+  "total": 307,
   "counts": {
-   "corner": 32,
+   "corner": 33,
    "free_kick": 16,
    "throw_in": 1,
-   "penalty": 15,
-   "open_play": 233
+   "penalty": 16,
+   "open_play": 241
   },
-  "setPieceExclPens": 49,
-  "pctExclPens": 16.4983164983165,
-  "pctInclPens": 21.54882154882155
+  "setPieceExclPens": 50,
+  "pctExclPens": 16.286644951140065,
+  "pctInclPens": 21.498371335504885
  },
  "matches": [
   {
@@ -4902,6 +4902,139 @@
      "scoreAfter": "1–2",
      "evidence": "Goal! England 1, Argentina 2. Lautaro Martínez (Argentina) header from very close range to the top left corner. Assisted by Lionel Messi with a cross.",
      "wallclock": "2026-07-15T20:52:34Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760516",
+   "name": "England at France",
+   "kickoff": "2026-07-18T21:00Z",
+   "state": "post",
+   "statusText": "Full Time",
+   "home": "France",
+   "away": "England",
+   "homeScore": 4,
+   "awayScore": 6,
+   "goals": [
+    {
+     "espnPlayId": "49865115",
+     "minute": "3'",
+     "team": "England",
+     "scorer": "Declan Rice",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–1",
+     "evidence": "Goal! France 0, England 1. Declan Rice (England) right footed shot from outside the box to the bottom right corner.",
+     "wallclock": "2026-07-18T21:02:27Z"
+    },
+    {
+     "espnPlayId": "49865676",
+     "minute": "18'",
+     "team": "England",
+     "scorer": "Ezri Konsa",
+     "ownGoal": false,
+     "header": true,
+     "category": "corner",
+     "scoreAfter": "0–2",
+     "evidence": "Goal! France 0, England 2. Ezri Konsa (England) header from the centre of the box to the bottom right corner. Assisted by Declan Rice with a cross following a corner.",
+     "wallclock": "2026-07-18T21:18:05Z"
+    },
+    {
+     "espnPlayId": "49866393",
+     "minute": "37'",
+     "team": "England",
+     "scorer": "Bukayo Saka",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–3",
+     "evidence": "Goal! France 0, England 3. Bukayo Saka (England) left footed shot from the left side of the box to the high centre of the goal. Assisted by Marcus Rashford following a fast break.",
+     "wallclock": "2026-07-18T21:36:23Z"
+    },
+    {
+     "espnPlayId": "49866797",
+     "minute": "45'+1'",
+     "team": "England",
+     "scorer": "Bukayo Saka",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "0–4",
+     "evidence": "Goal! France 0, England 4. Bukayo Saka (England) left footed shot from the centre of the box to the bottom right corner. Assisted by Eberechi Eze with a through ball.",
+     "wallclock": "2026-07-18T21:46:05Z"
+    },
+    {
+     "espnPlayId": "49867337",
+     "minute": "48'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–4",
+     "evidence": "Goal! France 1, England 4. Kylian Mbappé (France) left footed shot from the centre of the box to the bottom right corner. Assisted by Michael Olise with a through ball following a fast break.",
+     "wallclock": "2026-07-18T22:10:33Z"
+    },
+    {
+     "espnPlayId": "49867589",
+     "minute": "54'",
+     "team": "France",
+     "scorer": "Bradley Barcola",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "2–4",
+     "evidence": "Goal! France 2, England 4. Bradley Barcola (France) right footed shot from the centre of the box to the bottom left corner. Assisted by Kylian Mbappé with a through ball.",
+     "wallclock": "2026-07-18T22:16:42Z"
+    },
+    {
+     "espnPlayId": "49867945",
+     "minute": "66'",
+     "team": "France",
+     "scorer": "Kylian Mbappé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "3–4",
+     "evidence": "Goal! France 3, England 4. Kylian Mbappé (France) left footed shot from the centre of the box to the bottom right corner. Assisted by Michael Olise.",
+     "wallclock": "2026-07-18T22:28:54Z"
+    },
+    {
+     "espnPlayId": "49868711",
+     "minute": "87'",
+     "team": "England",
+     "scorer": "Bukayo Saka",
+     "ownGoal": false,
+     "header": false,
+     "category": "penalty",
+     "scoreAfter": "3–5",
+     "evidence": "Goal! France 3, England 5. Bukayo Saka (England) converts the penalty with a left footed shot to the bottom right corner.",
+     "wallclock": "2026-07-18T22:49:44Z"
+    },
+    {
+     "espnPlayId": "49869018",
+     "minute": "90'+6'",
+     "team": "France",
+     "scorer": "Ousmane Dembélé",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–5",
+     "evidence": "Goal! France 4, England 5. Ousmane Dembélé (France) left footed shot from the centre of the box to the bottom left corner. Assisted by Dayot Upamecano following a fast break.",
+     "wallclock": "2026-07-18T22:58:27Z"
+    },
+    {
+     "espnPlayId": "49869058",
+     "minute": "90'+8'",
+     "team": "England",
+     "scorer": "Jude Bellingham",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "4–6",
+     "evidence": "Goal! France 4, England 6. Jude Bellingham (England) right footed shot from the centre of the box to the bottom right corner following a fast break.",
+     "wallclock": "2026-07-18T23:00:19Z"
     }
    ]
   }

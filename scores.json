@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-17T08:33:14.646Z",
+  "generated": "2026-07-19T08:42:07.156Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1533,6 +1533,21 @@
    "state": "post",
    "statusText": "FT",
    "minute": "90'+12'",
+   "period": 2
+  },
+  "103": {
+   "espnId": "760516",
+   "utc": "2026-07-18T21:00Z",
+   "home": "France",
+   "away": "England",
+   "homeScore": 4,
+   "awayScore": 6,
+   "homePens": null,
+   "awayPens": null,
+   "winner": "away",
+   "state": "post",
+   "statusText": "FT",
+   "minute": "90'+9'",
    "period": 2
   }
  }
