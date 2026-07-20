@@ -1,21 +1,21 @@
 {
  "_meta": {
-  "generated": "2026-07-19T08:42:13.771Z",
+  "generated": "2026-07-20T09:41:02.960Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
  "aggregate": {
-  "total": 307,
+  "total": 308,
   "counts": {
    "corner": 33,
    "free_kick": 16,
    "throw_in": 1,
    "penalty": 16,
-   "open_play": 241
+   "open_play": 242
   },
   "setPieceExclPens": 50,
-  "pctExclPens": 16.286644951140065,
-  "pctInclPens": 21.498371335504885
+  "pctExclPens": 16.233766233766232,
+  "pctInclPens": 21.428571428571427
  },
  "matches": [
   {
@@ -4926,7 +4926,7 @@
      "category": "open_play",
      "scoreAfter": "0–1",
      "evidence": "Goal! France 0, England 1. Declan Rice (England) right footed shot from outside the box to the bottom right corner.",
-     "wallclock": "2026-07-18T21:02:27Z"
+     "wallclock": "2026-07-18T21:02:28Z"
     },
     {
      "espnPlayId": "49865676",
@@ -4950,7 +4950,7 @@
      "category": "open_play",
      "scoreAfter": "0–3",
      "evidence": "Goal! France 0, England 3. Bukayo Saka (England) left footed shot from the left side of the box to the high centre of the goal. Assisted by Marcus Rashford following a fast break.",
-     "wallclock": "2026-07-18T21:36:23Z"
+     "wallclock": "2026-07-18T21:36:24Z"
     },
     {
      "espnPlayId": "49866797",
@@ -4962,7 +4962,7 @@
      "category": "open_play",
      "scoreAfter": "0–4",
      "evidence": "Goal! France 0, England 4. Bukayo Saka (England) left footed shot from the centre of the box to the bottom right corner. Assisted by Eberechi Eze with a through ball.",
-     "wallclock": "2026-07-18T21:46:05Z"
+     "wallclock": "2026-07-18T21:46:06Z"
     },
     {
      "espnPlayId": "49867337",
@@ -5035,6 +5035,31 @@
      "scoreAfter": "4–6",
      "evidence": "Goal! France 4, England 6. Jude Bellingham (England) right footed shot from the centre of the box to the bottom right corner following a fast break.",
      "wallclock": "2026-07-18T23:00:19Z"
+    }
+   ]
+  },
+  {
+   "espnId": "760517",
+   "name": "Argentina at Spain",
+   "kickoff": "2026-07-19T19:00Z",
+   "state": "post",
+   "statusText": "Final Score - After Extra Time",
+   "home": "Spain",
+   "away": "Argentina",
+   "homeScore": 1,
+   "awayScore": 0,
+   "goals": [
+    {
+     "espnPlayId": "49880522",
+     "minute": "106'",
+     "team": "Spain",
+     "scorer": "Ferran Torres",
+     "ownGoal": false,
+     "header": false,
+     "category": "open_play",
+     "scoreAfter": "1–0",
+     "evidence": "Goal! Spain 1, Argentina 0. Ferran Torres (Spain) left footed shot from the centre of the box to the high centre of the goal. Assisted by Nico Williams with a headed pass.",
+     "wallclock": "2026-07-19T21:42:29Z"
     }
    ]
   }

@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-19T08:42:07.156Z",
+  "generated": "2026-07-20T09:40:51.186Z",
   "source": "ESPN public API (site.api.espn.com)",
   "note": "keyed by data.js matchNumber; browser live-polls in-progress matches"
  },
@@ -1549,6 +1549,21 @@
    "statusText": "FT",
    "minute": "90'+9'",
    "period": 2
+  },
+  "104": {
+   "espnId": "760517",
+   "utc": "2026-07-19T19:00Z",
+   "home": "Spain",
+   "away": "Argentina",
+   "homeScore": 1,
+   "awayScore": 0,
+   "homePens": null,
+   "awayPens": null,
+   "winner": "home",
+   "state": "post",
+   "statusText": "AET",
+   "minute": "120'+5'",
+   "period": 4
   }
  }
 }
