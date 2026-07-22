@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-07-20T09:41:02.960Z",
+  "generated": "2026-07-22T09:07:51.398Z",
   "source": "ESPN public API (site.api.espn.com, Opta-sourced commentary)",
   "method": "goals classified by fixed Opta commentary phrases; verbatim evidence retained per goal"
  },
@@ -5059,7 +5059,7 @@
      "category": "open_play",
      "scoreAfter": "1–0",
      "evidence": "Goal! Spain 1, Argentina 0. Ferran Torres (Spain) left footed shot from the centre of the box to the high centre of the goal. Assisted by Nico Williams with a headed pass.",
-     "wallclock": "2026-07-19T21:42:29Z"
+     "wallclock": "2026-07-19T21:42:30Z"
     }
    ]
   }
